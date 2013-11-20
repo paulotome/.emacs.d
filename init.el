@@ -1,5 +1,5 @@
 ;;__________________________________________________________________________
-;;;;    System Customizations 
+;;;;    System Customizations
 
 ;; Set buffer behaviour
 (setq next-line-add-newlines nil)
@@ -31,14 +31,14 @@
 (defconst search-highlight t)           ;highlight incremental search
 (setq ls-lisp-dirs-first t)             ;display dirs first in dired
 
-;;; 
+;;;
 ;;; Emacs Server Mode
-;;; 
+;;;
 (server-mode)
 
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
+;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;; (setq inferior-lisp-program "sbcl")
 
 ;; (eval-after-load "slime"
 ;;   '(progn
@@ -68,13 +68,13 @@
 ;;   'slime-fuzzy-complete-symbol)))
 
 
-(require 'slime)
-(add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
-(add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
-(slime-setup '(slime-fancy slime-banner))
-(global-set-key "\C-cs" 'slime-selector)
-(setq slime-complete-symbol*-fancy t)
-(setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+;; (require 'slime)
+;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
+;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
+;; (slime-setup '(slime-fancy slime-banner))
+;; (global-set-key "\C-cs" 'slime-selector)
+;; (setq slime-complete-symbol*-fancy t)
+;; (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 
 ;;(setq slime-lisp-implementations '((sbcl ("sbcl" "--core" "sbcl.core-for-slime"))))
 
@@ -114,20 +114,20 @@
 
 (global-set-key [f12] 'revert-buffer)
 
-;;; 
+;;;
 ;;; don't make backup files
-;;; 
+;;;
 (setq make-backup-files nil)
 
-;;; 
+;;;
 ;;; Frame format
-;;; 
+;;;
 ;(setq frame-title-format '("" (buffer-file-name "%f - ") "Emacs"))
 ; (setq icon-title-format  '("" (buffer-file-name "%f - ") "Emacs"))
 (setq frame-title-format '("%b - Emacs"))
 ;(setq icon-title-format  '("%b - PauloTomeEmacs"))
 
-(w32-send-sys-command ?\xf030)
+;; (w32-send-sys-command ?\xf030)
 
 (defun sc-mark-sexp (arg)
   "Set mark ARG sexps from point."
@@ -173,7 +173,7 @@ Finaly, blinks at the end of the marked region."
 	     ;; If it is the second time the text is deleted from the buffer
 	     (delete-region (point) (mark))
 	     (setq *last-copy-kill-yank* nil))
-	    (t 
+	    (t
 	     ;; If it is the first time the marked text is saved to the kill ring
 	     (copy-region-as-kill (point) (mark))
 	     (setq *last-copy-kill-yank* (list (current-buffer) (point) (mark)))
@@ -242,3 +242,5 @@ Finaly, blinks at the end of the marked region."
 (transient-mark-mode nil)
 
 ;;(load "C:/Users/Paulo/quicklisp/clhs-use-local.el" t)
+
+(setq-default show-trailing-whitespace t)
