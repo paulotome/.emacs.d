@@ -244,3 +244,6 @@ Finaly, blinks at the end of the marked region."
 ;;(load "C:/Users/Paulo/quicklisp/clhs-use-local.el" t)
 
 (setq-default show-trailing-whitespace t)
+
+(custom-set-variables
+ '(initial-frame-alist (quote ((fullscreen . maximized)))))
