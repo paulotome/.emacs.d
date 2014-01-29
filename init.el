@@ -247,3 +247,16 @@ Finaly, blinks at the end of the marked region."
 
 (custom-set-variables
  '(initial-frame-alist (quote ((fullscreen . maximized)))))
+
+;; Hide splash-screen and startup-message
+(setq inhibit-splash-screen t)
+(setq inhibit-startup-message t)
+
+;; Switch to full screen at startup
+
+(defun switch-full-screen ()
+  (interactive)
+  (shell-command (concat "wmctrl -i -r " (frame-parameter nil 'outer-window-id)
+			 " -btoggle,maximized_vert,maximized_horz")))
+
+(switch-full-screen)
