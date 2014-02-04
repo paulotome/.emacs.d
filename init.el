@@ -260,3 +260,12 @@ Finaly, blinks at the end of the marked region."
 			 " -btoggle,maximized_vert,maximized_horz")))
 
 (switch-full-screen)
+
+
+(desktop-save-mode 1)
+
+(setq history-length 250)
+(add-to-list 'desktop-globals-to-save 'file-name-history)
+
+
+(setq mouse-wheel-progressive-speed nil)
