@@ -244,7 +244,13 @@ Finaly, blinks at the end of the marked region."
 (setq-default show-trailing-whitespace t)
 
 (custom-set-variables
- '(initial-frame-alist (quote ((fullscreen . maximized)))))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(initial-frame-alist (quote ((fullscreen . maximized))))
+ '(scroll-bar-mode (quote left))
+ '(tool-bar-mode nil))
 
 ;; Hide splash-screen and startup-message
 (setq inhibit-splash-screen t)
@@ -260,10 +266,10 @@ Finaly, blinks at the end of the marked region."
 (switch-full-screen)
 
 
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
-(setq history-length 250)
-(add-to-list 'desktop-globals-to-save 'file-name-history)
+;; (setq history-length 250)
+;; (add-to-list 'desktop-globals-to-save 'file-name-history)
 
 
 (setq mouse-wheel-progressive-speed nil)
@@ -349,3 +355,15 @@ Finaly, blinks at the end of the marked region."
               nil t nil 'coding-system-history
               (if default (symbol-name default)))))
     (unless (zerop (length cs)) (intern cs))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ENCODING ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq org-list-allow-alphabetical t)
+
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
