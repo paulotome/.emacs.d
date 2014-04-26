@@ -298,12 +298,17 @@ Finaly, blinks at the end of the marked region."
 (add-to-list 'file-coding-system-alist '("\\.tex" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("\\.txt" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("\\.el" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.lisp" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.cl" . ) utf-8-unix)
 (add-to-list 'file-coding-system-alist '("\\.scratch" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("user_prefs" . utf-8-unix) )
 
 (add-to-list 'process-coding-system-alist '("\\.txt" . utf-8-unix) )
 
 (add-to-list 'network-coding-system-alist '("\\.txt" . utf-8-unix) )
+
+;;;(modify-coding-system-alist 'file "\\.lisp\\'" 'iso-latin-1-dos)
+;;;(modify-coding-system-alist 'file "\\.cl\\'" 'iso-latin-1-dos)
 
 (prefer-coding-system 'utf-8-unix)
 (set-default-coding-systems 'utf-8-unix)
