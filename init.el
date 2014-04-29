@@ -371,7 +371,7 @@ Finaly, blinks at the end of the marked region."
 (global-set-key (kbd "<S-f5>") 'bh/widen)
 (global-set-key (kbd "<f7>") 'bh/set-truncate-lines)
 (global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
-(global-set-key (kbd "<f9> <f9>") 'bh/show-org-agenda)
+;; (global-set-key (kbd "<f9> <f9>") 'bh/show-org-agenda)
 ;; (global-set-key (kbd "<f9> b") 'bbdb)
 (global-set-key (kbd "<f9> c") 'calendar)
 (global-set-key (kbd "<f9> f") 'boxquote-insert-file)
@@ -982,12 +982,6 @@ A prefix arg forces clock in of the default task."
 ; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))
 
-;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
-(setq org-capture-templates
-      (quote (
-              ("p" "Phone call" entry (file "~/git/agenda/refile.org")
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-              )))
 
 ;; (require 'bbdb)
 ;; (require 'bbdb-com)
@@ -1476,6 +1470,8 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 (setq org-startup-folded t)
 
+(add-hook 'org-mode-hook ' (lambda () (org-indent-mode t)) t)
+
 ;; flyspell mode for spell checking everywhere
 (add-hook 'org-mode-hook 'turn-on-flyspell 'append)
 
@@ -1489,3 +1485,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
       '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
 
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ELECTRIC MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(electric-pair-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG AGENDA  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
