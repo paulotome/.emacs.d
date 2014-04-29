@@ -1,3 +1,9 @@
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (package-initialize)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  )
+
 ;;__________________________________________________________________________
 ;;;;    System Customizations
 
@@ -355,9 +361,9 @@ Finaly, blinks at the end of the marked region."
 (require 'org)
 ;;
 ;; Standard key bindings
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\C-c l" 'org-store-link)
+(global-set-key "\C-c a" 'org-agenda)
+(global-set-key "\C-c b" 'org-iswitchb)
 
 ;; Custom Key Bindings
 (global-set-key (kbd "<f12>") 'org-agenda)
@@ -526,7 +532,7 @@ Finaly, blinks at the end of the marked region."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org Agenda Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq org-agenda-files (quote ("~/git/org")))
+(setq org-agenda-files (quote ("~/git/agenda")))
 
 ;; Do not dim blocked tasks
 (setq org-agenda-dim-blocked-tasks nil)
@@ -979,7 +985,7 @@ A prefix arg forces clock in of the default task."
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
 (setq org-capture-templates
       (quote (
-              ("p" "Phone call" entry (file "~/git/org/refile.org")
+              ("p" "Phone call" entry (file "~/git/agenda/refile.org")
                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
               )))
 
@@ -1297,9 +1303,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 (setq org-list-allow-alphabetical t)
 
 ;; Explicitly load required exporters
-(require 'ox-html)
-(require 'ox-latex)
-(require 'ox-ascii)
+;; (require 'ox-html)
+;; (require 'ox-latex)
+;; (require 'ox-ascii)
 
 ;; Don't enable this because it breaks access to emacs from my Android phone
 (setq org-startup-with-inline-images nil)
