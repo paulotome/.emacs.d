@@ -1,9 +1,3 @@
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (package-initialize)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  )
-
 ;;__________________________________________________________________________
 ;;;;    System Customizations
 
@@ -117,10 +111,10 @@
 ;;;
 ;;; Frame format
 ;;;
-;(setq frame-title-format '("" (buffer-file-name "%f - ") "Emacs"))
-; (setq icon-title-format  '("" (buffer-file-name "%f - ") "Emacs"))
+;;(setq frame-title-format '("" (buffer-file-name "%f - ") "Emacs"))
+;; (setq icon-title-format  '("" (buffer-file-name "%f - ") "Emacs"))
 (setq frame-title-format '("%b - Emacs"))
-;(setq icon-title-format  '("%b - PauloTomeEmacs"))
+;;(setq icon-title-format  '("%b - PauloTomeEmacs"))
 
 ;; (w32-send-sys-command ?\xf030)
 
@@ -498,32 +492,32 @@ Finaly, blinks at the end of the marked region."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org Refile Tasks ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
 
-; Use full outline paths for refile targets - we file directly with IDO
+;; Use full outline paths for refile targets - we file directly with IDO
 (setq org-refile-use-outline-path t)
 
-; Targets complete directly with IDO
+;; Targets complete directly with IDO
 (setq org-outline-path-complete-in-steps nil)
 
-; Allow refile to create parent tasks with confirmation
+;; Allow refile to create parent tasks with confirmation
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 
-; Use IDO for both buffer and file completion and ido-everywhere to t
-(setq org-completion-use-ido t)
-(setq ido-everywhere t)
-(setq ido-max-directory-size 100000)
-(ido-mode (quote both))
-; Use the current window when visiting files and buffers with ido
-(setq ido-default-file-method 'selected-window)
-(setq ido-default-buffer-method 'selected-window)
-; Use the current window for indirect buffer display
+;; ; Use IDO for both buffer and file completion and ido-everywhere to t
+;; (setq org-completion-use-ido t)
+;; (setq ido-everywhere t)
+;; (setq ido-max-directory-size 100000)
+;; (ido-mode (quote both))
+;; ; Use the current window when visiting files and buffers with ido
+;; (setq ido-default-file-method 'selected-window)
+;; (setq ido-default-buffer-method 'selected-window)
+;; Use the current window for indirect buffer display
 (setq org-indirect-buffer-display 'current-window)
 
 ;;;; Refile settings
-; Exclude DONE state tasks from refile targets
+;; Exclude DONE state tasks from refile targets
 (defun bh/verify-refile-target ()
   "Exclude todo keywords with a done state from refile targets"
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
@@ -624,9 +618,9 @@ Finaly, blinks at the end of the marked region."
 
 (setq org-agenda-clock-consistency-checks
       (quote (:max-duration "4:00"
-              :min-duration 0
-              :max-gap 0
-              :gap-ok-around ("4:00"))))
+			    :min-duration 0
+			    :max-gap 0
+			    :gap-ok-around ("4:00"))))
 
 ;; Agenda clock report parameters
 (setq org-agenda-clockreport-parameter-plist
@@ -635,7 +629,7 @@ Finaly, blinks at the end of the marked region."
 ;; Agenda log mode items to display (closed and state changes by default)
 (setq org-agenda-log-mode-items (quote (closed state)))
 
-; For tag searches ignore tasks with scheduled and deadline dates
+;; For tag searches ignore tasks with scheduled and deadline dates
 (setq org-agenda-tags-todo-honor-ignore-options t)
 
 (setq org-agenda-span 'day)
@@ -718,44 +712,44 @@ Finaly, blinks at the end of the marked region."
 Late deadlines first, then scheduled, then non-late deadlines"
   (let (result num-a num-b)
     (cond
-     ; time specific items are already sorted first by org-agenda-sorting-strategy
+     ;; time specific items are already sorted first by org-agenda-sorting-strategy
 
-     ; non-deadline and non-scheduled items next
+     ;; non-deadline and non-scheduled items next
      ((bh/agenda-sort-test 'bh/is-not-scheduled-or-deadline a b))
 
-     ; deadlines for today next
+     ;; deadlines for today next
      ((bh/agenda-sort-test 'bh/is-due-deadline a b))
 
-     ; late deadlines next
+     ;; late deadlines next
      ((bh/agenda-sort-test-num 'bh/is-late-deadline '> a b))
 
-     ; scheduled items for today next
+     ;; scheduled items for today next
      ((bh/agenda-sort-test 'bh/is-scheduled-today a b))
 
-     ; late scheduled items next
+     ;; late scheduled items next
      ((bh/agenda-sort-test-num 'bh/is-scheduled-late '> a b))
 
-     ; pending deadlines last
+     ;; pending deadlines last
      ((bh/agenda-sort-test-num 'bh/is-pending-deadline '< a b))
 
-     ; finally default to unsorted
+     ;; finally default to unsorted
      (t (setq result nil)))
     result))
 
 (defmacro bh/agenda-sort-test (fn a b)
   "Test for agenda sort"
   `(cond
-    ; if both match leave them unsorted
+    ;; if both match leave them unsorted
     ((and (apply ,fn (list ,a))
           (apply ,fn (list ,b)))
      (setq result nil))
-    ; if a matches put a first
+    ;; if a matches put a first
     ((apply ,fn (list ,a))
      (setq result -1))
-    ; otherwise if b matches put b first
+    ;; otherwise if b matches put b first
     ((apply ,fn (list ,b))
      (setq result 1))
-    ; if none match leave them unsorted
+    ;; if none match leave them unsorted
     (t nil)))
 
 (defmacro bh/agenda-sort-test-num (fn compfn a b)
@@ -878,7 +872,7 @@ as the default task."
     ;;
     (save-restriction
       (widen)
-      ; Find the tags on the current task
+      ;; Find the tags on the current task
       (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
           (org-clock-in '(16))
         (bh/clock-in-organization-task-as-default)))))
@@ -952,15 +946,15 @@ A prefix arg forces clock in of the default task."
 
 (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
-; Set default column view headings: Task Effort Clock_Summary
+;; Set default column view headings: Task Effort Clock_Summary
 (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
 
-; global Effort estimate values
-; global STYLE property values for completion
+;; global Effort estimate values
+;; global STYLE property values for completion
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit"))))
 
-; Tags with fast selection keys
+;; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
                             ("@errand" . ?e)
                             ("@office" . ?o)
@@ -979,7 +973,7 @@ A prefix arg forces clock in of the default task."
                             ("CANCELLED" . ?c)
                             ("FLAGGED" . ??))))
 
-; Allow setting single tags without the menu
+;; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))
 
 
@@ -1461,7 +1455,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
                             ("\\.x?html?\\'" . system)
                             ("\\.pdf\\'" . system))))
 
-; Overwrite the current window with the agenda
+					; Overwrite the current window with the agenda
 (setq org-agenda-window-setup 'current-window)
 
 (setq org-cycle-include-plain-lists t)
@@ -1473,7 +1467,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 (add-hook 'org-mode-hook ' (lambda () (org-indent-mode t)) t)
 
 ;; flyspell mode for spell checking everywhere
-(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
+;;(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
 
 (setq org-src-preserve-indentation nil)
 
@@ -1488,6 +1482,6 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ELECTRIC MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(electric-pair-mode)
+;; (electric-pair-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG AGENDA  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
