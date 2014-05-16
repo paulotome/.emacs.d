@@ -1,13 +1,14 @@
 (require 'cl)
-(require 'nnml)
 (require 'gnus)
 (require 'gnus-topic)
 (require 'gnus-art)
 (require 'gnus-cache)
 (require 'gnus-score)
 (require 'gnus-msg)
+(require' gnus-ml)
 (require 'smtpmail)
 (require 'gnus-demon)
+(require 'nnml)
 (require 'nntp)
 (require 'nnir)
 (require 'mm-util)
@@ -27,6 +28,7 @@
 
 
 (setq
+
  starttls-use-gnutls t
  starttls-gnutls-program "gnutls-cli"
  starttls-extra-arguments nil
@@ -42,8 +44,43 @@
 
  )
 
-
 (setq gnus-parameters '(("nnimap\\+gmail:INBOX" (expiry-wait . 2))))
+
+(setq
+
+ ;; send mail function
+ ;; send-mail-function 'sendmail-send-it
+ send-mail-function 'smtpmail-send-it
+ ;; message-send-mail-function 'sendmail-send-it
+ message-send-mail-function 'smtpmail-send-it
+ smtpmail-queue-mail nil
+ ;; in case:
+ smtpmail-debug-info t
+ smtpmail-local-domain nil
+
+ )
+
+
+
+
+(defadvice message-send-mail (around gmail-message-send-mail protect activate)
+  "Set up SMTP settings to use Gmail's server when mail is from a gmail.com address."
+  (interactive "P")
+  (if (save-restriction
+       (message-narrow-to-headers)
+       (string-match "gmail.com" (message-fetch-field "from")))
+
+      (let ((message-send-mail-function 'smtpmail-send-it)
+            ;; gmail says use port 465 or 587, but 25 works and those don't, go figure
+            (smtpmail-starttls-credentials '(("smtp.gmail.com" 25 nil nil)))
+            (smtpmail-auth-credentials '(("smtp.gmail.com" 25 "username@gmail.com" nil)))
+            (smtpmail-default-smtp-server "smtp.gmail.com")
+            (smtpmail-smtp-server "smtp.gmail.com")
+            (smtpmail-smtp-service 25)
+            (smtpmail-local-domain "yourdomain.com"))
+        ad-do-it)
+      ad-do-it))
+
 
 ;; ******************************************************
 ;; *                    END GMAIL	         	*
@@ -52,6 +89,11 @@
 
 (setq gnus-secondary-select-methods '((nnml "")))
 
+(add-to-list 'gnus-secondary-select-methods '(nnimap "gmail"
+					      (nnimap-stream ssl)
+					      (nnimap-address "imap.gmail.com")
+					      (nnimap-server-port 993)
+					      (nnir-search-engine imap)))
 
 
 
@@ -77,10 +119,12 @@
 (when (fboundp 'turn-on-gnus-mailing-list-mode)
   (add-hook 'gnus-summary-mode-hook 'turn-on-gnus-mailing-list-mode))
 
+
+
+
+(setq level 2)
+
 (setq
-
- level 2
-
  ;;
  gnus-show-threads t
 
@@ -117,7 +161,10 @@
  gnus-thread-hide-subtree nil
 ;;; ;; Makes presentation more compact by hiding thread subtree
 ;;; gnus-thread-hide-subtree t
+ )
 
+(setq
+ ;;
 
  ;;
  gnus-thread-indent-level 1
@@ -136,6 +183,10 @@
  ;; Gather subjects by fuzzy string matching in the same thread if we don't have any References.
  gnus-summary-gather-subject-limit 'fuzzy
 
+ )
+
+(setq
+
  ;;
  gnus-treat-buttonize t
 
@@ -145,18 +196,10 @@
  ;; Don't subscribe to newsgroups automagically.
  gnus-subscribe-newsgroup-method 'gnus-subscribe-killed
 
- ;; send mail function
- ;; send-mail-function 'sendmail-send-it
- send-mail-function 'smtpmail-send-it
- ;; message-send-mail-function 'sendmail-send-it
- message-send-mail-function 'smtpmail-send-it
- smtpmail-queue-mail nil
-      ;; in case:
- smtpmail-debug-info t
- smtpmail-local-domain
+ 
 
  ;; Use gnus to send mail
- mail-user-agent 'gnus-user-agent
+ ;;mail-user-agent 'gnus-user-agent
 
  ;; Turn off nntp server
  gnus-nntp-server nil
@@ -176,14 +219,18 @@
 
  ;; ask when fetching more articles than this.
  gnus-large-newsgroup 10000
+ )
 
+(setq
+
+ ;;
  ;; quit quietly
  gnus-interactive-exit nil
 
  ;; turn off cache
  gnus-cacheable-groups "off"
 
- ;; don't promp when switching to plugged
+ ;; don't prompt when switching to plugged
  gnus-agent-go-online nil
 
  ;;
@@ -213,6 +260,8 @@
 
  ;;
  gnus-add-to-list t
+
+ ;;
  gnus-summary-display-while-building 10
 
  ;; fonts, colors, etc.
@@ -227,19 +276,29 @@
 
  ;;
  gnus-use-trees nil
+
+ ;;
  gnus-tree-minimize-window 4
+
+ ;;
  gnus-generate-tree-function 'gnus-generate-horizontal-tree
 
  ;;
  gnus-break-pages nil
- gnus-novice-user nil
- gnus-expert-user t
+
+ ;;
+ gnus-novice-user t
+ gnus-expert-user nil
+
+ )
+
+(setq
 
  ;; just show the summary, don't fetch the first article
  gnus-auto-select-first nil
 
  ;;
- gnus-view-pseudos t
+ gnus-view-pseudos 'automatic
 
  ;;
  gnus-use-generic-form nil
@@ -314,16 +373,19 @@
 
  ;; Grab older messages in the thread
  gnus-fetch-old-headers 100
-
+ )
+(setq
  ;; View all the MIME parts in the current article
  gnus-mime-view-all-parts t
  gnus-buttonized-mime-types nil
  gnus-unbuttonized-mime-types '("text/plain")
+ )
 
+(setq
+
+ ;;
  gnus-verbose 9
  gnus-verbose-backends 9
-
- 
  )
 
 ;; wash HTML encoded articles with the built in function.
