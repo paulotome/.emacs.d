@@ -95,8 +95,6 @@
 					      (nnimap-server-port 993)
 					      (nnir-search-engine imap)))
 
-
-
 ;;; My own key bindings.
 ;;;
 ;;; I want to be able to refer to a parent in a thread with $ (as well
@@ -196,7 +194,15 @@
  ;; Don't subscribe to newsgroups automagically.
  gnus-subscribe-newsgroup-method 'gnus-subscribe-killed
 
- 
+ ;; send mail function
+ ;; send-mail-function 'sendmail-send-it
+ send-mail-function 'smtpmail-send-it
+ ;; message-send-mail-function 'sendmail-send-it
+ message-send-mail-function 'smtpmail-send-it
+ smtpmail-queue-mail nil
+ ;; in case:
+ smtpmail-debug-info t
+ ;; smtpmail-local-domain
 
  ;; Use gnus to send mail
  ;;mail-user-agent 'gnus-user-agent

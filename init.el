@@ -237,6 +237,8 @@ Finaly, blinks at the end of the marked region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(gnus-home-directory "~/.emacs.d/")
+ '(gnus-init-file "~/.emacs.d/.gnus.el")
  '(initial-frame-alist (quote ((fullscreen . maximized))))
  '(scroll-bar-mode (quote left))
  '(tool-bar-mode nil))
