@@ -1,6 +1,17 @@
 ;;__________________________________________________________________________
 ;;;;    System Customizations
 
+;; Deactivate tooltips in emacs
+(tooltip-mode 0)
+(tool-bar-mode -1)
+(fringe-mode 'none)
+;; Delete the selection area with a keypress
+(delete-selection-mode t)
+(global-font-lock-mode t)
+(column-number-mode t)
+
+(show-paren-mode t)
+
 ;; Set buffer behaviour
 (setq next-line-add-newlines nil)
 (setq scroll-step 1)
@@ -81,13 +92,6 @@
 (modify-syntax-entry ?#  "_   " lisp-mode-syntax-table)
 (modify-syntax-entry ?.  "w   " lisp-mode-syntax-table)
 
-
-;; Deactivate tooltips in emacs:
-
-(tooltip-mode 0)
-
-;;(tool-bar-mode 0)
-(tool-bar-mode -1)
 
 
 
