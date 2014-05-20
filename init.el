@@ -1,3 +1,13 @@
+(require 'info)
+(require 'cl)
+(require 'advice)
+(require 'bytecomp)
+(require 'timer)
+;; FIXME
+;;(require 'setnu)
+;;(require 'wtf)
+
+
 ;;__________________________________________________________________________
 ;;;;    System Customizations
 
