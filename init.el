@@ -43,47 +43,34 @@
 ;;;
 (server-mode)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; KEY RECONFIGURATION
 
-;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
-;; (setq inferior-lisp-program "sbcl")
+;; HOME - go to beginning of line
+(define-key global-map [home]   'beginning-of-line)
 
-;; (eval-after-load "slime"
-;;   '(progn
-;;      (setq slime-lisp-implementations
-;;            '((sbcl ("/usr/bin/sbcl"))
-;;              (ecl ("/usr/bin/ecl"))
-;;              (clisp ("/usr/bin/clisp"))))
-;;      (slime-setup '(
-;;                     slime-asdf
-;;                     slime-autodoc
-;;                     slime-editing-commands
-;;                     slime-fancy-inspector
-;;                     slime-fontifying-fu
-;;                     slime-fuzzy
-;;                     slime-indentation
-;;                     slime-mdot-fu
-;;                     slime-package-fu
-;;                     slime-references
-;;                     slime-repl
-;;                     slime-sbcl-exts
-;;                     slime-scratch
-;;                     slime-xref-browser
-;;                     ))
-;;      (slime-autodoc-mode)
-;;      (setq slime-complete-symbol*-fancy t)
-;;      (setq slime-complete-symbol-function
-;;   'slime-fuzzy-complete-symbol)))
+;; C-HOME - go to beginning of buffer
+(define-key global-map [C-home] 'beginning-of-buffer)
+
+;; END - go to end of line
+(define-key global-map [end]    'end-of-line)
+
+;; C-END - go to end of buffer
+(define-key global-map [C-end]  'end-of-buffer)
+
+;; KEYPAD-/ - "/" character
+(define-key global-map [kp-divide] "/")
 
 
-;; (require 'slime)
-;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
-;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
-;; (slime-setup '(slime-fancy slime-banner))
-;; (global-set-key "\C-cs" 'slime-selector)
-;; (setq slime-complete-symbol*-fancy t)
-;; (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; NAVIGATION
 
-;;(setq slime-lisp-implementations '((sbcl ("sbcl" "--core" "sbcl.core-for-slime"))))
+;; M-LEFT - begining of S-Expression
+(define-key global-map [M-left]  'backward-sexp)
+
+;; M-RIGHT - end of S-Expression
+(define-key global-map [M-right] 'forward-sexp)
+
 
 ;; Isto destina-se a permitir seleccionar simbolos com '.' no meio quando se carrega
 ;; o botao do meio do rato
@@ -91,6 +78,36 @@
 (modify-syntax-entry ?.  "w   " emacs-lisp-mode-syntax-table)
 (modify-syntax-entry ?#  "_   " lisp-mode-syntax-table)
 (modify-syntax-entry ?.  "w   " lisp-mode-syntax-table)
+
+
+;;; VISUAL ENHANCEMENTS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Background selection color
+(set-face-background 'region "darkseagreen")
+
+;;; Background Color
+(set-background-color "seashell")
+
+;;; Show matching parenthesis
+(show-paren-mode t)
+(setq show-paren-style 'expression)
+(set-face-background 'show-paren-match-face "LightSteelBlue2")
+
+;;; Highlight isearch current match
+(setq search-highlight t)
+
+;;; Display line and column numbers in mode line
+(line-number-mode 1)
+(column-number-mode 1)
+
+;;; Display date and time in mode line
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+(display-time)
+
+;; Prevent emacs from adding newlines when pressing down arrow at the end of the buffer
+(setq next-line-add-newlines nil)
 
 
 
@@ -1474,6 +1491,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 ;; flyspell mode for spell checking everywhere
 ;;(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
+(setq flyspell-issue-welcome-flag nil)
 
 (setq org-src-preserve-indentation nil)
 
