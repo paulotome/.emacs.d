@@ -17,8 +17,11 @@
 (fringe-mode 'none)
 ;; Delete the selection area with a keypress
 (delete-selection-mode t)
+;; Use font-lock everywhere.
 (global-font-lock-mode t)
-(column-number-mode t)
+
+;; We have CPU to spare; highlight all syntax categories.
+(setq font-lock-maximum-decoration t)
 
 (show-paren-mode t)
 
@@ -38,6 +41,9 @@
 
 ;; Misc customizations
 (fset 'yes-or-no-p 'y-or-n-p)           ;replace y-e-s by y
+;;________________________________________________________________
+;;    Don't display initial logo
+;;________________________________________________________________
 (setq inhibit-startup-message t)        ;no startup message
 (setq inhibit-splash-screen t)		;no splash screen
 (defconst use-backup-dir t)             ;use backup directory
@@ -48,10 +54,68 @@
 (setq ecb-tip-of-the-day nil)           ;turn off ECB tips
 (recentf-mode 1)                        ;recently edited files in menu
 
+;; If we read a compressed file, uncompress it on the fly:
+;; (this works with .tar.gz and .tgz file as well)
+(auto-compression-mode 1)
+
+;; The following key-binding iconifies a window -- we disable it:
+(global-unset-key "\C-x\C-z")
+
+;; The following key-binding quits emacs -- we disable it too:
+(global-unset-key "\C-x\C-c")
+
+;; But we establish a longer sequence that is harder to hit by accident:
+(global-set-key "\C-x\C-c\C-v" 'save-buffers-kill-emacs)
+;; The longer sequence is all right: emacs should be launched just
+;; once at login and never killed until ready to logout.
+
+;; Disable binding of C-z to iconify a window.
+(global-unset-key "\C-z")
+
+;; M-` invokes tmm-menubar; disable it.
+(global-unset-key "\M-`")
+
+;; C-x C-n invokes set-goal-column; disable it.
+(global-unset-key "\C-x\C-n")
+
+;;________________________________________________________________
+;;    Flash the screen on error; don't beep.
+;;________________________________________________________________
+(setq-default visible-bell t)
 ;;;
 ;;; Emacs Server Mode
 ;;;
 (server-mode)
+
+;;________________________________________________________________
+;;    Files and directories
+;;________________________________________________________________
+
+;; dired-x is a nice substitute for Windows Explorer and OSX's Finder.
+;; M-o: avoid seeing all the backup files.
+;; C-x C-j: enter dired/dired-x mode.
+(add-hook 'dired-load-hook
+	  (function (lambda ()
+		      (load "dired-x"))))
+
+
+;; Ordinarily emacs jumps by half a page when scrolling -- reduce:
+(setq scroll-step 1)
+
+;;________________________________________________________________
+;;    scroll-left is disabled by default; enable it.
+;;________________________________________________________________
+(put 'scroll-left 'disabled nil)
+
+(put 'set-goal-column 'disabled nil)
+
+;;________________________________________________________________
+;;    Choose interactively from the kill ring.
+;;________________________________________________________________
+
+(require 'browse-kill-ring)
+(global-set-key (kbd "C-c C-k") 'browse-kill-ring)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; KEY RECONFIGURATION
@@ -107,9 +171,9 @@
 ;;; Highlight isearch current match
 (setq search-highlight t)
 
-;;; Display line and column numbers in mode line
-(line-number-mode 1)
-(column-number-mode 1)
+;; Permanent display of line and column numbers is handy.
+(setq-default line-number-mode 't)
+(setq-default column-number-mode 't)
 
 ;;; Display date and time in mode line
 (setq display-time-24hr-format t)
@@ -261,6 +325,13 @@ Finaly, blinks at the end of the marked region."
 ;; Isto e' para manter a marcacao das areas seleccionadas
 (transient-mark-mode nil)
 
+
+;; 'woman' mode is an improvement on 'man' mode for manual pages
+(setq-default woman-use-own-frame nil)
+
+;; Man-notify-method controls the behaviour of (wo)man mode.
+(setq-default Man-notify-method 'pushy)
+
 (setq-default show-trailing-whitespace t)
 
 (custom-set-variables
@@ -272,7 +343,7 @@ Finaly, blinks at the end of the marked region."
  '(gnus-init-file "~/.emacs.d/.gnus.el")
  '(initial-frame-alist (quote ((fullscreen . maximized))))
  '(scroll-bar-mode (quote left))
- '(tool-bar-mode nil))
+ )
 
 ;; Switch to full screen at startup
 
