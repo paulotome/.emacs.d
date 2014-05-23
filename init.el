@@ -1,3 +1,18 @@
+;; ******************************************************
+;; *                    EZWINPORTS	         	*
+;; ******************************************************
+
+
+(if (eq system-type 'windows-nt)
+    (progn
+      (setq exec-path (cons "C:/gnu/ezwinports/bin" exec-path))
+      (setenv "PATH" (concat "C:\\gnu\\ezwinports\\bin;" (getenv "PATH")))
+      ;;(setenv "PATH" (concat "C:\\Program Files\\Google\\Chrome\\Application;" (getenv "PATH")))
+      ))
+(setq tls-program '("C:/siscog-dev-tools/Git/bin/openssl.exe s_client -connect %h:%p -no_ssl2 -ign_eof"))
+
+;; ******************************************************
+
 (require 'info)
 (require 'cl)
 (require 'advice)
@@ -165,6 +180,7 @@
 
 ;;; Show matching parenthesis
 (show-paren-mode t)
+(show-paren-match ((t (:bold t))))
 (setq show-paren-style 'expression)
 (set-face-background 'show-paren-match-face "LightSteelBlue2")
 
@@ -182,8 +198,6 @@
 
 ;; Prevent emacs from adding newlines when pressing down arrow at the end of the buffer
 (setq next-line-add-newlines nil)
-
-
 
 
 ;;; Quick expression selection with control return
@@ -334,17 +348,9 @@ Finaly, blinks at the end of the marked region."
 
 (setq-default show-trailing-whitespace t)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(gnus-home-directory "~/.emacs.d/")
- '(gnus-init-file "~/.emacs.d/.gnus.el")
- '(initial-frame-alist (quote ((fullscreen . maximized))))
- '(scroll-bar-mode (quote left))
- )
 
+
+(scroll-bar-mode (quote left))
 ;; Switch to full screen at startup
 
 (defun switch-full-screen ()
@@ -1570,6 +1576,8 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 (add-hook 'org-mode-hook ' (lambda () (org-indent-mode t)) t)
 
+(org-indent-mode-turns-on-hiding-stars t)
+
 ;; flyspell mode for spell checking everywhere
 ;;(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
 (setq flyspell-issue-welcome-flag nil)
@@ -1586,7 +1594,18 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ELECTRIC MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (electric-pair-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG AGENDA  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(gnus-home-directory "~/.emacs.d/")
+ '(gnus-init-file "~/.emacs.d/.gnus.el")
+ ;'(initial-frame-alist (quote ((fullscreen . maximized))))
+ )
