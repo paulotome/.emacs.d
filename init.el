@@ -26,6 +26,7 @@
 ;;__________________________________________________________________________
 ;;;;    System Customizations
 
+
 ;; Deactivate tooltips in emacs
 (tooltip-mode 0)
 (tool-bar-mode -1)
@@ -1576,7 +1577,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 (add-hook 'org-mode-hook ' (lambda () (org-indent-mode t)) t)
 
-(org-indent-mode-turns-on-hiding-stars t)
+
 
 ;; flyspell mode for spell checking everywhere
 ;;(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
@@ -1605,7 +1606,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(gnus-home-directory "~/.emacs.d/")
  '(gnus-init-file "~/.emacs.d/.gnus.el")
+ '(org-indent-mode-turns-on-hiding-stars t)
  ;'(initial-frame-alist (quote ((fullscreen . maximized))))
  )
