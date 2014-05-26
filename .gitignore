@@ -4,3 +4,4 @@ server
 *~
 elpa/*~
 csharp-mode-0.8.5.el
+org-clock-save.el
