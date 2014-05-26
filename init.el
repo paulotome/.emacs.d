@@ -637,7 +637,7 @@ Finaly, blinks at the end of the marked region."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org Agenda Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq org-agenda-files (quote ("~/git/agenda")))
+(setq org-agenda-files (quote ("~/github/agenda")))
 
 ;; Do not dim blocked tasks
 (setq org-agenda-dim-blocked-tasks nil)
@@ -647,7 +647,9 @@ Finaly, blinks at the end of the marked region."
 
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
-      (quote (("N" "Notes" tags "NOTE"
+      (quote (("a" agenda ""
+		   ((org-deadline-warning-days -5)))
+	      ("N" "Notes" tags "NOTE"
                ((org-agenda-overriding-header "Notes")
                 (org-tags-match-list-sublevels t)))
               ("h" "Habits" tags-todo "STYLE=\"habit\""
@@ -720,8 +722,6 @@ Finaly, blinks at the end of the marked region."
   "Automatic task exclusion in the agenda with / RET"
   (and (cond
         ((string= tag "hold")
-         t)
-        ((string= tag "farm")
          t))
        (concat "-" tag)))
 
@@ -729,9 +729,9 @@ Finaly, blinks at the end of the marked region."
 
 (setq org-agenda-clock-consistency-checks
       (quote (:max-duration "4:00"
-			    :min-duration 0
-			    :max-gap 0
-			    :gap-ok-around ("4:00"))))
+	      :min-duration 0
+	      :max-gap 0
+	      :gap-ok-around ("4:00"))))
 
 ;; Agenda clock report parameters
 (setq org-agenda-clockreport-parameter-plist
@@ -1076,7 +1076,6 @@ A prefix arg forces clock in of the default task."
                             ("HOLD" . ?h)
                             ("PERSONAL" . ?P)
                             ("WORK" . ?W)
-                            ("FARM" . ?F)
                             ("ORG" . ?O)
                             ("NORANG" . ?N)
                             ("crypt" . ?E)
