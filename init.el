@@ -1,6 +1,5 @@
-
 ;; ******************************************************
-;; *                    EZWINPORTS                      *
+;; *                    EZWINPORTS	         	*
 ;; ******************************************************
 
 
@@ -23,7 +22,6 @@
 ;; FIXME
 ;;(require 'setnu)
 ;;(require 'wtf)
-
 
 ;; copy/paste between emacs and e.g. iceweasel
 (setq x-select-enable-clipboard t)
@@ -257,10 +255,6 @@
 ;; Prevent the cursor from blinking
 (blink-cursor-mode 0)
 
-;; Don't use messages that you don't read
-(setq initial-scratch-message "")
-(setq inhibit-startup-message t)        ;no startup message
-(setq inhibit-splash-screen t)          ;no splash screen
 
 ;; Who use the bar to scroll?
 ;(scroll-bar-mode left)
@@ -278,6 +272,7 @@
 ;; We have CPU to spare; highlight all syntax categories.
 (setq font-lock-maximum-decoration t)
 
+;;; Show matching parenthesis
 (show-paren-mode t)
 
 ;; Set buffer behaviour
@@ -303,13 +298,13 @@
 ;;________________________________________________________________
 (setq inhibit-startup-message t)        ;no startup message
 (setq inhibit-splash-screen t)          ;no splash screen
+(setq initial-scratch-message "")	; Don't use messages that you don't read
 (defconst use-backup-dir t)             ;use backup directory
 (defconst query-replace-highlight t)    ;highlight during query
 (defconst search-highlight t)           ;highlight incremental search
 (setq ls-lisp-dirs-first t)             ;display dirs first in dired
 (global-font-lock-mode t)               ;colorize all buffers
 (setq ecb-tip-of-the-day nil)           ;turn off ECB tips
-(recentf-mode 1)                        ;recently edited files in menu
 
 ;; If we read a compressed file, uncompress it on the fly:
 ;; (this works with .tar.gz and .tgz file as well)
@@ -385,6 +380,9 @@
 ;; KEYPAD-/ - "/" character
 (define-key global-map [kp-divide] "/")
 
+(global-set-key [C-tab] 'hippie-expand)
+
+(global-set-key [M-delete] 'kill-word)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; NAVIGATION
@@ -413,9 +411,7 @@
 ;;; Background Color
 (set-background-color "seashell")
 
-;;; Show matching parenthesis
-(show-paren-mode t)
-;; (show-paren-match ((t (:bold t))))
+;;(show-paren-match ((t (:bold t))))
 ;;(setq show-paren-style 'expression)
 (set-face-background 'show-paren-match-face "LightSteelBlue2")
 
@@ -577,6 +573,7 @@
 (set-selection-coding-system 'utf-8-unix)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+(setq org-export-coding-system 'utf-8-unix)
 (set-charset-priority 'unicode)
 
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
@@ -1087,6 +1084,8 @@ A prefix arg forces clock in of the default task."
 
 (setq org-startup-indented t)
 
+(setq org-indent-mode-turns-on-hiding-stars t)
+
 (setq org-cycle-separator-lines 0)
 
 (setq org-blank-before-new-entry (quote ((heading)
@@ -1133,9 +1132,9 @@ A prefix arg forces clock in of the default task."
 (setq save-place-file "~/.emacs.d/saved-places")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GIT COMMIT MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (require 'git-commit)
-;; ;;(add-hook 'git-commit-mode-hook 'turn-on-flyspell)
-;; (add-hook 'git-commit-mode-hook (lambda () (toggle-save-place 0)))
+(require 'git-commit)
+;;(add-hook 'git-commit-mode-hook 'turn-on-flyspell)
+(add-hook 'git-commit-mode-hook (lambda () (toggle-save-place 0)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; KILL PROCESS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
@@ -1156,7 +1155,7 @@ A prefix arg forces clock in of the default task."
 
 (setq org-agenda-skip-additional-timestamps-same-entry t)
 
-;;
+;;(setq org-agenda-window-setup 'current-window)
 (setq org-agenda-window-setup 'reorganize-frame)
 
 (setq org-agenda-files (quote ("~/github/agenda")))
@@ -1296,7 +1295,7 @@ A prefix arg forces clock in of the default task."
 ;; Remove completed items from search results
 (setq org-agenda-skip-timestamp-if-done t)
 
-(setq org-agenda-include-diary nil)
+(setq org-agenda-include-diary t)
 
 (setq org-agenda-include-all-todo t)
 
@@ -1704,8 +1703,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
                             ("\\.x?html?\\'" . system)
                             ("\\.pdf\\'" . system))))
 
-                                        ; Overwrite the current window with the agenda
-
+;; Overwrite the current window with the agenda
 (setq org-cycle-include-plain-lists t)
 
 (setq org-src-fontify-natively t)
@@ -1732,8 +1730,8 @@ by using nxml's indentation rules."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; HELM-SPOTIFY  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Helm
-;; (add-to-list 'load-path (expand-file-name "~/git/helm/"))
-;; (require 'helm-config)
+(add-to-list 'load-path (expand-file-name "~/git/helm/"))
+(require 'helm-config)
 
 ;; Multi
 ;; (add-to-list 'load-path (expand-file-name "~/git/emacs-multi/"))
@@ -1747,64 +1745,64 @@ by using nxml's indentation rules."
 ;; (add-to-list 'load-path "~/git/emacs-jabber")
 
 ;; For 0.7.90 and above:
-;; (require 'jabber-autoloads)
+(require 'jabber-autoloads)
 
-;; (setq special-display-regexps
-;;       '(("jabber-chat"
-;;       (width . 80)
-;;       (scroll-bar-width . 16)
-;;       (height . 15)
-;;       (tool-bar-lines . 0)
-;;       (menu-bar-lines 0)
-;;       (font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
-;;       (left . 80))))
+(setq special-display-regexps
+      '(("jabber-chat"
+	 (width . 80)
+	 (scroll-bar-width . 16)
+	 (height . 15)
+	 (tool-bar-lines . 0)
+	 (menu-bar-lines 0)
+	 (font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
+	 (left . 80))))
 
-;; (setq
+(setq
 
-;;  jabber-history-enabled t
-;;  jabber-use-global-history nil
-;;  jabber-backlog-number 40
-;;  jabber-backlog-days 30
+ jabber-history-enabled t
+ jabber-use-global-history nil
+ jabber-backlog-number 40
+ jabber-backlog-days 30
 
-;;  )
+ )
 
-;; (setq jabber-chat-header-line-format
-;;           '(" " (:eval (jabber-jid-displayname jabber-chatting-with))
-;;      " " (:eval (jabber-jid-resource jabber-chatting-with)) "\t";
-;;      (:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
-;;               (propertize
-;;                (or
-;;                 (cdr (assoc (get buddy 'show) jabber-presence-strings))
-;;                 (get buddy 'show))
-;;                'face
-;;                (or (cdr (assoc (get buddy 'show) jabber-presence-faces))
-;;                    'jabber-roster-user-online))))
-;;      "\t" (:eval (get (jabber-jid-symbol jabber-chatting-with) 'status))
-;;      (:eval (unless (equal "" *jabber-current-show*)
-;;               (concat "\t You're " *jabber-current-show*
-;;                       " (" *jabber-current-status* ")")))))
+(setq jabber-chat-header-line-format
+          '(" " (:eval (jabber-jid-displayname jabber-chatting-with))
+    	" " (:eval (jabber-jid-resource jabber-chatting-with)) "\t";
+    	(:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
+    		 (propertize
+    		  (or
+    		   (cdr (assoc (get buddy 'show) jabber-presence-strings))
+    		   (get buddy 'show))
+    		  'face
+    		  (or (cdr (assoc (get buddy 'show) jabber-presence-faces))
+    		      'jabber-roster-user-online))))
+    	"\t" (:eval (get (jabber-jid-symbol jabber-chatting-with) 'status))
+    	(:eval (unless (equal "" *jabber-current-show*)
+    		 (concat "\t You're " *jabber-current-show*
+    			 " (" *jabber-current-status* ")")))))
 
-;; ;; Don't disturb me if someone chage presence status (usually remote clients make this automatically):
-;; (setq jabber-alert-presence-message-function (lambda (who oldstatus newstatus statustext)
-;;                                             nil))
+;; Don't disturb me if someone chage presence status (usually remote clients make this automatically):
+(setq jabber-alert-presence-message-function (lambda (who oldstatus newstatus statustext)
+					       nil))
 
-;; ;; Redefine standard binding for sending message form RET to C-RET
-;; ;; (define-key jabber-chat-mode-map (kbd "RET") 'newline)
-;; ;; (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
+;; Redefine standard binding for sending message form RET to C-RET
+;; (define-key jabber-chat-mode-map (kbd "RET") 'newline)
+;; (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
 
-;; ;; (add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage jabber-message-beep)
-;; (add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage)
+;; (add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage jabber-message-beep)
+(add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage)
 
-;; ;; hook which will highlight URLs, and bind C-c RET to open the URL using browse-url:
-;; (add-hook 'jabber-chat-mode-hook 'goto-address)
+;; hook which will highlight URLs, and bind C-c RET to open the URL using browse-url:
+(add-hook 'jabber-chat-mode-hook 'goto-address)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MAGIT  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (add-to-list 'load-path "~/git/git-modes")
-;; (add-to-list 'load-path "~/git/magit")
-;; (eval-after-load 'info
-;;   '(progn (info-initialize)
-;;           (add-to-list 'Info-directory-list "~/git/magit/")))
-;; (require 'magit)
+(add-to-list 'load-path "z:/siscog/git/git-modes")
+(add-to-list 'load-path "z:/siscog/git/magit")
+(eval-after-load 'info
+  '(progn (info-initialize)
+          (add-to-list 'Info-directory-list "z:/siscog/git/magit/")))
+(require 'magit)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GNUS  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (add-to-list 'load-path "~/git/gnus/elisp/gnus/lisp")
@@ -1823,5 +1821,4 @@ by using nxml's indentation rules."
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(gnus-home-directory "~/.emacs.d/")
  '(gnus-init-file "~/.emacs.d/.gnus.el")
- '(org-indent-mode-turns-on-hiding-stars t)
  '(initial-frame-alist (quote ((fullscreen . maximized)))))
