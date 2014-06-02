@@ -147,15 +147,76 @@
 ;(global-highlight-changes-mode t)
 (setq highlight-changes-global-changes-existing-buffers t)
 
+;;;_ , uniquify
+; See (Info-goto-node "(emacs) Uniquify")
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-trailing-separator-p t)
+
+;;_ , multi-protocol remote file access
+
+; See (Info-goto-node "(tramp)Top") as well as
+; http://www.emacswiki.org/cgi-bin/wiki/TrampMode
+
+; What I also consider very useful is
+;(Info-goto-node "(tramp)Version Control")
 
 
+(require 'tramp)
+
+(setq tramp-default-method "ssh")
+
+;;;_ , dired
+
+(setq dired-dwim-target t)
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+(setq image-dired-external-viewer "/usr/bin/gimp")
+
+;;;_ , dired-x
+
+; See (Info-goto-node "(dired-x) Top")
+(require 'dired-x)
+
+;;;_  . Advanced Mark Commands
+
+; (Info-goto-node "(dired-x) Advanced Mark Commands")
+
+;;;_  . Omit
+
+(dired-omit-mode 1)
+(setq dired-omit-files (concat dired-omit-files "\\|^\\."))
+(setq dired-omit-extensions `(,@dired-omit-extensions ".avi" ".mp3"))
+
+;;;_ , image-dired
+
+; See http://www.emacswiki.org/cgi-bin/wiki/Tumme
+(require 'image-dired)
+
+(setq image-dired-show-all-from-dir-max-files 100)
+(setq image-dired-thumb-margin 4)
+(setq image-dired-thumb-relief 0)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'recentf)
 (recentf-mode 1)                        ;recently edited files in menu
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-xr" 'recentf-open-files)
+
+;;;_ Web
+
+;;;_. standard browser to open URLs within GNU Emacs
+
+; See http://www.emacswiki.org/cgi-bin/wiki/BrowseUrl for more information.
+
+(setq gnus-button-url 'browse-url-generic
+      browse-url-generic-program "iceweasel"
+      browse-url-browser-function gnus-button-url)
+
+;;;_. w3m
+
+;;(require 'w3m)
 
 
 ;;; GNUGP && EasyPG

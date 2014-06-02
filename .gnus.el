@@ -1,4 +1,3 @@
-(require 'cl)
 (require 'gnus)
 (require 'gnus-art)
 (require 'gnus-cache)
@@ -18,6 +17,30 @@
 (require 'rfc2047)
 (require 'mailheader)
 
+
+;;;_ Communication
+
+;;;_. Gnus
+
+;;;_ , miscellaneous settings
+
+;;;_  . Personal settings
+
+(setq user-full-name "Paulo Tomé")
+;(setq user-mail-address )
+
+;;;_  . Gnus common settings
+
+(setq gnus-default-article-saver 'gnus-summary-save-in-file)
+(setq gnus-visual t)
+(setq gnus-backup-startup-file t)
+(setq gnus-init-file nil)
+(setq gnus-inhibit-startup-message t)
+
+ ;; Use gnus to send mail
+;(setq mail-user-agent 'gnus-user-agent)
+
+
 ;;;_ , mail and news
 
 ;;;_  . news, mail and mail2news gateways
@@ -25,42 +48,43 @@
 ;;;_    . gnus-select-method
 (setq gnus-select-method
       '(nntp "news.gnus.org"
-	     (nntp-connection-timeout 360)
-	     (nntp-open-connection-function nntp-open-network-stream)
-	     (nntp-address "news.gnus.org")
-	     )
+             (nntp-connection-timeout 360)
+             (nntp-open-connection-function nntp-open-network-stream)
+             (nntp-address "news.gnus.org")
+             )
       )
 
-(setq gnus-secondary-select-methods '((nnimap "")))
+;; (setq gnus-secondary-select-methods '((nnimap "")))
+
 
 (add-to-list 'gnus-secondary-select-methods
-	     '(nntp "news.gmane.org"
-		    (nntp-connection-timeout 240)
-		    (nntp-open-connection-function nntp-open-network-stream)
-		    (nntp-address "news.gmane.org")
-		    )
-	     t
-	     )
+             '(nntp "news.gmane.org"
+                    (nntp-connection-timeout 240)
+                    (nntp-open-connection-function nntp-open-network-stream)
+                    (nntp-address "news.gmane.org")
+                    )
+             t
+             )
 
 (add-to-list 'gnus-secondary-select-methods
-	     '(nnimap "gmail"
-		      (nnimap-address "imap.gmail.com")
-		      (nnimap-server-port 993)
-		      (nnimap-stream ssl)
-		      (nnimap-authinfo-file "~/.authinfo")
-		      )
-	     t
-	     )
+             '(nnimap "gmail"
+                      (nnimap-address "imap.gmail.com")
+                      (nnimap-server-port 993)
+                      (nnimap-stream ssl)
+                      (nnimap-authinfo-file "~/.authinfo")
+                      )
+             t
+             )
 
 ;; ******************************************************
-;; *                      GMAIL		         	*
+;; *                      GMAIL                         *
 ;; ******************************************************
 ;;;(setq gnus-select-method '(nnimap "gmail"
-;;;			   (nnimap-address "imap.gmail.com")
-;;;			   (nnimap-server-port 993)
-;;;			   (nnimap-stream ssl)
-;;;			   (nnimap-authinfo-file "~/.authinfo")
-;;;			   ))
+;;;                        (nnimap-address "imap.gmail.com")
+;;;                        (nnimap-server-port 993)
+;;;                        (nnimap-stream ssl)
+;;;                        (nnimap-authinfo-file "~/.authinfo")
+;;;                        ))
 
 
 
@@ -88,137 +112,137 @@
 ;;;_        . family
 ;;;_        . misc
 ;;;_        . spam
-					; This is the S P A M group for ALL messages (mail and news)
-			("\\`nnml:m.junk"
-					; .... spam rules ............
-			 (gnus-article-sort-functions (gnus-article-sort-by-chars))
-			 (spam-contents gnus-group-spam-classification-spam)
-			 (ham-process-destination . "nnml:junk2ham")
-					; Regarding the above line -- from there (`nnml:junk2ham'), I manually
-					; move/copy ham to a group where it belongs plus I can use them for
-					; ham training. Of course I have to inspect my spam group
-					; `nnml:m.junk' occasionally in order to find false positives (i.e.
-					; legitimate mails, that were wrongly judged as spam) and remove the
-					; spam mark (`M-d') -- then at group exit all false positives are
-					; moved/copied to `nnml:junk2ham'.
+                                        ; This is the S P A M group for ALL messages (mail and news)
+                        ("\\`nnml:m.junk"
+                                        ; .... spam rules ............
+                         (gnus-article-sort-functions (gnus-article-sort-by-chars))
+                         (spam-contents gnus-group-spam-classification-spam)
+                         (ham-process-destination . "nnml:junk2ham")
+                                        ; Regarding the above line -- from there (`nnml:junk2ham'), I manually
+                                        ; move/copy ham to a group where it belongs plus I can use them for
+                                        ; ham training. Of course I have to inspect my spam group
+                                        ; `nnml:m.junk' occasionally in order to find false positives (i.e.
+                                        ; legitimate mails, that were wrongly judged as spam) and remove the
+                                        ; spam mark (`M-d') -- then at group exit all false positives are
+                                        ; moved/copied to `nnml:junk2ham'.
 
-					;The below line is redundancy since other groups already
-					;contain the same rule but keeping it doesn't harm --
-					;everythime I visit and exit the spam group I can be sure all
-					;senders are added to the blacklist
-			 (spam-process ((spam spam-use-blacklist)
-					(spam spam-use-bogofilter)))
-					; .... agent parameters ......
-			 (agent-predicate . true)
-			 (agent-score . file)
-					; - - agent score rule - -
-					; .... posting style .........
-			 (posting-style
-			  (name "NoName")
-			  (address "spam_is_for@the_weak.com")
-			  )
-					; .... group parameters ......
-			 (display . 22) ;counting starts at zero so 15 results in 16
-					; .... local variables .......
-			 )
+                                        ;The below line is redundancy since other groups already
+                                        ;contain the same rule but keeping it doesn't harm --
+                                        ;everythime I visit and exit the spam group I can be sure all
+                                        ;senders are added to the blacklist
+                         (spam-process ((spam spam-use-blacklist)
+                                        (spam spam-use-bogofilter)))
+                                        ; .... agent parameters ......
+                         (agent-predicate . true)
+                         (agent-score . file)
+                                        ; - - agent score rule - -
+                                        ; .... posting style .........
+                         (posting-style
+                          (name "NoName")
+                          (address "spam_is_for@the_weak.com")
+                          )
+                                        ; .... group parameters ......
+                         (display . 22) ;counting starts at zero so 15 results in 16
+                                        ; .... local variables .......
+                         )
 ;;;_       , people
 ;;;_        . realname
 ;;;_         , firstname and lastname
-;;;			(,priv-my-gmail0-mail-address-gp ; FIXME replace with priv-my-sunoano1-mail-address-gp once my own email system is up and running
-;;;					; .... spam rules ............
-;;;							 (spam-contents gnus-group-spam-classification-ham)
-;;;							 (spam-process-destination . "nnimap:m.junk")
-;;;							 (spam-process ((spam spam-use-blacklist)
-;;;									(ham spam-use-whitelist)     ; for ham groups only
-;;;									(ham spam-use-bogofilter)    ; for ham groups only
-;;;									(spam spam-use-bogofilter)))
-;;;					; .... agent parameters ......
-;;;							 (agent-predicate . true)
-;;;							 (agent-score . file)
-;;;					; - - agent score rule - -
-;;;					; .... posting style .........
-;;;							 (posting-style
-;;;							  (name priv-my-name)
-;;;							  (address priv-my-sunoano1-mail-address)
-;;;							  (signature-file (concat emacs-root-dir "gnus/sig/m.realname"))
-;;;							  (mml2015-signers priv-my-keyid)
-;;;							  )
-;;;					; .... group parameters ......
-;;;							 (display . 20)
-;;;					; .... local variables .......
-;;;							 )
+;;;                     (,priv-my-gmail0-mail-address-gp ; FIXME replace with priv-my-sunoano1-mail-address-gp once my own email system is up and running
+;;;                                     ; .... spam rules ............
+;;;                                                      (spam-contents gnus-group-spam-classification-ham)
+;;;                                                      (spam-process-destination . "nnimap:m.junk")
+;;;                                                      (spam-process ((spam spam-use-blacklist)
+;;;                                                                     (ham spam-use-whitelist)     ; for ham groups only
+;;;                                                                     (ham spam-use-bogofilter)    ; for ham groups only
+;;;                                                                     (spam spam-use-bogofilter)))
+;;;                                     ; .... agent parameters ......
+;;;                                                      (agent-predicate . true)
+;;;                                                      (agent-score . file)
+;;;                                     ; - - agent score rule - -
+;;;                                     ; .... posting style .........
+;;;                                                      (posting-style
+;;;                                                       (name priv-my-name)
+;;;                                                       (address priv-my-sunoano1-mail-address)
+;;;                                                       (signature-file (concat emacs-root-dir "gnus/sig/m.realname"))
+;;;                                                       (mml2015-signers priv-my-keyid)
+;;;                                                       )
+;;;                                     ; .... group parameters ......
+;;;                                                      (display . 20)
+;;;                                     ; .... local variables .......
+;;;                                                      )
 ;;;_         , only firstname
-;;;			(,priv-my-gmail1-mail-address-gp
-;;;					; .... spam rules ............
-;;;			 (spam-contents gnus-group-spam-classification-ham)
-;;;			 (spam-process-destination . "nnimap:m.junk")
-;;;			 (spam-process ((spam spam-use-blacklist)
-;;;					(ham spam-use-whitelist)     ; for ham groups only
-;;;					(ham spam-use-bogofilter)    ; for ham groups only
-;;;					(spam spam-use-bogofilter)))
-;;;					; .... agent parameters ......
-;;;			 (agent-predicate . true)
-;;;			 (agent-score . file)
-;;;					; - - agent score rule - -
-;;;					; .... posting style .........
-;;;			 (posting-style
-;;;			  (name priv-my-name)
-;;;			  (address priv-my-gmail1-mail-address)
-;;;			  )
-;;;					; .... group parameters ......
-;;;			 (display . 20)
-;;;					; .... local variables .......
-;;;			 )
+;;;                     (,priv-my-gmail1-mail-address-gp
+;;;                                     ; .... spam rules ............
+;;;                      (spam-contents gnus-group-spam-classification-ham)
+;;;                      (spam-process-destination . "nnimap:m.junk")
+;;;                      (spam-process ((spam spam-use-blacklist)
+;;;                                     (ham spam-use-whitelist)     ; for ham groups only
+;;;                                     (ham spam-use-bogofilter)    ; for ham groups only
+;;;                                     (spam spam-use-bogofilter)))
+;;;                                     ; .... agent parameters ......
+;;;                      (agent-predicate . true)
+;;;                      (agent-score . file)
+;;;                                     ; - - agent score rule - -
+;;;                                     ; .... posting style .........
+;;;                      (posting-style
+;;;                       (name priv-my-name)
+;;;                       (address priv-my-gmail1-mail-address)
+;;;                       )
+;;;                                     ; .... group parameters ......
+;;;                      (display . 20)
+;;;                                     ; .... local variables .......
+;;;                      )
 ;;;_        . suno ano
-;;;			(,priv-my-gmail2-mail-address-gp ; FIXME replace with priv-my-sunoano0-mail-address-gp once I have my own email system up and running
-;;;					; .... spam rules ............
-;;;							 (spam-contents gnus-group-spam-classification-ham)
-;;;							 (spam-process-destination . "nnimap:m.junk")
-;;;							 (spam-process ((spam spam-use-blacklist)
-;;;									(ham spam-use-whitelist)     ; for ham groups only
-;;;									(ham spam-use-bogofilter)    ; for ham groups only
-;;;									(spam spam-use-bogofilter)))
-;;;					; .... agent parameters ......
-;;;							 (agent-predicate . true)
-;;;							 (agent-score . file)
-;;;					; - - agent score rule - -
-;;;					; .... posting style .........
-;;;							 (posting-style
-;;;							  (name priv-my-syn-name)
-;;;							  (address priv-my-sunoano0-mail-address)
-;;;							  (signature-file (concat emacs-root-dir "gnus/sig/m.suno"))
-;;;							  (mml2015-signers priv-my-syn-keyid)
-;;;							  )
-;;;					; .... group parameters ......
-;;;							 (display . 20)
-;;;					; .... local variables .......
-;;;							 )
+;;;                     (,priv-my-gmail2-mail-address-gp ; FIXME replace with priv-my-sunoano0-mail-address-gp once I have my own email system up and running
+;;;                                     ; .... spam rules ............
+;;;                                                      (spam-contents gnus-group-spam-classification-ham)
+;;;                                                      (spam-process-destination . "nnimap:m.junk")
+;;;                                                      (spam-process ((spam spam-use-blacklist)
+;;;                                                                     (ham spam-use-whitelist)     ; for ham groups only
+;;;                                                                     (ham spam-use-bogofilter)    ; for ham groups only
+;;;                                                                     (spam spam-use-bogofilter)))
+;;;                                     ; .... agent parameters ......
+;;;                                                      (agent-predicate . true)
+;;;                                                      (agent-score . file)
+;;;                                     ; - - agent score rule - -
+;;;                                     ; .... posting style .........
+;;;                                                      (posting-style
+;;;                                                       (name priv-my-syn-name)
+;;;                                                       (address priv-my-sunoano0-mail-address)
+;;;                                                       (signature-file (concat emacs-root-dir "gnus/sig/m.suno"))
+;;;                                                       (mml2015-signers priv-my-syn-keyid)
+;;;                                                       )
+;;;                                     ; .... group parameters ......
+;;;                                                      (display . 20)
+;;;                                     ; .... local variables .......
+;;;                                                      )
 ;;;_       , domains
 ;;;_        . education
 ;;;_         , website
-;;;			(,priv-my-gmail4-mail-address-gp ; FIXME replace with priv-my-sunoano4-mail-address-gp once I have my own email system up and running
-;;;					; .... spam rules ............
-;;;							 (spam-contents gnus-group-spam-classification-ham)
-;;;							 (spam-process-destination . "nnimap:m.junk")
-;;;							 (spam-process ((spam spam-use-blacklist)
-;;;									(ham spam-use-whitelist)     ; for ham groups only
-;;;									(ham spam-use-bogofilter)    ; for ham groups only
-;;;									(spam spam-use-bogofilter)))
-;;;					; .... agent parameters ......
-;;;							 (agent-predicate . true)
-;;;							 (agent-score . file)
-;;;					; - - agent score rule - -
-;;;					; .... posting style .........
-;;;							 (posting-style
-;;;							  (name priv-my-syn-name)
-;;;							  (address priv-my-sunoano2-mail-address)
-;;;							  (signature-file (concat emacs-root-dir "gnus/sig/m.suno"))
-;;;							  (mml2015-signers priv-my-syn-keyid)
-;;;							  )
-;;;					; .... group parameters ......
-;;;							 (display . 20)
-;;;					; .... local variables .......
-;;;							 )
+;;;                     (,priv-my-gmail4-mail-address-gp ; FIXME replace with priv-my-sunoano4-mail-address-gp once I have my own email system up and running
+;;;                                     ; .... spam rules ............
+;;;                                                      (spam-contents gnus-group-spam-classification-ham)
+;;;                                                      (spam-process-destination . "nnimap:m.junk")
+;;;                                                      (spam-process ((spam spam-use-blacklist)
+;;;                                                                     (ham spam-use-whitelist)     ; for ham groups only
+;;;                                                                     (ham spam-use-bogofilter)    ; for ham groups only
+;;;                                                                     (spam spam-use-bogofilter)))
+;;;                                     ; .... agent parameters ......
+;;;                                                      (agent-predicate . true)
+;;;                                                      (agent-score . file)
+;;;                                     ; - - agent score rule - -
+;;;                                     ; .... posting style .........
+;;;                                                      (posting-style
+;;;                                                       (name priv-my-syn-name)
+;;;                                                       (address priv-my-sunoano2-mail-address)
+;;;                                                       (signature-file (concat emacs-root-dir "gnus/sig/m.suno"))
+;;;                                                       (mml2015-signers priv-my-syn-keyid)
+;;;                                                       )
+;;;                                     ; .... group parameters ......
+;;;                                                      (display . 20)
+;;;                                     ; .... local variables .......
+;;;                                                      )
 ;;;_         , tugraz
 ;;;         ("\\`nnml:m\\.do\\.tugraz"
 ;;;          ; .... spam rules ............
@@ -245,33 +269,33 @@
 ;;;         )
 ;;;_        . work
 ;;;_         , 1
-;;;			(,priv-my-gmail3-mail-address-gp
-;;;					; .... spam rules ............
-;;;			 (spam-contents gnus-group-spam-classification-ham)
-;;;			 (spam-process-destination . "nnml:m.junk")
-;;;			 (spam-process ((spam spam-use-blacklist)
-;;;					(ham spam-use-whitelist)
-;;;					(ham spam-use-bogofilter)
-;;;					(spam spam-use-bogofilter)))
-;;;					; .... agent parameters ......
-;;;			 (agent-predicate . true)
-;;;			 (agent-score . file)
-;;;					; - - agent score rule - -
-;;;					; .... posting style .........
-;;;			 (posting-style
-;;;			  (name priv-my-name)
-;;;			  (address priv-my-work0-mail-address)
-;;;			  (signature-file (concat emacs-root-dir "gnus/sig/m.work"))
-;;;					;(body (concat "\n\n"priv-my-firstname",\nwith fondest regards.\n"))
-;;;			  )
-;;;					; .... group parameters ......
-;;;			 (display . 20)
-;;;					; .... local variables .......
-;;;			 )
+;;;                     (,priv-my-gmail3-mail-address-gp
+;;;                                     ; .... spam rules ............
+;;;                      (spam-contents gnus-group-spam-classification-ham)
+;;;                      (spam-process-destination . "nnml:m.junk")
+;;;                      (spam-process ((spam spam-use-blacklist)
+;;;                                     (ham spam-use-whitelist)
+;;;                                     (ham spam-use-bogofilter)
+;;;                                     (spam spam-use-bogofilter)))
+;;;                                     ; .... agent parameters ......
+;;;                      (agent-predicate . true)
+;;;                      (agent-score . file)
+;;;                                     ; - - agent score rule - -
+;;;                                     ; .... posting style .........
+;;;                      (posting-style
+;;;                       (name priv-my-name)
+;;;                       (address priv-my-work0-mail-address)
+;;;                       (signature-file (concat emacs-root-dir "gnus/sig/m.work"))
+;;;                                     ;(body (concat "\n\n"priv-my-firstname",\nwith fondest regards.\n"))
+;;;                       )
+;;;                                     ; .... group parameters ......
+;;;                      (display . 20)
+;;;                                     ; .... local variables .......
+;;;                      )
 ;;;_         , 2
 ;;;_       , default
-					; Note, those need be the last block within each group since they
-					; catch everything!
+                                        ; Note, those need be the last block within each group since they
+                                        ; catch everything!
 
 ;;;               ("\\`nnml:m\\..*"
 ;;;                ; .... spam rules ............
@@ -295,8 +319,8 @@
 ;;;               )
 ;;;_      . mailing lists
 ;;;_       , mailing lists default
-					; Note, those need be the last block within each group since they
-					; catch everything!
+                                        ; Note, those need be the last block within each group since they
+                                        ; catch everything!
 
 ;;;               ("\\`nnml:ml\\..*"
 ;;;                 ; .... spam rules ............
@@ -323,50 +347,50 @@
 ;;;                   gnus-thread-sort-by-date
 ;;;                   gnus-thread-sort-by-total-score))
 ;;;               )
-			("\\`nntp\\+news\\.gmane\\.org:"
-					; .... spam rules ............
-			 (spam-contents gnus-group-spam-classification-ham)
-			 (spam-process-destination . "nnml:m.junk")
-			 (spam-process ((spam spam-use-gmane)
-					(spam spam-use-blacklist)
-					(ham spam-use-whitelist)
-					(ham spam-use-bogofilter)
-					(spam spam-use-bogofilter)))
-			 (spam-autodetect . t)
-			 (spam-autodetect-methods spam-use-BBDB          ;never mark incoming mail from folk in my BBDB as spam
-						  spam-use-whitelist     ;same as above but for sender addresses not in my BBDB
-						  spam-use-regex-headers ;server-side SpamAssassin tags
-						  spam-use-blacklist     ;sender addresses from spam declared messages
-						  spam-use-bogofilter)   ;therefore bogofilter needs to be installed
-					; .... agent parameters ......
-			 (agent-predicate or high short (not old))
-			 (agent-score . file)
-					; - - agent score rule - -
-			 (agent-score
-			  ("from"
-					;("Mr. Foo Bar" 100 nil s)
-			   ("debian\\|emacs\\|linux\\|gnu\\|fsf" 100 nil s)
-			   )
-			  ("subject"
-			   ("Nose and Face" -100 nil s)
-			   ("debian\\|emacs\\|linux\\|gnu\\|fsf" 100 nil s)
-			   )
-					; lower the score of articles that have been
-					; crossposted to >= 3 groups
-			  ("xref"
-			   ("[^:\n]+:[0-9]+ +[^:\n]+:[0-9]+ +[^:\n]+:[0-9]+" -100 nil r)
-			   )
-			  )
-					; .... posting style .........
-			 (posting-style
-			  (name priv-my-name)
-			  (address priv-my-sunoano1-mail-address)
-			  )
-					; .... group parameters ......
-			 (display . 20)
-					; .... local variables .......
-			 )
-			))
+                        ("\\`nntp\\+news\\.gmane\\.org:"
+                                        ; .... spam rules ............
+                         (spam-contents gnus-group-spam-classification-ham)
+                         (spam-process-destination . "nnml:m.junk")
+                         (spam-process ((spam spam-use-gmane)
+                                        (spam spam-use-blacklist)
+                                        (ham spam-use-whitelist)
+                                        (ham spam-use-bogofilter)
+                                        (spam spam-use-bogofilter)))
+                         (spam-autodetect . t)
+                         (spam-autodetect-methods spam-use-BBDB          ;never mark incoming mail from folk in my BBDB as spam
+                                                  spam-use-whitelist     ;same as above but for sender addresses not in my BBDB
+                                                  spam-use-regex-headers ;server-side SpamAssassin tags
+                                                  spam-use-blacklist     ;sender addresses from spam declared messages
+                                                  spam-use-bogofilter)   ;therefore bogofilter needs to be installed
+                                        ; .... agent parameters ......
+                         (agent-predicate or high short (not old))
+                         (agent-score . file)
+                                        ; - - agent score rule - -
+                         (agent-score
+                          ("from"
+                                        ;("Mr. Foo Bar" 100 nil s)
+                           ("debian\\|emacs\\|linux\\|gnu\\|fsf" 100 nil s)
+                           )
+                          ("subject"
+                           ("Nose and Face" -100 nil s)
+                           ("debian\\|emacs\\|linux\\|gnu\\|fsf" 100 nil s)
+                           )
+                                        ; lower the score of articles that have been
+                                        ; crossposted to >= 3 groups
+                          ("xref"
+                           ("[^:\n]+:[0-9]+ +[^:\n]+:[0-9]+ +[^:\n]+:[0-9]+" -100 nil r)
+                           )
+                          )
+                                        ; .... posting style .........
+                         (posting-style
+                          (name priv-my-name)
+                          (address priv-my-sunoano1-mail-address)
+                          )
+                                        ; .... group parameters ......
+                         (display . 20)
+                                        ; .... local variables .......
+                         )
+                        ))
 
 (setq
 
@@ -389,8 +413,8 @@
   "Set up SMTP settings to use Gmail's server when mail is from a gmail.com address."
   (interactive "P")
   (if (save-restriction
-	(message-narrow-to-headers)
-	(string-match "gmail.com" (message-fetch-field "from")))
+        (message-narrow-to-headers)
+        (string-match "gmail.com" (message-fetch-field "from")))
 
       (let ((message-send-mail-function 'smtpmail-send-it)
             ;; gmail says use port 465 or 587, but 25 works and those don't, go figure
@@ -405,17 +429,17 @@
 
 
 ;; ******************************************************
-;; *                    END GMAIL	         	*
+;; *                    END GMAIL                       *
 ;; ******************************************************
 
 
 (setq gnus-secondary-select-methods '((nnml "")))
 
 (add-to-list 'gnus-secondary-select-methods '(nnimap "gmail"
-						     (nnimap-stream ssl)
-						     (nnimap-address "imap.gmail.com")
-						     (nnimap-server-port 993)
-						     (nnir-search-engine imap)))
+                                                     (nnimap-stream ssl)
+                                                     (nnimap-address "imap.gmail.com")
+                                                     (nnimap-server-port 993)
+                                                     (nnir-search-engine imap)))
 
 ;;; My own key bindings.
 ;;;
@@ -425,21 +449,31 @@
 ;;; Gnus at times handles long lines erroneously, so I want to be able
 ;;; to fill long lines with F only at a few times.
 (add-hook 'gnus-summary-mode-hook
-	  (function (lambda ()
-		      (define-key gnus-summary-mode-map "K" 'gnus-summary-kill-thread)
-		      (define-key gnus-summary-mode-map "F" 'gnus-article-fill-long-lines)
-		      (define-key gnus-summary-mode-map "$" 'gnus-summary-refer-parent-article)
-		      (define-key gnus-summary-mode-map "z" 'scroll-down)
-		      (define-key gnus-summary-mode-map "v" 'scroll-up)
-		      (define-key gnus-summary-mode-map "-" 'gnus-summary-hide-thread)
-		      (define-key gnus-summary-mode-map "+" 'gnus-summary-show-thread)
-		      )))
+          (function (lambda ()
+                      (define-key gnus-summary-mode-map "K" 'gnus-summary-kill-thread)
+                      (define-key gnus-summary-mode-map "F" 'gnus-article-fill-long-lines)
+                      (define-key gnus-summary-mode-map "$" 'gnus-summary-refer-parent-article)
+                      (define-key gnus-summary-mode-map "z" 'scroll-down)
+                      (define-key gnus-summary-mode-map "v" 'scroll-up)
+                      (define-key gnus-summary-mode-map "-" 'gnus-summary-hide-thread)
+                      (define-key gnus-summary-mode-map "+" 'gnus-summary-show-thread)
+                      )))
 
 ;; Enable mailinglist support
 (when (fboundp 'turn-on-gnus-mailing-list-mode)
   (add-hook 'gnus-summary-mode-hook 'turn-on-gnus-mailing-list-mode))
 
 
+;;;_    . miscellaneous
+
+; See (Info-goto-node "(gnus)Category Syntax")
+
+(require 'gnus-agent)
+
+(setq gnus-agent-go-online t)
+(setq gnus-agent-expire-days 30) ; used in `my-article-old-p' (see below)
+(setq gnus-agent-synchronize-flags t)
+(add-hook 'gnus-select-article-hook 'gnus-agent-fetch-selected-article)
 
 
 (setq level 2)
@@ -452,17 +486,17 @@
  ;; par date (plus recent en premier) puis par sujets
 ;;;(setq gnus-thread-sort-functions
 ;;;      '(
-;;;	gnus-thread-sort-by-total-score
+;;;     gnus-thread-sort-by-total-score
 ;;;        gnus-thread-sort-by-subject
 ;;;        (not gnus-thread-sort-by-date)
 ;;;        ))
 
 ;;; gnus-thread-sort-functions '(gnus-thread-sort-by-total-score
-;;;			      gnus-thread-sort-by-date
-;;;			      )
+;;;                           gnus-thread-sort-by-date
+;;;                           )
  gnus-thread-sort-functions '(gnus-thread-sort-by-total-score
-			      gnus-thread-sort-by-number
-			      gnus-thread-sort-by-most-recent-date)
+                              gnus-thread-sort-by-number
+                              gnus-thread-sort-by-most-recent-date)
 
  gnus-sort-gathered-threads-function 'gnus-thread-sort-by-date
 
@@ -526,8 +560,6 @@
  smtpmail-debug-info t
  ;; smtpmail-local-domain
 
- ;; Use gnus to send mail
- ;;mail-user-agent 'gnus-user-agent
 
  ;; Turn off nntp server
  gnus-nntp-server nil
@@ -667,9 +699,9 @@
  gnus-sorted-header-list '("^From:" "^Subject:" "^Date:" "^Newsgroups:" "^To:" "^Cc:")
 
  gnus-visible-headers (format "^%s:"
-			      (regexp-opt'("From" "Subject" "Date" "Newsgroups" "Followup-To"
-					   "Reply-To" "Summary" "To" "Cc" "Posted-To"
-					   "Mail-Copies-To" "Apparently-To" "Resent-From")))
+                              (regexp-opt'("From" "Subject" "Date" "Newsgroups" "Followup-To"
+                                           "Reply-To" "Summary" "To" "Cc" "Posted-To"
+                                           "Mail-Copies-To" "Apparently-To" "Resent-From")))
 
  ;; setq gnus-boring-article-headers '(empty followup-to reply-to newgroups to-address to-list cc-list)
 
@@ -745,4 +777,3 @@
 ;; http://www.emacswiki.org/emacs/GroupParameters
 ;;(setq gnus-parameter-to-list-alist '(("stack.exchange" . "do-not-reply@stackexchange.com")))
 ;;(setq gnus-total-expirable-newsgroups (regexp-opt '("stack.exchange")))
-
