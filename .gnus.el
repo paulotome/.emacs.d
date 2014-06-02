@@ -25,29 +25,30 @@
 ;;;_    . gnus-select-method
 (setq gnus-select-method
       '(nntp "news.gnus.org"
-        (nntp-connection-timeout 360)
-        (nntp-open-connection-function nntp-open-network-stream)
-        (nntp-address "news.gnus.org")
-       )
-)
+	     (nntp-connection-timeout 360)
+	     (nntp-open-connection-function nntp-open-network-stream)
+	     (nntp-address "news.gnus.org")
+	     )
+      )
 
 (setq gnus-secondary-select-methods '((nnimap "")))
 
 (add-to-list 'gnus-secondary-select-methods
 	     '(nntp "news.gmane.org"
-	       (nntp-connection-timeout 240)
-	       (nntp-open-connection-function nntp-open-network-stream)
-	       (nntp-address "news.gmane.org")
-	       )
+		    (nntp-connection-timeout 240)
+		    (nntp-open-connection-function nntp-open-network-stream)
+		    (nntp-address "news.gmane.org")
+		    )
 	     t
 	     )
 
 (add-to-list 'gnus-secondary-select-methods
 	     '(nnimap "gmail"
-	       (nnimap-address "imap.gmail.com")
-	       (nnimap-server-port 993)
-	       (nnimap-stream ssl)
-	       )
+		      (nnimap-address "imap.gmail.com")
+		      (nnimap-server-port 993)
+		      (nnimap-stream ssl)
+		      (nnimap-authinfo-file "~/.authinfo")
+		      )
 	     t
 	     )
 
@@ -388,8 +389,8 @@
   "Set up SMTP settings to use Gmail's server when mail is from a gmail.com address."
   (interactive "P")
   (if (save-restriction
-       (message-narrow-to-headers)
-       (string-match "gmail.com" (message-fetch-field "from")))
+	(message-narrow-to-headers)
+	(string-match "gmail.com" (message-fetch-field "from")))
 
       (let ((message-send-mail-function 'smtpmail-send-it)
             ;; gmail says use port 465 or 587, but 25 works and those don't, go figure
@@ -400,7 +401,7 @@
             (smtpmail-smtp-service 25)
             (smtpmail-local-domain "yourdomain.com"))
         ad-do-it)
-      ad-do-it))
+    ad-do-it))
 
 
 ;; ******************************************************
@@ -411,10 +412,10 @@
 (setq gnus-secondary-select-methods '((nnml "")))
 
 (add-to-list 'gnus-secondary-select-methods '(nnimap "gmail"
-					      (nnimap-stream ssl)
-					      (nnimap-address "imap.gmail.com")
-					      (nnimap-server-port 993)
-					      (nnir-search-engine imap)))
+						     (nnimap-stream ssl)
+						     (nnimap-address "imap.gmail.com")
+						     (nnimap-server-port 993)
+						     (nnir-search-engine imap)))
 
 ;;; My own key bindings.
 ;;;
@@ -425,14 +426,14 @@
 ;;; to fill long lines with F only at a few times.
 (add-hook 'gnus-summary-mode-hook
 	  (function (lambda ()
-	    (define-key gnus-summary-mode-map "K" 'gnus-summary-kill-thread)
-	    (define-key gnus-summary-mode-map "F" 'gnus-article-fill-long-lines)
-	    (define-key gnus-summary-mode-map "$" 'gnus-summary-refer-parent-article)
-	    (define-key gnus-summary-mode-map "z" 'scroll-down)
-	    (define-key gnus-summary-mode-map "v" 'scroll-up)
-	    (define-key gnus-summary-mode-map "-" 'gnus-summary-hide-thread)
-	    (define-key gnus-summary-mode-map "+" 'gnus-summary-show-thread)
-	    )))
+		      (define-key gnus-summary-mode-map "K" 'gnus-summary-kill-thread)
+		      (define-key gnus-summary-mode-map "F" 'gnus-article-fill-long-lines)
+		      (define-key gnus-summary-mode-map "$" 'gnus-summary-refer-parent-article)
+		      (define-key gnus-summary-mode-map "z" 'scroll-down)
+		      (define-key gnus-summary-mode-map "v" 'scroll-up)
+		      (define-key gnus-summary-mode-map "-" 'gnus-summary-hide-thread)
+		      (define-key gnus-summary-mode-map "+" 'gnus-summary-show-thread)
+		      )))
 
 ;; Enable mailinglist support
 (when (fboundp 'turn-on-gnus-mailing-list-mode)
