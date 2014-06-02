@@ -1,5 +1,6 @@
+
 ;; ******************************************************
-;; *                    EZWINPORTS	         	*
+;; *                    EZWINPORTS                      *
 ;; ******************************************************
 
 
@@ -7,9 +8,10 @@
     (progn
       (setq exec-path (cons "C:/gnu/ezwinports/bin" exec-path))
       (setenv "PATH" (concat "C:\\gnu\\ezwinports\\bin;" (getenv "PATH")))
-      ;;(setenv "PATH" (concat "C:\\Program Files\\Google\\Chrome\\Application;" (getenv "PATH")))
       ))
-(setq tls-program '("C:/siscog-dev-tools/Git/bin/openssl.exe s_client -connect %h:%p -no_ssl2 -ign_eof"))
+
+(if (eq system-type 'windows-nt)
+    (setq tls-program '("C:/siscog-dev-tools/Git/bin/openssl.exe s_client -connect %h:%p -no_ssl2 -ign_eof")))
 
 ;; ******************************************************
 
@@ -23,15 +25,142 @@
 ;;(require 'wtf)
 
 
+;; copy/paste between emacs and e.g. iceweasel
+(setq x-select-enable-clipboard t)
+
+;;
+(setq default-truncate-lines t)
+
+;; Since my sentences end with `. ' and not `.  '
+(setq sentence-end-double-space 'nil)
+
+;; all files end with `\n'
+(setq require-final-newline 'visit-save)
+
+;; no pager-like behavior with ansi-term
+(setq term-buffer-maximum-size 0)
+(setq backup-by-copying t)
+(setq compilation-scroll-output t)
+
+(global-auto-revert-mode 1)
+(setq global-auto-revert-non-file-buffers t)
+
+; Elevate some limits
+(setq max-lisp-eval-depth '4000)
+(setq max-specpdl-size '10000)
+
+; Disable enabled commands/keybindings
+(put 'overwrite-mode 'disabled t)
+
+;;;_ , automatically create path
+
+; some sort of mkdir -p for non existing paths
+;   when opening a non-existing file (e.g. myfile) within some yet
+;   non-existing directory, it automatically creates the file and
+;   /path/to/file/myfile when the file is saved witin emacs
+
+(add-hook 'before-save-hook
+          '(lambda ()
+             (or (file-exists-p (file-name-directory buffer-file-name))
+                 (make-directory (file-name-directory buffer-file-name) t))))
+
+;;;_ , automatically delete trailing whitespace
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+
+;;;_ , automatically untabify buffers
+
+(add-hook 'before-save-hook
+          '(lambda ()
+             (untabify (point-min) (point-max))))
+
+;;;_ , autosave
+
+; save every 100 characters typed
+(setq auto-save-interval 100)
+
+; save after 10 seconds of idle time
+(setq auto-save-timeout 10)
+
+(defun my-save-buffer-if-visiting-file (&optional args)
+  "Save the current buffer only if it is visiting a file"
+  (interactive)
+    (if (buffer-file-name)
+        (save-buffer args)))
+
+; This causes files that I'm editing to be saved automatically by the
+; emacs auto-save functionality.  I'm hoping to break myself of the
+; c-x c-s twitch.
+(add-hook 'auto-save-hook 'my-save-buffer-if-visiting-file)
+
+;;;_ , my-frame-title-refresh
+
+; Show date and current time, GNU Emacs version and `buffer-file-name'
+; if available, `buffer-name' otherwise
+(defun my-frame-title-refresh ()
+  (setq frame-title-format
+        `((buffer-file-name "buffer-file-name: %f" ("%b"))
+          "      "
+          ,(format-time-string "Week/Day of year: %W/%j")
+          "      "
+          ,(format-time-string "Weekday: %A")
+          "      "
+          ,(format-time-string "Date: %Y/%m/%d")
+          "      "
+          ,(format-time-string "Time:  ")
+          ,(replace-regexp-in-string "\n" "" (shell-command-to-string "date -u +%H:%M"))
+          " UTC"
+          "      "
+          ,(substring (emacs-version) 0 20)
+          )))
+
+; Update frame title every minute
+(run-with-timer 1 60 'my-frame-title-refresh)
+
+
+;;;_ , Auto bytecompile
+
+(defun byte-compile-init-file ()
+  (when (equal buffer-file-name user-init-file)
+    (let ((byte-compile-warnings '(unresolved)))
+      (when (file-exists-p (concat user-init-file ".elc"))
+        (delete-file (concat user-init-file ".elc")))
+      (byte-compile-file user-init-file)
+      (message "Just compiled %s " user-init-file))))
+
+(add-hook 'kill-buffer-hook 'byte-compile-init-file)
+
+;;_ , command-history
+
+; See `chistory.el'
+
+; NOTES:
+; 1) I use `command-history' which is bound to `C-x c' on a regular
+; 2) Using `repeat-complex-command' wich is bound to `C-x M-:' per
+; default is also pretty useful
+
+(setq list-command-history-max '100)
+
+;;;_ , higlight-changes-mode
+
+;(global-highlight-changes-mode t)
+(setq highlight-changes-global-changes-existing-buffers t)
+
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'recentf)
 (recentf-mode 1)                        ;recently edited files in menu
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-xr" 'recentf-open-files)
 
+
 ;;; GNUGP && EasyPG
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path (expand-file-name "z:/siscog/git/gnupg"))
+;; (add-to-list 'load-path (expand-file-name "~/git/gnupg"))
 
 ;(require 'epa-file)
 ;(epa-file-enable)
@@ -42,11 +171,11 @@
 ;; After Info-mode has started
 (add-hook 'Info-mode-hook
         (lambda ()
-    	    (setq Info-additional-directory-list Info-default-directory-list)
-    	))
-(add-to-list 'Info-default-directory-list "Z:/siscog/git/gnupg/doc")
-(add-to-list 'Info-default-directory-list "Z:/siscog/git/gnus/texi")
-(add-to-list 'Info-default-directory-list "Z:/siscog/git/org-mode/doc")
+            (setq Info-additional-directory-list Info-default-directory-list)
+        ))
+(add-to-list 'Info-default-directory-list "~/git/gnupg/doc")
+(add-to-list 'Info-default-directory-list "~/git/gnus/texi")
+(add-to-list 'Info-default-directory-list "~/git/org-mode/doc")
 
 ;;;(Info-goto-node "(emacs)FFAP")
 ;;;(Info-goto-node "(dired-x) Top")
@@ -70,10 +199,11 @@
 ;; Don't use messages that you don't read
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t)        ;no startup message
-(setq inhibit-splash-screen t)		;no splash screen
+(setq inhibit-splash-screen t)          ;no splash screen
 
 ;; Who use the bar to scroll?
-(scroll-bar-mode 0)
+;(scroll-bar-mode left)
+(set-scroll-bar-mode 'left)
 
 ;; Deactivate tooltips in emacs
 (tooltip-mode 0)
@@ -111,7 +241,7 @@
 ;;    Don't display initial logo
 ;;________________________________________________________________
 (setq inhibit-startup-message t)        ;no startup message
-(setq inhibit-splash-screen t)		;no splash screen
+(setq inhibit-splash-screen t)          ;no splash screen
 (defconst use-backup-dir t)             ;use backup directory
 (defconst query-replace-highlight t)    ;highlight during query
 (defconst search-highlight t)           ;highlight incremental search
@@ -161,8 +291,8 @@
 ;; M-o: avoid seeing all the backup files.
 ;; C-x C-j: enter dired/dired-x mode.
 (add-hook 'dired-load-hook
-	  (function (lambda ()
-		      (load "dired-x"))))
+          (function (lambda ()
+                      (load "dired-x"))))
 
 
 ;; Ordinarily emacs jumps by half a page when scrolling -- reduce:
@@ -174,13 +304,6 @@
 (put 'scroll-left 'disabled nil)
 
 (put 'set-goal-column 'disabled nil)
-
-;;________________________________________________________________
-;;    Choose interactively from the kill ring.
-;;________________________________________________________________
-
-(require 'browse-kill-ring)
-(global-set-key (kbd "C-c C-k") 'browse-kill-ring)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -232,7 +355,7 @@
 ;;; Show matching parenthesis
 (show-paren-mode t)
 ;; (show-paren-match ((t (:bold t))))
-(setq show-paren-style 'expression)
+;;(setq show-paren-style 'expression)
 (set-face-background 'show-paren-match-face "LightSteelBlue2")
 
 ;;; Highlight isearch current match
@@ -255,7 +378,7 @@
 (setq-default show-trailing-whitespace t)
 
 ;; ******************************************************
-;; *               Maximize Emacs window   	        *
+;; *               Maximize Emacs window                *
 ;; ******************************************************
 
 (defun toggle-full-screen ()
@@ -278,7 +401,7 @@
 (defun select-current-sexp ()
   (interactive)
   (when (and (not (char-equal (char-after) ?\())
-	     (char-equal (char-before) ?\)))
+             (char-equal (char-before) ?\)))
     (backward-char)
     (backward-up-list))
   (when mark-active
@@ -293,7 +416,7 @@
 
 
 ;; ******************************************************
-;; *                    EMACS - SLIME           	*
+;; *                    EMACS - SLIME                   *
 ;; ******************************************************
 
 ;; How to customize Emacs split-window-X with the new window showing the next buffer?
@@ -307,11 +430,11 @@
     new-window))
 
 (defadvice split-window-right (after split-window-right-and-next-buffer
-				     activate protect compile)
+                                     activate protect compile)
   (split-window-and-next-buffer ad-return-value))
 
 (defadvice split-window-below (after split-window-bellow-and-next-buffer
-				     activate protect compile)
+                                     activate protect compile)
   (split-window-and-next-buffer ad-return-value))
 
 ;; To remove the advices, call the functions until they return nil.
@@ -332,20 +455,20 @@
   (interactive "P")
   (let ((case-fold-search nil))
     (if (looking-at electrify-return-match)
-	(save-excursion (newline-and-indent)))
+        (save-excursion (newline-and-indent)))
     (newline arg)
     (indent-according-to-mode)))
 
 
 (add-hook 'emacs-lisp-mode-hook
-	  (lambda ()
-;;;	    (paredit-mode t)
-	    (turn-on-eldoc-mode)
-;;;	    (eldoc-add-command
-;;;	     'paredit-backward-delete
-;;;	     'paredit-close-round)
-	    (local-set-key (kbd "RET") 'electrify-return-if-match)
-	    (eldoc-add-command 'electrify-return-if-match)))
+          (lambda ()
+;;;         (paredit-mode t)
+            (turn-on-eldoc-mode)
+;;;         (eldoc-add-command
+;;;          'paredit-backward-delete
+;;;          'paredit-close-round)
+            (local-set-key (kbd "RET") 'electrify-return-if-match)
+            (eldoc-add-command 'electrify-return-if-match)))
 
 (require 'eldoc) ; if not already loaded
 ;;;(eldoc-add-command
@@ -446,8 +569,8 @@
 ;;;      (setq ispell-program-name "hunspell")
 ;;;      (eval-after-load "ispell"
 ;;;        '(progn (setq ispell-dictionary "american"
-;;;		      ispell-extra-args '("-a" "-i" "utf-8")
-;;;		      ispell-silently-savep t)))))
+;;;                   ispell-extra-args '("-a" "-i" "utf-8")
+;;;                   ispell-silently-savep t)))))
 ;;;
 ;;;(setq-default ispell-program-name "C:/gnu/ezwinports/bin/hunspell.exe")
 
@@ -462,12 +585,12 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path (expand-file-name "z:/siscog/org-mode/lisp"))
+(add-to-list 'load-path (expand-file-name "~/org-mode/lisp"))
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
 (require 'org)
 (require 'org-id)
 ;; (require 'org-checklist)
-(require 'org-latex)
+;;(require 'org-latex)
 (require 'org-clock)
 
 ;;
@@ -492,10 +615,10 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG-MODE SETUP ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq org-directory "z:/siscog/git/org-mode")
-(setq org-default-notes-file "z:/siscog/github/notes.org")
+(setq org-directory "~/git/org-mode")
+(setq org-default-notes-file "~/github/notes.org")
 
-(add-to-list 'load-path (expand-file-name "z:/siscog/git/org-mode/contrib/lisp"))
+(add-to-list 'load-path (expand-file-name "~/git/org-mode/contrib/lisp"))
 
 (setq org-empty-line-terminates-plain-lists t)
 
@@ -552,15 +675,15 @@
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "DEFERRED(f)" "STARTED(s)" "|" "DONE(d)" "NOTE(n)"  "PHONE(p)" "MEETING(m)" "CLOSED(l)" "CANCELED(c)")))
 
 (setq org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
-				     ("WAITING" :foreground "orange" :weight bold)
-				     ("DEFERRED" :foreground "orange" :weight bold)
-				     ("STARTED" :foreground "orange" :weight bold)
-				     ("DONE" :foreground "forest green" :weight bold)
-				     ("NOTE" :foreground "dark violet" :weight bold)
-				     ("PHONE" :foreground "dark violet" :weight bold)
-				     ("MEETING" :foreground "dark violet" :weight bold)
-				     ("CLOSED" :foreground "forest green" :weight bold)
-				     ("CANCELLED" :foreground "forest green" :weight bold))))
+                                     ("WAITING" :foreground "orange" :weight bold)
+                                     ("DEFERRED" :foreground "orange" :weight bold)
+                                     ("STARTED" :foreground "orange" :weight bold)
+                                     ("DONE" :foreground "forest green" :weight bold)
+                                     ("NOTE" :foreground "dark violet" :weight bold)
+                                     ("PHONE" :foreground "dark violet" :weight bold)
+                                     ("MEETING" :foreground "dark violet" :weight bold)
+                                     ("CLOSED" :foreground "forest green" :weight bold)
+                                     ("CANCELLED" :foreground "forest green" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
 
@@ -569,9 +692,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG REFILE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq org-refile-targets '((nil :maxlevel . 2)
-					; all top-level headlines in the
-					; current buffer are used (first) as a
-					; refile target
+                                        ; all top-level headlines in the
+                                        ; current buffer are used (first) as a
+                                        ; refile target
                            (org-agenda-files :maxlevel . 2)))
 
 ;; provide refile targets as paths, including the file name
@@ -798,21 +921,21 @@ A prefix arg forces clock in of the default task."
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file "z:/siscog/github/agenda/refile.org")
+      (quote (("t" "todo" entry (file "~/github/agenda/refile.org")
                "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("r" "respond" entry (file "z:/siscog/github/agenda/refile.org")
+              ("r" "respond" entry (file "~/github/agenda/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-              ("n" "note" entry (file "z:/siscog/github/agenda/refile.org")
+              ("n" "note" entry (file "~/github/agenda/refile.org")
                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("j" "Journal" entry (file+datetree "z:/siscog/github/agenda/diary.org")
+              ("j" "Journal" entry (file+datetree "~/github/agenda/diary.org")
                "* %?\n%U\n" :clock-in t :clock-resume t)
-              ("w" "org-protocol" entry (file "z:/siscog/github/agenda/refile.org")
+              ("w" "org-protocol" entry (file "~/github/agenda/refile.org")
                "* TODO Review %c\n%U\n" :immediate-finish t)
-              ("m" "Meeting" entry (file "z:/siscog/github/agenda/refile.org")
+              ("m" "Meeting" entry (file "~/github/agenda/refile.org")
                "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file "z:/siscog/github/agenda/refile.org")
+              ("p" "Phone call" entry (file "~/github/agenda/refile.org")
                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-              ("h" "Habit" entry (file "z:/siscog/github/agenda/refile.org")
+              ("h" "Habit" entry (file "~/github/agenda/refile.org")
                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 
 
@@ -877,15 +1000,14 @@ A prefix arg forces clock in of the default task."
 ;; (iimage-mode)
 ;; add the org file link format to the iimage mode regex
 ;;;(add-to-list 'iimage-mode-image-regex-alist
-;;;	     (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex "\\)\\]") 1))
+;;;          (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex "\\)\\]") 1))
 ;; add a hook so we can display images on load
 ;; (add-hook 'org-mode-hook '(lambda () (org-turn-on-iimage-in-org)))
 (add-hook 'org-mode-hook ' (lambda ()
-			     (org-indent-mode t)
-			     (imenu-add-to-menubar "Imenu")
-			     (local-set-key "\M-I" 'org-toggle-iimage-in-org))
-	  t)
-
+                             (org-indent-mode t)
+                             (imenu-add-to-menubar "Imenu")
+                             (local-set-key "\M-I" 'org-toggle-iimage-in-org))
+          t)
 
 ;; Explicitly load required exporters
 ;; (require 'ox-html)
@@ -950,9 +1072,9 @@ A prefix arg forces clock in of the default task."
 (setq save-place-file "~/.emacs.d/saved-places")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GIT COMMIT MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'git-commit)
-;;(add-hook 'git-commit-mode-hook 'turn-on-flyspell)
-(add-hook 'git-commit-mode-hook (lambda () (toggle-save-place 0)))
+;; (require 'git-commit)
+;; ;;(add-hook 'git-commit-mode-hook 'turn-on-flyspell)
+;; (add-hook 'git-commit-mode-hook (lambda () (toggle-save-place 0)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; KILL PROCESS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
@@ -991,8 +1113,8 @@ A prefix arg forces clock in of the default task."
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
       (quote (("a" agenda ""
-		   ((org-deadline-warning-days -5)))
-	      ("N" "Notes" tags "NOTE"
+                   ((org-deadline-warning-days -5)))
+              ("N" "Notes" tags "NOTE"
                ((org-agenda-overriding-header "Notes")
                 (org-tags-match-list-sublevels t)))
               ("h" "Habits" tags-todo "STYLE=\"habit\""
@@ -1510,7 +1632,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
                                             ("B." . "-")
                                             ("a." . "-")
                                             ("b." . "-"))))
-setq org-tags-match-list-sublevels t)
+(setq org-tags-match-list-sublevels t)
 
 (setq org-agenda-persistent-filter t)
 
@@ -1521,7 +1643,7 @@ setq org-tags-match-list-sublevels t)
                             ("\\.x?html?\\'" . system)
                             ("\\.pdf\\'" . system))))
 
-					; Overwrite the current window with the agenda
+                                        ; Overwrite the current window with the agenda
 
 (setq org-cycle-include-plain-lists t)
 
@@ -1549,11 +1671,11 @@ by using nxml's indentation rules."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; HELM-SPOTIFY  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Helm
-(add-to-list 'load-path (expand-file-name "z:/siscog/git/helm/"))
-(require 'helm-config)
+;; (add-to-list 'load-path (expand-file-name "~/git/helm/"))
+;; (require 'helm-config)
 
 ;; Multi
-(add-to-list 'load-path (expand-file-name "z:/siscog/git/emacs-multi/"))
+;; (add-to-list 'load-path (expand-file-name "~/git/emacs-multi/"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; CASK  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;(require 'cask "~/.cask/cask.el")
@@ -1561,73 +1683,73 @@ by using nxml's indentation rules."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EMACS JABBER  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; adjust this path:
-(add-to-list 'load-path "z:/siscog/git/emacs-jabber")
+;; (add-to-list 'load-path "~/git/emacs-jabber")
 
 ;; For 0.7.90 and above:
-(require 'jabber-autoloads)
+;; (require 'jabber-autoloads)
 
-(setq special-display-regexps
-      '(("jabber-chat"
-	 (width . 80)
-	 (scroll-bar-width . 16)
-	 (height . 15)
-	 (tool-bar-lines . 0)
-	 (menu-bar-lines 0)
-	 (font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
-	 (left . 80))))
+;; (setq special-display-regexps
+;;       '(("jabber-chat"
+;;       (width . 80)
+;;       (scroll-bar-width . 16)
+;;       (height . 15)
+;;       (tool-bar-lines . 0)
+;;       (menu-bar-lines 0)
+;;       (font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
+;;       (left . 80))))
 
-(setq
+;; (setq
 
- jabber-history-enabled t
- jabber-use-global-history nil
- jabber-backlog-number 40
- jabber-backlog-days 30
+;;  jabber-history-enabled t
+;;  jabber-use-global-history nil
+;;  jabber-backlog-number 40
+;;  jabber-backlog-days 30
 
- )
+;;  )
 
-(setq jabber-chat-header-line-format
-          '(" " (:eval (jabber-jid-displayname jabber-chatting-with))
-    	" " (:eval (jabber-jid-resource jabber-chatting-with)) "\t";
-    	(:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
-    		 (propertize
-    		  (or
-    		   (cdr (assoc (get buddy 'show) jabber-presence-strings))
-    		   (get buddy 'show))
-    		  'face
-    		  (or (cdr (assoc (get buddy 'show) jabber-presence-faces))
-    		      'jabber-roster-user-online))))
-    	"\t" (:eval (get (jabber-jid-symbol jabber-chatting-with) 'status))
-    	(:eval (unless (equal "" *jabber-current-show*)
-    		 (concat "\t You're " *jabber-current-show*
-    			 " (" *jabber-current-status* ")")))))
+;; (setq jabber-chat-header-line-format
+;;           '(" " (:eval (jabber-jid-displayname jabber-chatting-with))
+;;      " " (:eval (jabber-jid-resource jabber-chatting-with)) "\t";
+;;      (:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
+;;               (propertize
+;;                (or
+;;                 (cdr (assoc (get buddy 'show) jabber-presence-strings))
+;;                 (get buddy 'show))
+;;                'face
+;;                (or (cdr (assoc (get buddy 'show) jabber-presence-faces))
+;;                    'jabber-roster-user-online))))
+;;      "\t" (:eval (get (jabber-jid-symbol jabber-chatting-with) 'status))
+;;      (:eval (unless (equal "" *jabber-current-show*)
+;;               (concat "\t You're " *jabber-current-show*
+;;                       " (" *jabber-current-status* ")")))))
 
-;; Don't disturb me if someone chage presence status (usually remote clients make this automatically):
-(setq jabber-alert-presence-message-function (lambda (who oldstatus newstatus statustext)
-					       nil))
+;; ;; Don't disturb me if someone chage presence status (usually remote clients make this automatically):
+;; (setq jabber-alert-presence-message-function (lambda (who oldstatus newstatus statustext)
+;;                                             nil))
 
-;; Redefine standard binding for sending message form RET to C-RET
-;; (define-key jabber-chat-mode-map (kbd "RET") 'newline)
-;; (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
+;; ;; Redefine standard binding for sending message form RET to C-RET
+;; ;; (define-key jabber-chat-mode-map (kbd "RET") 'newline)
+;; ;; (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
 
-;; (add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage jabber-message-beep)
-(add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage)
+;; ;; (add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage jabber-message-beep)
+;; (add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage)
 
-;; hook which will highlight URLs, and bind C-c RET to open the URL using browse-url:
-(add-hook 'jabber-chat-mode-hook 'goto-address)
+;; ;; hook which will highlight URLs, and bind C-c RET to open the URL using browse-url:
+;; (add-hook 'jabber-chat-mode-hook 'goto-address)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MAGIT  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "z:/siscog/git/git-modes")
-(add-to-list 'load-path "z:/siscog/git/magit")
-(eval-after-load 'info
-  '(progn (info-initialize)
-          (add-to-list 'Info-directory-list "z:/siscog/git/magit/")))
-(require 'magit)
+;; (add-to-list 'load-path "~/git/git-modes")
+;; (add-to-list 'load-path "~/git/magit")
+;; (eval-after-load 'info
+;;   '(progn (info-initialize)
+;;           (add-to-list 'Info-directory-list "~/git/magit/")))
+;; (require 'magit)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GNUS  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "z:/siscog/git/gnus/elisp/gnus/lisp")
-(add-to-list 'load-path "z:/siscog/git/gnus/elisp/gnus/contrib")
-;;(load-file "z:/siscog/github/.emacs.d/.gnus.el")
-;;(byte-recompile-directory (expand-file-name "z:/siscog/git") 0)
+;; (add-to-list 'load-path "~/git/gnus/elisp/gnus/lisp")
+;; (add-to-list 'load-path "~/git/gnus/elisp/gnus/contrib")
+;;(load-file "~/github/.emacs.d/.gnus.el")
+;;(byte-recompile-directory (expand-file-name "~/git") 0)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; CUSTOM-SET-VARIABLES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1636,22 +1758,9 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-'(ediff-window-setup-function (quote ediff-setup-windows-plain)))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ELECTRIC MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (electric-pair-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG AGENDA  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+ '(doc-view-continuous t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(gnus-home-directory "~/.emacs.d/")
  '(gnus-init-file "~/.emacs.d/.gnus.el")
  '(org-indent-mode-turns-on-hiding-stars t)
- ;'(initial-frame-alist (quote ((fullscreen . maximized))))
- )
+ '(initial-frame-alist (quote ((fullscreen . maximized)))))
