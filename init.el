@@ -162,7 +162,7 @@
 
 
 (require 'tramp)
-
+;;(add-to-list 'Info-default-directory-list "~/git/tramp/info/")
 (setq tramp-default-method "ssh")
 
 ;;;_ , dired
@@ -1822,3 +1822,40 @@ by using nxml's indentation rules."
  '(gnus-home-directory "~/.emacs.d/")
  '(gnus-init-file "~/.emacs.d/.gnus.el")
  '(initial-frame-alist (quote ((fullscreen . maximized)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SISCOG-STUFF ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun x-sc-mark-sexp (click)
+  "Moves point to current mouse position. Then marks the S-Expression.
+Finaly, blinks at the end of the marked region."
+  (interactive "e")
+  (mouse-set-point click)
+  (let ((mark (sc-mark-sexp nil)))
+    (push-mark mark nil t)))
+
+(defvar *last-copy-kill-yank* nil)
+
+(defun x-sc-copy-kill-yank (click)
+  "Several actions can be performed. See comments in the code."
+  (interactive "e")
+  (if mark-active
+      (cond ((equal *last-copy-kill-yank* (list (current-buffer) (point) (mark)))
+	     ;; If it is the second time the text is deleted from the buffer
+	     (delete-region (point) (mark))
+	     (setq *last-copy-kill-yank* nil))
+	    (t
+	     ;; If it is the first time the marked text is saved to the kill ring
+	     (copy-region-as-kill (point) (mark))
+	     (setq *last-copy-kill-yank* (list (current-buffer) (point) (mark)))
+	     (setq deactivate-mark nil)))
+      ;; Otherwise yank the text in the kill ring
+      (yank)))
+
+(global-set-key [mouse-2]        'x-sc-mark-sexp)
+(global-set-key [double-mouse-2] 'x-sc-mark-sexp)
+(global-set-key [triple-mouse-2] 'x-sc-mark-sexp)
+
+(global-set-key [S-mouse-2]      'x-sc-copy-kill-yank)
+(global-set-key [mouse-3]        'x-sc-copy-kill-yank)
+(global-set-key [double-mouse-3] 'x-sc-copy-kill-yank)
+(global-set-key [triple-mouse-3] 'x-sc-copy-kill-yank)
