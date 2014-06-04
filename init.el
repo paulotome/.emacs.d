@@ -98,7 +98,7 @@
 ; if available, `buffer-name' otherwise
 (defun my-frame-title-refresh ()
   (setq frame-title-format
-        `((buffer-file-name "buffer-file-name: %f" ("%b"))
+        `(,(buffer-file-name "buffer-file-name: %f" ("%b"))
           "      "
           ,(format-time-string "Week/Day of year: %W/%j")
           "      "
