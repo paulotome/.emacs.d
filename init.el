@@ -280,7 +280,9 @@
 (setq font-lock-maximum-decoration t)
 
 ;;; Show matching parenthesis
-(show-paren-mode t)
+(setq show-paren-delay 0) ; how long to wait?
+(show-paren-mode t) ; turn paren-mode on
+(setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
 
 ;; Set buffer behaviour
 ;; Prevent emacs from adding newlines when pressing down arrow at the end of the buffer
