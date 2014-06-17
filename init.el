@@ -23,6 +23,11 @@
 ;;(require 'setnu)
 ;;(require 'wtf)
 
+;; Info directory
+(unless (boundp 'Info-directory-list)
+  (setq Info-directory-list Info-default-directory-list))
+
+
 ;; copy/paste between emacs and e.g. iceweasel
 (setq x-select-enable-clipboard t)
 
@@ -60,7 +65,8 @@
 (add-hook 'before-save-hook
           '(lambda ()
              (or (file-exists-p (file-name-directory buffer-file-name))
-                 (make-directory (file-name-directory buffer-file-name) t))))
+                 (make-directory (file-name-directory buffer-file-name) t)))
+	  'append)
 
 ;;;_ , automatically delete trailing whitespace
 
@@ -229,12 +235,13 @@
 
 ;; After Info-mode has started
 (add-hook 'Info-mode-hook
-        (lambda ()
-            (setq Info-additional-directory-list Info-default-directory-list)
-        ))
-(add-to-list 'Info-default-directory-list "~/git/gnupg/doc")
-(add-to-list 'Info-default-directory-list "~/git/gnus/texi")
-(add-to-list 'Info-default-directory-list "~/git/org-mode/doc")
+	  (lambda ()
+    	    (setq Info-additional-directory-list Info-default-directory-list)
+	    )
+	  'append)
+(add-to-list 'Info-default-directory-list "Z:/siscog/git/gnupg/doc")
+(add-to-list 'Info-default-directory-list "Z:/siscog/git/gnus/texi")
+(add-to-list 'Info-default-directory-list "Z:/siscog/git/org-mode/doc")
 
 ;;;(Info-goto-node "(emacs)FFAP")
 ;;;(Info-goto-node "(dired-x) Top")
@@ -349,7 +356,6 @@
 (add-hook 'dired-load-hook
           (function (lambda ()
                       (load "dired-x"))))
-
 
 ;; Ordinarily emacs jumps by half a page when scrolling -- reduce:
 (setq scroll-step 1)
@@ -516,7 +522,10 @@
     (newline arg)
     (indent-according-to-mode)))
 
-
+(require 'eldoc) ; if not already loaded
+;;;(eldoc-add-command
+;;; 'paredit-backward-delete
+;;; 'paredit-close-round)
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
 ;;;         (paredit-mode t)
@@ -526,11 +535,8 @@
 ;;;          'paredit-close-round)
             (local-set-key (kbd "RET") 'electrify-return-if-match)
             (eldoc-add-command 'electrify-return-if-match)))
-
-(require 'eldoc) ; if not already loaded
-;;;(eldoc-add-command
-;;; 'paredit-backward-delete
-;;; 'paredit-close-round)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 
 
 ;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
@@ -573,7 +579,6 @@
 (set-selection-coding-system 'utf-8-unix)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-(setq org-export-coding-system 'utf-8-unix)
 (set-charset-priority 'unicode)
 
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
@@ -650,7 +655,11 @@
 ;; (require 'org-checklist)
 ;;(require 'org-latex)
 (require 'org-clock)
+(require 'org-special-blocks)
 
+;; Nice bullets
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 ;;
 ;; Standard key bindings
 (global-set-key "\C-cl" 'org-store-link)
@@ -659,9 +668,18 @@
 ;; Custom Key Bindings
 (global-set-key (kbd "<f11>") 'org-clock-goto)
 
+
+(add-to-list 'org-src-lang-modes
+             '("elisp" . emacs-lisp))
+(add-to-list 'org-src-lang-modes
+             '("emacs_lisp" . emacs-lisp))
+
+(setq org-src-preserve-indentation t)
+(setq org-edit-src-auto-save-idle-delay 5)
+(setq org-edit-src-content-indentation 0)
+
 (setq org-export-coding-system 'utf-8-unix)
-(set-charset-priority 'unicode)
-(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+
 
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
@@ -1341,8 +1359,10 @@ A prefix arg forces clock in of the default task."
 ;; Use sticky agenda's so they persist
 (setq org-agenda-sticky t)
 
-
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
 (setq org-src-preserve-indentation nil)
+(setq org-src-fontify-natively t)
 
 (setq org-edit-src-content-indentation 0)
 
@@ -1705,8 +1725,6 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 ;; Overwrite the current window with the agenda
 (setq org-cycle-include-plain-lists t)
-
-(setq org-src-fontify-natively t)
 
 (setq org-startup-folded t)
 
