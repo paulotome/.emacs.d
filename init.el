@@ -23,6 +23,11 @@
 ;;(require 'setnu)
 ;;(require 'wtf)
 
+;; (find-lisp-object-file-name 'goto-line 'function)
+
+(setq find-function-C-source-directory "~/git/emacs/src")
+(setq source-directory "~/git/emacs")
+
 ;; Info directory
 (unless (boundp 'Info-directory-list)
   (setq Info-directory-list Info-default-directory-list))
