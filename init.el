@@ -1,5 +1,5 @@
 ;; ******************************************************
-;; *                    EZWINPORTS	         	*
+;; *                    EZWINPORTS                      *
 ;; ******************************************************
 
 
@@ -13,6 +13,53 @@
     (setq tls-program '("C:/siscog-dev-tools/Git/bin/openssl.exe s_client -connect %h:%p -no_ssl2 -ign_eof")))
 
 ;; ******************************************************
+;; *               Maximize Emacs window                *
+;; ******************************************************
+;; Start emacs in fullscreen mode in Xorg
+(defun fullscreen ()
+  (interactive)
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+                         '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
+(cond (eq window-system 'x)
+      (add-hook 'emacs-startup-hook 'fullscreen)
+      (eq system-type 'windows-nt)
+      ;; Maximize Emacs window
+      (w32-send-sys-command ?\xf030)
+      ;;(w32-send-sys-command #xf030)
+      )
+
+;; ******************************************************
+(setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
+
+(setq indicate-empty-lines t)
+
+;;; Display date and time in mode line
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+(setq display-time-format "∥ %A %e %B − %R ∥")
+(display-time-mode 1)
+
+(setq fill-column 80)
+(auto-fill-mode t)
+
+;; display only tails of lines longer than 80 columns, tabs and
+;; trailing whitespaces
+(setq whitespace-line-column 80
+      whitespace-style '(tabs trailing lines-tail))
+
+(require 'whitespace)
+
+;; face for long lines' tails
+(set-face-attribute 'whitespace-line nil
+                    :background "red1"
+                    :foreground "yellow"
+                    :weight 'bold)
+
+;; face for Tabs
+(set-face-attribute 'whitespace-tab nil
+                    :background "red1"
+                    :foreground "yellow"
+                    :weight 'bold)
 
 (require 'info)
 (require 'cl)
@@ -53,25 +100,25 @@
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
 
-; Elevate some limits
+;; Elevate some limits
 (setq max-lisp-eval-depth '4000)
 (setq max-specpdl-size '10000)
 
-; Disable enabled commands/keybindings
+;; Disable enabled commands/keybindings
 (put 'overwrite-mode 'disabled t)
 
 ;;;_ , automatically create path
 
-; some sort of mkdir -p for non existing paths
-;   when opening a non-existing file (e.g. myfile) within some yet
-;   non-existing directory, it automatically creates the file and
-;   /path/to/file/myfile when the file is saved witin emacs
+;; some sort of mkdir -p for non existing paths
+;;   when opening a non-existing file (e.g. myfile) within some yet
+;;   non-existing directory, it automatically creates the file and
+;;   /path/to/file/myfile when the file is saved witin emacs
 
 (add-hook 'before-save-hook
           '(lambda ()
              (or (file-exists-p (file-name-directory buffer-file-name))
                  (make-directory (file-name-directory buffer-file-name) t)))
-	  'append)
+          'append)
 
 ;;;_ , automatically delete trailing whitespace
 
@@ -86,27 +133,27 @@
 
 ;;;_ , autosave
 
-; save every 100 characters typed
+;; save every 100 characters typed
 (setq auto-save-interval 100)
 
-; save after 10 seconds of idle time
+;; save after 10 seconds of idle time
 (setq auto-save-timeout 10)
 
 (defun my-save-buffer-if-visiting-file (&optional args)
   "Save the current buffer only if it is visiting a file"
   (interactive)
-    (if (buffer-file-name)
-        (save-buffer args)))
+  (if (buffer-file-name)
+      (save-buffer args)))
 
-; This causes files that I'm editing to be saved automatically by the
-; emacs auto-save functionality.  I'm hoping to break myself of the
-; c-x c-s twitch.
+;; This causes files that I'm editing to be saved automatically by the
+;; emacs auto-save functionality.  I'm hoping to break myself of the
+;; c-x c-s twitch.
 (add-hook 'auto-save-hook 'my-save-buffer-if-visiting-file)
 
 ;;;_ , my-frame-title-refresh
 
-; Show date and current time, GNU Emacs version and `buffer-file-name'
-; if available, `buffer-name' otherwise
+;; Show date and current time, GNU Emacs version and `buffer-file-name'
+;; if available, `buffer-name' otherwise
 (defun my-frame-title-refresh ()
   (setq frame-title-format
         `(,(buffer-file-name "buffer-file-name: %f" ("%b"))
@@ -124,7 +171,7 @@
           ,(substring (emacs-version) 0 20)
           )))
 
-; Update frame title every minute
+;; Update frame title every minute
 (run-with-timer 1 60 'my-frame-title-refresh)
 
 
@@ -142,22 +189,22 @@
 
 ;;_ , command-history
 
-; See `chistory.el'
+;; See `chistory.el'
 
-; NOTES:
-; 1) I use `command-history' which is bound to `C-x c' on a regular
-; 2) Using `repeat-complex-command' wich is bound to `C-x M-:' per
-; default is also pretty useful
+;; NOTES:
+;; 1) I use `command-history' which is bound to `C-x c' on a regular
+;; 2) Using `repeat-complex-command' wich is bound to `C-x M-:' per
+;; default is also pretty useful
 
 (setq list-command-history-max '100)
 
 ;;;_ , higlight-changes-mode
 
-;(global-highlight-changes-mode t)
+;;(global-highlight-changes-mode t)
 (setq highlight-changes-global-changes-existing-buffers t)
 
 ;;;_ , uniquify
-; See (Info-goto-node "(emacs) Uniquify")
+;; See (Info-goto-node "(emacs) Uniquify")
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
@@ -165,12 +212,11 @@
 
 ;;_ , multi-protocol remote file access
 
-; See (Info-goto-node "(tramp)Top") as well as
-; http://www.emacswiki.org/cgi-bin/wiki/TrampMode
+;; See (Info-goto-node "(tramp)Top") as well as
+;; http://www.emacswiki.org/cgi-bin/wiki/TrampMode
 
-; What I also consider very useful is
-;(Info-goto-node "(tramp)Version Control")
-
+;; What I also consider very useful is
+;;(Info-goto-node "(tramp)Version Control")
 
 (require 'tramp)
 ;;(add-to-list 'Info-default-directory-list "~/git/tramp/info/")
@@ -185,12 +231,12 @@
 
 ;;;_ , dired-x
 
-; See (Info-goto-node "(dired-x) Top")
+;; See (Info-goto-node "(dired-x) Top")
 (require 'dired-x)
 
 ;;;_  . Advanced Mark Commands
 
-; (Info-goto-node "(dired-x) Advanced Mark Commands")
+;; (Info-goto-node "(dired-x) Advanced Mark Commands")
 
 ;;;_  . Omit
 
@@ -200,13 +246,12 @@
 
 ;;;_ , image-dired
 
-; See http://www.emacswiki.org/cgi-bin/wiki/Tumme
+;; See http://www.emacswiki.org/cgi-bin/wiki/Tumme
 (require 'image-dired)
 
 (setq image-dired-show-all-from-dir-max-files 100)
 (setq image-dired-thumb-margin 4)
 (setq image-dired-thumb-relief 0)
-
 
 (require 'recentf)
 (recentf-mode 1)                        ;recently edited files in menu
@@ -217,7 +262,7 @@
 
 ;;;_. standard browser to open URLs within GNU Emacs
 
-; See http://www.emacswiki.org/cgi-bin/wiki/BrowseUrl for more information.
+;; See http://www.emacswiki.org/cgi-bin/wiki/BrowseUrl for more information.
 
 (setq gnus-button-url 'browse-url-generic
       browse-url-generic-program "iceweasel"
@@ -232,18 +277,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (add-to-list 'load-path (expand-file-name "~/git/gnupg"))
 
-;(require 'epa-file)
-;(epa-file-enable)
+;;(require 'epa-file)
+;;(epa-file-enable)
 
 ;;; Info mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; After Info-mode has started
 (add-hook 'Info-mode-hook
-	  (lambda ()
-    	    (setq Info-additional-directory-list Info-default-directory-list)
-	    )
-	  'append)
+          (lambda ()
+            (setq Info-additional-directory-list Info-default-directory-list)
+            )
+          'append)
 (add-to-list 'Info-default-directory-list "Z:/siscog/git/gnupg/doc")
 (add-to-list 'Info-default-directory-list "Z:/siscog/git/gnus/texi")
 (add-to-list 'Info-default-directory-list "Z:/siscog/git/org-mode/doc")
@@ -269,7 +314,7 @@
 
 
 ;; Who use the bar to scroll?
-;(scroll-bar-mode left)
+;;(scroll-bar-mode left)
 (set-scroll-bar-mode 'left)
 
 ;; Deactivate tooltips in emacs
@@ -312,7 +357,7 @@
 ;;________________________________________________________________
 (setq inhibit-startup-message t)        ;no startup message
 (setq inhibit-splash-screen t)          ;no splash screen
-(setq initial-scratch-message "")	; Don't use messages that you don't read
+(setq initial-scratch-message "")       ; Don't use messages that you don't read
 (defconst use-backup-dir t)             ;use backup directory
 (defconst query-replace-highlight t)    ;highlight during query
 (defconst search-highlight t)           ;highlight incremental search
@@ -446,26 +491,6 @@
 (setq mouse-wheel-progressive-speed nil)
 
 (setq-default show-trailing-whitespace t)
-
-;; ******************************************************
-;; *               Maximize Emacs window                *
-;; ******************************************************
-
-(defun toggle-full-screen ()
-  "Toggles full-screen mode for Emacs window on Win32."
-  (interactive)
-  ;; Maximize Emacs window
-  (if (eq system-type 'windows-nt)
-      (w32-send-sys-command ?\xf030)
-      ;;(w32-send-sys-command #xf030)
-      ))
-
-;; F11 to switch between windowed and full-screen modes
-(global-set-key [f5] 'toggle-full-screen)
-
-;; Switch to full-screen mode during startup
-(toggle-full-screen)
-;; ******************************************************
 
 ;;; Quick expression selection with control return
 (defun select-current-sexp ()
@@ -687,7 +712,6 @@
 
 (setq org-export-coding-system 'utf-8-unix)
 
-
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
 
@@ -895,7 +919,7 @@ as the default task."
     ;;
     (save-restriction
       (widen)
-      ; Find the tags on the current task
+      ;; Find the tags on the current task
       (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
           (org-clock-in '(16))
         (bh/clock-in-organization-task-as-default)))))
@@ -968,15 +992,15 @@ A prefix arg forces clock in of the default task."
 
 (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
-; Set default column view headings: Task Effort Clock_Summary
+;; Set default column view headings: Task Effort Clock_Summary
 (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
 
-; global Effort estimate values
-; global STYLE property values for completion
+;; global Effort estimate values
+;; global STYLE property values for completion
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit"))))
 
-; Tags with fast selection keys
+;; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
                             ("@errand" . ?e)
                             ("@office" . ?o)
@@ -995,7 +1019,7 @@ A prefix arg forces clock in of the default task."
                             ("CANCELLED" . ?c)
                             ("FLAGGED" . ??))))
 
-; Allow setting single tags without the menu
+;; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))
 
 (setq org-fast-tag-selection-include-todo t)
@@ -1021,9 +1045,7 @@ A prefix arg forces clock in of the default task."
               ("h" "Habit" entry (file "~/github/agenda/refile.org")
                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 
-
 (define-key org-mode-map (kbd "C-S-a") 'org-archive-subtree)
-
 
 (setq org-use-speed-commands t)
 (setq org-speed-commands-user (quote (("0" . ignore)
@@ -1156,11 +1178,6 @@ A prefix arg forces clock in of the default task."
 (setq-default save-place t)
 (setq save-place-file "~/.emacs.d/saved-places")
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GIT COMMIT MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'git-commit)
-;;(add-hook 'git-commit-mode-hook 'turn-on-flyspell)
-(add-hook 'git-commit-mode-hook (lambda () (toggle-save-place 0)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; KILL PROCESS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
 (define-key process-menu-mode-map (kbd "C-k") 'ptome/delete-process-at-point)
@@ -1198,7 +1215,7 @@ A prefix arg forces clock in of the default task."
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
       (quote (("a" agenda ""
-                   ((org-deadline-warning-days -5)))
+               ((org-deadline-warning-days -5)))
               ("N" "Notes" tags "NOTE"
                ((org-agenda-overriding-header "Notes")
                 (org-tags-match-list-sublevels t)))
@@ -1291,7 +1308,7 @@ A prefix arg forces clock in of the default task."
 ;; Agenda log mode items to display (closed and state changes by default)
 (setq org-agenda-log-mode-items (quote (closed state)))
 
-; For tag searches ignore tasks with scheduled and deadline dates
+;; For tag searches ignore tasks with scheduled and deadline dates
 (setq org-agenda-tags-todo-honor-ignore-options t)
 
 (setq org-agenda-span 'day)
@@ -1774,13 +1791,13 @@ by using nxml's indentation rules."
 
 (setq special-display-regexps
       '(("jabber-chat"
-	 (width . 80)
-	 (scroll-bar-width . 16)
-	 (height . 15)
-	 (tool-bar-lines . 0)
-	 (menu-bar-lines 0)
-	 (font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
-	 (left . 80))))
+         (width . 80)
+         (scroll-bar-width . 16)
+         (height . 15)
+         (tool-bar-lines . 0)
+         (menu-bar-lines 0)
+         (font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
+         (left . 80))))
 
 (setq
 
@@ -1792,24 +1809,24 @@ by using nxml's indentation rules."
  )
 
 (setq jabber-chat-header-line-format
-          '(" " (:eval (jabber-jid-displayname jabber-chatting-with))
-    	" " (:eval (jabber-jid-resource jabber-chatting-with)) "\t";
-    	(:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
-    		 (propertize
-    		  (or
-    		   (cdr (assoc (get buddy 'show) jabber-presence-strings))
-    		   (get buddy 'show))
-    		  'face
-    		  (or (cdr (assoc (get buddy 'show) jabber-presence-faces))
-    		      'jabber-roster-user-online))))
-    	"\t" (:eval (get (jabber-jid-symbol jabber-chatting-with) 'status))
-    	(:eval (unless (equal "" *jabber-current-show*)
-    		 (concat "\t You're " *jabber-current-show*
-    			 " (" *jabber-current-status* ")")))))
+      '(" " (:eval (jabber-jid-displayname jabber-chatting-with))
+        " " (:eval (jabber-jid-resource jabber-chatting-with)) "\t";
+        (:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
+                 (propertize
+                  (or
+                   (cdr (assoc (get buddy 'show) jabber-presence-strings))
+                   (get buddy 'show))
+                  'face
+                  (or (cdr (assoc (get buddy 'show) jabber-presence-faces))
+                      'jabber-roster-user-online))))
+        "\t" (:eval (get (jabber-jid-symbol jabber-chatting-with) 'status))
+        (:eval (unless (equal "" *jabber-current-show*)
+                 (concat "\t You're " *jabber-current-show*
+                         " (" *jabber-current-status* ")")))))
 
 ;; Don't disturb me if someone chage presence status (usually remote clients make this automatically):
 (setq jabber-alert-presence-message-function (lambda (who oldstatus newstatus statustext)
-					       nil))
+                                               nil))
 
 ;; Redefine standard binding for sending message form RET to C-RET
 ;; (define-key jabber-chat-mode-map (kbd "RET") 'newline)
@@ -1822,11 +1839,11 @@ by using nxml's indentation rules."
 (add-hook 'jabber-chat-mode-hook 'goto-address)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MAGIT  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "z:/siscog/git/git-modes")
-(add-to-list 'load-path "z:/siscog/git/magit")
+(add-to-list 'load-path "~/git/git-modes")
+(add-to-list 'load-path "~/git/magit")
 (eval-after-load 'info
   '(progn (info-initialize)
-          (add-to-list 'Info-directory-list "z:/siscog/git/magit/")))
+          (add-to-list 'Info-directory-list "~/git/magit/")))
 (require 'magit)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GNUS  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1865,14 +1882,14 @@ Finaly, blinks at the end of the marked region."
   (interactive "e")
   (if mark-active
       (cond ((equal *last-copy-kill-yank* (list (current-buffer) (point) (mark)))
-	     ;; If it is the second time the text is deleted from the buffer
-	     (delete-region (point) (mark))
-	     (setq *last-copy-kill-yank* nil))
-	    (t
-	     ;; If it is the first time the marked text is saved to the kill ring
-	     (copy-region-as-kill (point) (mark))
-	     (setq *last-copy-kill-yank* (list (current-buffer) (point) (mark)))
-	     (setq deactivate-mark nil)))
+             ;; If it is the second time the text is deleted from the buffer
+             (delete-region (point) (mark))
+             (setq *last-copy-kill-yank* nil))
+            (t
+             ;; If it is the first time the marked text is saved to the kill ring
+             (copy-region-as-kill (point) (mark))
+             (setq *last-copy-kill-yank* (list (current-buffer) (point) (mark)))
+             (setq deactivate-mark nil)))
       ;; Otherwise yank the text in the kill ring
       (yank)))
 
