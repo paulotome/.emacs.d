@@ -70,6 +70,8 @@
 ;;(require 'setnu)
 ;;(require 'wtf)
 
+(add-hook 'prog-mode-hook #'hs-minor-mode)
+
 ;; (find-lisp-object-file-name 'goto-line 'function)
 
 (setq find-function-C-source-directory "~/git/emacs/src")
