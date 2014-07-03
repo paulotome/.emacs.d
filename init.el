@@ -275,7 +275,7 @@
 
 ;; (setf browse-url-generic-program "C:/Program Files/Google/Chrome/Application/chrome.exe")
 
-(defun google ()
+(defun google-region-or-query ()
   "Googles a query or region if any."
   (interactive)
   (browse-url
@@ -285,7 +285,7 @@
         (buffer-substring (region-beginning) (region-end))
 	(read-string "Query: ")))))
 
-(global-set-key [M-mouse-3] 'google)
+(global-set-key [M-mouse-3] 'google-region-or-query)
 
 ;;;_. w3m
 
