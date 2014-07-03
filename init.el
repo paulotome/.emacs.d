@@ -270,6 +270,23 @@
       browse-url-generic-program "iceweasel"
       browse-url-browser-function gnus-button-url)
 
+
+(setf browse-url-browser-function 'browse-url-generic)
+
+;; (setf browse-url-generic-program "C:/Program Files/Google/Chrome/Application/chrome.exe")
+
+(defun google ()
+  "Googles a query or region if any."
+  (interactive)
+  (browse-url
+   (concat
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
+    (if mark-active
+        (buffer-substring (region-beginning) (region-end))
+	(read-string "Query: ")))))
+
+(global-set-key [M-mouse-3] 'google)
+
 ;;;_. w3m
 
 ;;(require 'w3m)
