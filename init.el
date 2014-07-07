@@ -270,9 +270,9 @@
       browse-url-generic-program "iceweasel"
       browse-url-browser-function gnus-button-url)
 
+(setq gnus-button-url (list (cons "." 'browse-url-generic)))
 
-(setf browse-url-browser-function 'browse-url-generic)
-
+(setf browse-url-browser-function (list (cons "." 'browse-url-generic)))
 ;; (setf browse-url-generic-program "C:/Program Files/Google/Chrome/Application/chrome.exe")
 
 (defun google-region-or-query ()
@@ -769,7 +769,7 @@
 
 (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
-(defvar bh/insert-inactive-timestamp t)
+(defvar bh/insert-inactive-timestamp nil)
 
 (defun bh/toggle-insert-inactive-timestamp ()
   (interactive)
@@ -780,9 +780,9 @@
   (interactive)
   (org-insert-time-stamp nil t t nil nil nil))
 
-(defun bh/insert-inactive-timestamp ()
-  (interactive)
-  (org-insert-time-stamp nil t t nil nil nil))
+;; (defun bh/insert-inactive-timestamp ()
+;;   (interactive)
+;;   (org-insert-time-stamp nil t t nil nil nil))
 
 (defun bh/insert-heading-inactive-timestamp ()
   (save-excursion
@@ -792,11 +792,11 @@
       (bh/insert-inactive-timestamp))))
 
 
-(add-hook 'org-insert-heading-hook 'bh/insert-heading-inactive-timestamp 'append)
+;;(add-hook 'org-insert-heading-hook 'bh/insert-heading-inactive-timestamp 'append)
 
 ;; (global-set-key (kbd "<f9> t") 'bh/insert-inactive-timestamp)
 
-
+;; (setq org-treat-insert-todo-heading-as-state-change t)
 
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "DEFERRED(f)" "STARTED(s)" "|" "DONE(d)" "NOTE(n)"  "PHONE(p)" "MEETING(m)" "CLOSED(l)" "CANCELED(c)")))
 
