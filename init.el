@@ -19,14 +19,14 @@
 (defun fullscreen ()
   (interactive)
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                         '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
-(cond (eq window-system 'x)
-      (add-hook 'emacs-startup-hook 'fullscreen)
-      (eq system-type 'windows-nt)
-      ;; Maximize Emacs window
-      (w32-send-sys-command ?\xf030)
-      ;;(w32-send-sys-command #xf030)
-      )
+                         '(2 "_NET_WM_STATE_FULLSCREEN" 0))
+  (cond ((eq window-system 'x)
+         (add-hook 'emacs-startup-hook 'fullscreen))
+        ((eq system-type 'windows-nt)
+         ;; Maximize Emacs window
+         (w32-send-sys-command ?\xf030))
+        ;;(w32-send-sys-command #xf030)
+        ))
 
 ;; ******************************************************
 (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
@@ -156,25 +156,25 @@
 
 ;; Show date and current time, GNU Emacs version and `buffer-file-name'
 ;; if available, `buffer-name' otherwise
-(defun my-frame-title-refresh ()
-  (setq frame-title-format
-        `(,(buffer-file-name "buffer-file-name: %f" ("%b"))
-          "      "
-          ,(format-time-string "Week/Day of year: %W/%j")
-          "      "
-          ,(format-time-string "Weekday: %A")
-          "      "
-          ,(format-time-string "Date: %Y/%m/%d")
-          "      "
-          ,(format-time-string "Time:  ")
-          ,(replace-regexp-in-string "\n" "" (shell-command-to-string "date -u +%H:%M"))
-          " UTC"
-          "      "
-          ,(substring (emacs-version) 0 20)
-          )))
+;; (defun my-frame-title-refresh ()
+;;   (setq frame-title-format
+;;         `(,(buffer-file-name "buffer-file-name: %f" ("%b"))
+;;           "      "
+;;           ,(format-time-string "Week/Day of year: %W/%j")
+;;           "      "
+;;           ,(format-time-string "Weekday: %A")
+;;           "      "
+;;           ,(format-time-string "Date: %Y/%m/%d")
+;;           "      "
+;;           ,(format-time-string "Time:  ")
+;;           ,(replace-regexp-in-string "\n" "" (shell-command-to-string "date -u +%H:%M"))
+;;           " UTC"
+;;           "      "
+;;           ,(substring (emacs-version) 0 20)
+;;           )))
 
 ;; Update frame title every minute
-(run-with-timer 1 60 'my-frame-title-refresh)
+;; (run-with-timer 1 60 'my-frame-title-refresh)
 
 
 ;;;_ , Auto bytecompile
@@ -283,7 +283,7 @@
     "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
     (if mark-active
         (buffer-substring (region-beginning) (region-end))
-	(read-string "Query: ")))))
+        (read-string "Query: ")))))
 
 (global-set-key [M-mouse-3] 'google-region-or-query)
 
@@ -706,11 +706,11 @@
 ;; (require 'org-checklist)
 ;;(require 'org-latex)
 (require 'org-clock)
-(require 'org-special-blocks)
+;;(require 'org-special-blocks)
 
 ;; Nice bullets
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;;(require 'org-bullets)
+;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 ;;
 ;; Standard key bindings
 (global-set-key "\C-cl" 'org-store-link)
@@ -1806,56 +1806,56 @@ by using nxml's indentation rules."
 ;; (add-to-list 'load-path "~/git/emacs-jabber")
 
 ;; For 0.7.90 and above:
-(require 'jabber-autoloads)
+;;(require 'jabber-autoloads)
 
-(setq special-display-regexps
-      '(("jabber-chat"
-         (width . 80)
-         (scroll-bar-width . 16)
-         (height . 15)
-         (tool-bar-lines . 0)
-         (menu-bar-lines 0)
-         (font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
-         (left . 80))))
+;; (setq special-display-regexps
+;;       '(("jabber-chat"
+;;          (width . 80)
+;;          (scroll-bar-width . 16)
+;;          (height . 15)
+;;          (tool-bar-lines . 0)
+;;          (menu-bar-lines 0)
+;;          (font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
+;;          (left . 80))))
 
-(setq
+;; (setq
 
- jabber-history-enabled t
- jabber-use-global-history nil
- jabber-backlog-number 40
- jabber-backlog-days 30
+;;  jabber-history-enabled t
+;;  jabber-use-global-history nil
+;;  jabber-backlog-number 40
+;;  jabber-backlog-days 30
 
- )
+;;  )
 
-(setq jabber-chat-header-line-format
-      '(" " (:eval (jabber-jid-displayname jabber-chatting-with))
-        " " (:eval (jabber-jid-resource jabber-chatting-with)) "\t";
-        (:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
-                 (propertize
-                  (or
-                   (cdr (assoc (get buddy 'show) jabber-presence-strings))
-                   (get buddy 'show))
-                  'face
-                  (or (cdr (assoc (get buddy 'show) jabber-presence-faces))
-                      'jabber-roster-user-online))))
-        "\t" (:eval (get (jabber-jid-symbol jabber-chatting-with) 'status))
-        (:eval (unless (equal "" *jabber-current-show*)
-                 (concat "\t You're " *jabber-current-show*
-                         " (" *jabber-current-status* ")")))))
+;; (setq jabber-chat-header-line-format
+;;       '(" " (:eval (jabber-jid-displayname jabber-chatting-with))
+;;         " " (:eval (jabber-jid-resource jabber-chatting-with)) "\t";
+;;         (:eval (let ((buddy (jabber-jid-symbol jabber-chatting-with)))
+;;                  (propertize
+;;                   (or
+;;                    (cdr (assoc (get buddy 'show) jabber-presence-strings))
+;;                    (get buddy 'show))
+;;                   'face
+;;                   (or (cdr (assoc (get buddy 'show) jabber-presence-faces))
+;;                       'jabber-roster-user-online))))
+;;         "\t" (:eval (get (jabber-jid-symbol jabber-chatting-with) 'status))
+;;         (:eval (unless (equal "" *jabber-current-show*)
+;;                  (concat "\t You're " *jabber-current-show*
+;;                          " (" *jabber-current-status* ")")))))
 
 ;; Don't disturb me if someone chage presence status (usually remote clients make this automatically):
-(setq jabber-alert-presence-message-function (lambda (who oldstatus newstatus statustext)
-                                               nil))
+;; (setq jabber-alert-presence-message-function (lambda (who oldstatus newstatus statustext)
+;;                                                nil))
 
 ;; Redefine standard binding for sending message form RET to C-RET
 ;; (define-key jabber-chat-mode-map (kbd "RET") 'newline)
 ;; (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
 
 ;; (add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage jabber-message-beep)
-(add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage)
+;; (add-hook 'jabber-alert-message-hooks 'jabber-message-xmessage)
 
 ;; hook which will highlight URLs, and bind C-c RET to open the URL using browse-url:
-(add-hook 'jabber-chat-mode-hook 'goto-address)
+;; (add-hook 'jabber-chat-mode-hook 'goto-address)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MAGIT  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'load-path "~/git/git-modes")
