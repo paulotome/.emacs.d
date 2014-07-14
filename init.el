@@ -174,7 +174,8 @@
 ;;           )))
 
 ;; Update frame title every minute
-;; (run-with-timer 1 60 'my-frame-title-refresh)
+;;(run-with-timer 1 60 'my-frame-title-refresh)
+;; (cancel-timer (fifth timer-list))
 
 
 ;;;_ , Auto bytecompile
