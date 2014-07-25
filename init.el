@@ -74,8 +74,8 @@
 
 ;; (find-lisp-object-file-name 'goto-line 'function)
 
-(setq find-function-C-source-directory "~/git/emacs/src")
-(setq source-directory "~/git/emacs")
+(setq find-function-C-source-directory "/usr/share/emacs23/src")
+(setq source-directory "/usr/share/emacs23")
 
 ;; Info directory
 (unless (boundp 'Info-directory-list)
@@ -124,7 +124,7 @@
 
 ;;;_ , automatically delete trailing whitespace
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 
 ;;;_ , automatically untabify buffers
@@ -353,6 +353,10 @@
 (setq show-paren-delay 0) ; how long to wait?
 (show-paren-mode t) ; turn paren-mode on
 (setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
+;;(show-paren-match ((t (:bold t))))
+;;(setq show-paren-style 'expression)
+;;(set-face-background 'show-paren-match-face "LightSteelBlue2")
+(set-face-background 'show-paren-match-face (face-background 'default))
 
 ;; Set buffer behaviour
 ;; Prevent emacs from adding newlines when pressing down arrow at the end of the buffer
@@ -489,9 +493,7 @@
 ;;; Background Color
 (set-background-color "seashell")
 
-;;(show-paren-match ((t (:bold t))))
-;;(setq show-paren-style 'expression)
-(set-face-background 'show-paren-match-face "LightSteelBlue2")
+
 
 ;;; Highlight isearch current match
 (setq search-highlight t)
@@ -619,6 +621,12 @@
 (add-to-list 'file-coding-system-alist '("\\.cl" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("\\.scratch" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("user_prefs" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.xml" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.java" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.bash_profile" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.bashrc" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.profile" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.sh" . utf-8-unix) )
 
 (add-to-list 'process-coding-system-alist '("\\.txt" . utf-8-unix) )
 
@@ -691,12 +699,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SHOW ERRORS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Show errors in this file:
-(setq debug-on-error t)
-(setq stack-trace-on-error t)
+;; (setq debug-on-error t)
+;; (setq stack-trace-on-error t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ELECTRIC MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(electric-pair-mode)
+;;(electric-pair-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1200,7 +1208,7 @@ A prefix arg forces clock in of the default task."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; KILL PROCESS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
-(define-key process-menu-mode-map (kbd "C-k") 'ptome/delete-process-at-point)
+;;(define-key process-menu-mode-map (kbd "C-k") 'ptome/delete-process-at-point)
 
 (defun ptome/delete-process-at-point ()
   (interactive)
@@ -1793,7 +1801,7 @@ by using nxml's indentation rules."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; HELM-SPOTIFY  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Helm
 (add-to-list 'load-path (expand-file-name "~/git/helm/"))
-(require 'helm-config)
+;;(require 'helm-config)
 
 ;; Multi
 ;; (add-to-list 'load-path (expand-file-name "~/git/emacs-multi/"))
