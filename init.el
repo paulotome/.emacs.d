@@ -626,6 +626,7 @@
 (add-to-list 'file-coding-system-alist '("\\.bashrc" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("\\.profile" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("\\.sh" . utf-8-unix) )
+(add-to-list 'file-coding-system-alist '("\\.org" . utf-8-unix) )
 
 (cond ((eq system-type 'windows-nt)
        (add-to-list 'file-coding-system-alist '("\\.lisp" . iso-latin-1-dos) )
