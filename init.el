@@ -1,7 +1,8 @@
+(require 'cl)
+
 ;; ******************************************************
 ;; *                    EZWINPORTS                      *
 ;; ******************************************************
-
 
 (if (eq system-type 'windows-nt)
     (progn
@@ -17,16 +18,19 @@
 ;; ******************************************************
 ;; Start emacs in fullscreen mode in Xorg
 (defun fullscreen ()
+  (unless (fboundp 'x-send-client-message)
+    (declare (ignore x-send-client-message)))
   (interactive)
-  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                         '(2 "_NET_WM_STATE_FULLSCREEN" 0))
   (cond ((eq window-system 'x)
-         (add-hook 'emacs-startup-hook 'fullscreen))
+	 (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+				'(2 "_NET_WM_STATE_FULLSCREEN" 0)))
         ((eq system-type 'windows-nt)
          ;; Maximize Emacs window
          (w32-send-sys-command ?\xf030))
         ;;(w32-send-sys-command #xf030)
-        ))
+        )
+  (add-hook 'emacs-startup-hook 'fullscreen))
+
 
 ;; ******************************************************
 (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
@@ -143,8 +147,8 @@
 ;; save every 100 characters typed
 (setq auto-save-interval 100)
 
-;; save after 10 seconds of idle time
-(setq auto-save-timeout 10)
+;; save after 30 seconds of idle time
+;; (setq auto-save-timeout 30)
 
 (defun my-save-buffer-if-visiting-file (&optional args)
   "Save the current buffer only if it is visiting a file"
