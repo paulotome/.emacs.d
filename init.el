@@ -1888,7 +1888,8 @@ by using nxml's indentation rules."
 (eval-after-load 'info
 		 '(progn (info-initialize)
 		   (add-to-list 'Info-directory-list "~/git/magit/")))
-(require 'magit)
+(unless (>= emacs-major-version 24)
+  (require 'magit))
 
 ;;;
 ;;; Emacs Server Mode
