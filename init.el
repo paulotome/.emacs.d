@@ -276,14 +276,38 @@
 
 ;; See http://www.emacswiki.org/cgi-bin/wiki/BrowseUrl for more information.
 
-(setq gnus-button-url 'browse-url-generic
-      browse-url-browser-function gnus-button-url)
+;;;(setq gnus-button-url 'browse-url-generic
+;;;      browse-url-browser-function gnus-button-url)
 
-(setq gnus-button-url (list (cons "." 'browse-url-generic)))
+;;;(setq gnus-button-url (list (cons "." 'browse-url-generic)))
 
-(setf browse-url-generic-program (cond ((eq system-type 'windows-n)
+(setf browse-url-generic-program (cond ((eq system-type 'windows-nt)
                                         "C:/Program Files/Google/Chrome/Application/chrome.exe")
                                        (t "iceweasel")))
+
+(defvar browse-url-chm-program "D:/clhs/KeyHH.exe")
+
+(defvar browse-url-chm-program-args '("-emacs"))
+
+(defun browse-url-chm (url &rest args)
+  (with-temp-buffer
+    (let ((process (apply 'start-process
+                          "CHMBrowser"
+                          nil
+                          browse-url-chm-program
+                          (append browse-url-chm-program-args (list url)))))
+      (process-kill-without-query process))))
+
+(unless (listp browse-url-browser-function)
+  (setf browse-url-browser-function (list (cons "." browse-url-browser-function))))
+
+(pushnew '("\\.chm" . browse-url-chm) browse-url-browser-function :test 'equal)
+
+
+;;; HyperSpec
+;;(setq common-lisp-hyperspec-root "k:/doc/ansicl/HyperSpec/")
+(setq common-lisp-hyperspec-root "D:\\clhs\\clhs.chm::/")
+(setq common-lisp-hyperspec-symbol-table "D:/clhs/Map_Sym.txt")
 
 (defun google-region-or-query ()
   "Googles a query or region if any."
@@ -359,13 +383,25 @@
 (setq font-lock-maximum-decoration t)
 
 ;;; Show matching parenthesis
-(setq show-paren-delay 0) ; how long to wait?
-(show-paren-mode t) ; turn paren-mode on
+;;(setq show-paren-delay 0.125) ; how long to wait?
+(show-paren-mode 1) ; turn paren-mode on
 (setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
-;;(show-paren-match ((t (:bold t))))
-;;(setq show-paren-style 'expression)
-;;(set-face-background 'show-paren-match-face "LightSteelBlue2")
-(set-face-background 'show-paren-match-face (face-background 'default))
+;; (setq show-paren-style 'mixed)
+;; (show-paren-match ((t (:bold t))))
+;; (setq show-paren-style 'expression)
+;; (set-face-background 'show-paren-match-face "LightSteelBlue2")
+;;;(set-face-background 'show-paren-match-face (face-background 'default))
+;;;(set-face-foreground 'show-paren-match-face (face-foreground 'default))
+;;;(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
+;;;(set-face-background 'show-paren-match (face-background 'default))
+;;;(set-face-foreground 'font-lock-comment-face       "red")
+;;;(set-face-foreground 'font-lock-keyword-face       "blue")
+;;;(set-face-foreground 'font-lock-string-face        "forest green")
+;;;(set-face-foreground 'font-lock-variable-name-face "black")
+;;;(set-face-foreground 'font-lock-function-name-face "black")
+;;;(set-face-background 'show-paren-match-face        "light green")
+;;;(set-face-background 'show-paren-mismatch-face     "red")
+;;;(set-face-foreground 'show-paren-match "black")
 
 ;; Set buffer behaviour
 ;; Prevent emacs from adding newlines when pressing down arrow at the end of the buffer
