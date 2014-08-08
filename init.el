@@ -683,11 +683,12 @@
 
 (add-to-list 'network-coding-system-alist '("\\.txt" . utf-8-unix) )
 
-(prefer-coding-system 'utf-8-unix)
+(setq locale-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8-unix)
 (set-terminal-coding-system 'utf-8-unix)
-(set-keyboard-coding-system 'utf-8-unix)
-(set-selection-coding-system 'utf-8-unix)
+(set-selection-coding-system 'utf-8)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 (set-charset-priority 'unicode)
