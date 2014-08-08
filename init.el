@@ -779,7 +779,7 @@
 (global-set-key "\C-cb" 'org-iswitchb)
 
 ;; Custom Key Bindings
-(global-set-key (kbd "<f11>") 'org-clock-goto)
+;;(global-set-key (kbd "<f11>") 'org-clock-goto)
 
 
 (add-to-list 'org-src-lang-modes
@@ -1932,3 +1932,26 @@ by using nxml's indentation rules."
 ;;; Emacs Server Mode
 ;;;
 (server-mode)
+
+(defun reposition-defun-at-top ()
+  "Put current defun at top of window."
+  (interactive)
+  (set-window-start
+   (get-buffer-window (current-buffer))
+   (save-excursion
+     (end-of-defun)
+     (beginning-of-defun)
+     (point))))
+
+
+(global-set-key (kbd "<f11>") 'reposition-defun-at-top)
+
+
+;;;
+;;; PO Mode
+;;;
+(add-to-list 'load-path (expand-file-name "~/git/gettext/gettext-tools/misc/"))
+(require 'po-mode)
+(setq auto-mode-alist
+      (cons '("\\.po\\'\\|\\.po\\." . po-mode) auto-mode-alist))
+(autoload 'po-mode "po-mode" "Major mode for translators to edit PO files" t)
