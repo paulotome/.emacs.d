@@ -1955,9 +1955,18 @@ by using nxml's indentation rules."
 (setq auto-mode-alist
       (cons '("\\.po\\'\\|\\.po\\." . po-mode) auto-mode-alist))
 (autoload 'po-mode "po-mode" "Major mode for translators to edit PO files" t)
+
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(fill-column 80))
+
+
+;;;
+;;; notmuch
+;;;
+(autoload 'notmuch "notmuch" "notmuch mail" t)
+(message-setup-hook (quote (mml-secure-message-sign)))
+(notmuch-crypto-process-mime t)
