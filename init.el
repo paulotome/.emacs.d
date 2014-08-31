@@ -1970,3 +1970,4 @@ by using nxml's indentation rules."
 (autoload 'notmuch "notmuch" "notmuch mail" t)
 (message-setup-hook (quote (mml-secure-message-sign)))
 (notmuch-crypto-process-mime t)
+(setq message-kill-buffer-on-exit t)
