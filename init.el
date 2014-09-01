@@ -18,8 +18,6 @@
 ;; ******************************************************
 ;; Start emacs in fullscreen mode in Xorg
 (defun fullscreen ()
-  (unless (fboundp 'x-send-client-message)
-    (declare (ignore x-send-client-message)))
   (interactive)
   (cond ((eq window-system 'x)
 	 (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
@@ -1967,7 +1965,7 @@ by using nxml's indentation rules."
 ;;;
 ;;; notmuch
 ;;;
-(autoload 'notmuch "notmuch" "notmuch mail" t)
-(message-setup-hook (quote (mml-secure-message-sign)))
-(notmuch-crypto-process-mime t)
-(setq message-kill-buffer-on-exit t)
+;;(autoload 'notmuch "notmuch" "notmuch mail" t)
+;;(message-setup-hook (quote (mml-secure-message-sign)))
+;;(notmuch-crypto-process-mime t)
+;;(setq message-kill-buffer-on-exit t)
