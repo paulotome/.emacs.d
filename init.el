@@ -1969,3 +1969,41 @@ by using nxml's indentation rules."
 ;;(message-setup-hook (quote (mml-secure-message-sign)))
 ;;(notmuch-crypto-process-mime t)
 ;;(setq message-kill-buffer-on-exit t)
+
+
+(defvar *last-copy-kill-yank* nil)
+
+(defun x-sc-copy-kill-yank (click)
+  "Several actions can be performed. See comments in the code."
+  (interactive "e")
+  (if mark-active
+      (cond ((equal *last-copy-kill-yank* (list (current-buffer) (point) (mark)))
+	     ;; If it is the second time the text is deleted from the buffer
+	     (delete-region (point) (mark))
+	     (setq *last-copy-kill-yank* nil))
+	    (t
+	     ;; If it is the first time the marked text is saved to the kill ring
+	     (copy-region-as-kill (point) (mark))
+	     (setq *last-copy-kill-yank* (list (current-buffer) (point) (mark)))
+	     (setq deactivate-mark nil)))
+      ;; Otherwise yank the text in the kill ring
+      (yank)))
+
+(global-set-key [S-mouse-2]      'x-sc-copy-kill-yank)
+(global-set-key [mouse-3]        'x-sc-copy-kill-yank)
+(global-set-key [double-mouse-3] 'x-sc-copy-kill-yank)
+(global-set-key [triple-mouse-3] 'x-sc-copy-kill-yank)
+
+
+(defun x-sc-mark-sexp (click)
+  "Moves point to current mouse position. Then marks the S-Expression.
+Finaly, blinks at the end of the marked region."
+  (interactive "e")
+  (mouse-set-point click)
+  (let ((mark (sc-mark-sexp nil)))
+    (push-mark mark nil t)))
+
+
+(global-set-key [mouse-2]        'x-sc-mark-sexp)
+(global-set-key [double-mouse-2] 'x-sc-mark-sexp)
+(global-set-key [triple-mouse-2] 'x-sc-mark-sexp)
