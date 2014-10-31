@@ -1582,10 +1582,10 @@ Late deadlines first, then scheduled, then non-late deadlines"
 
 ;; The following custom-set-faces create the highlights
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(org-mode-line-clock ((t (:background "grey75" :foreground "red" :box (:line-width -1 :style released-button)))) t))
 
 
@@ -1954,14 +1954,6 @@ by using nxml's indentation rules."
       (cons '("\\.po\\'\\|\\.po\\." . po-mode) auto-mode-alist))
 (autoload 'po-mode "po-mode" "Major mode for translators to edit PO files" t)
 
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(fill-column 80))
-
-
 ;;;
 ;;; notmuch
 ;;;
@@ -2007,3 +1999,57 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [mouse-2]        'x-sc-mark-sexp)
 (global-set-key [double-mouse-2] 'x-sc-mark-sexp)
 (global-set-key [triple-mouse-2] 'x-sc-mark-sexp)
+
+;; TeX
+(require 'reftex)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+
+(setq-default TeX-master nil)
+(add-hook 'LaTeX-mode-hook 'TeX-PDF-mode) ;Turn on pdf-mode.
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode) ;turn on math-mode by default
+(add-hook 'LaTeX-mode-hook 'reftex-mode) ;turn on REFTeX mode by default
+(add-hook 'LaTeX-mode-hook 'flyspell-mode) ;turn on flyspell mode by default
+(setq TeX-save-query nil) ;autosave before compiling
+(add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
+(setq reftex-ref-macro-prompt nil)
+
+(defun pdfevince ()
+  (add-to-list 'TeX-output-view-style
+	       '("^pdf$" "." "evince %o %(outpage)")))
+
+(defun pdfokular ()
+  (add-to-list 'TeX-output-view-style
+	       '("^pdf$" "." "okular %o %(outpage)")))
+
+(defun pdficeweasel ()
+  (add-to-list 'TeX-output-view-style
+	       '("^pdf$" "." "iceweasel %o %(outpage)")))
+
+
+(add-hook  'LaTeX-mode-hook   'pdficeweasel t) ; AUCTeX LaTeX mode
+;(add-hook  'LaTeX-mode-hook  'pdfokular  t) ; AUCTeX LaTeX mode
+;; (setq reftex-plug-into-AUCTeX t)
+;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; (setq-default TeX-master nil)
+;; ;(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+
+;; Automatically remove trailing whitespace when file is saved.
+(add-hook 'LaTeX-mode-hook
+	  (lambda()
+	    (add-hook 'local-write-file-hooks
+		      '(lambda()
+			 (save-excursion
+			   (delete-trailing-whitespace))))))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(TeX-PDF-mode t)
+ '(TeX-source-correlate-method (quote synctex))
+ '(TeX-source-correlate-mode t)
+ '(TeX-source-correlate-start-server t)
+ '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)") ("DVI Viewer" "iceweasel %o") ("PDF Viewer" "iceweasel %o") ("Google Chrome" "google-chrome %o"))))
+ '(fill-column 80))
