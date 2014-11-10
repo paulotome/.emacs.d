@@ -749,7 +749,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SHOW ERRORS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Show errors in this file:
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 ;; (setq stack-trace-on-error t)
 
 
