@@ -2025,6 +2025,33 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [double-mouse-2] 'x-sc-mark-sexp)
 (global-set-key [triple-mouse-2] 'x-sc-mark-sexp)
 
+
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (set-fill-column 80)))
+
+(add-hook 'lisp-mode-hook
+	  (lambda ()
+	    (turn-on-auto-fill)
+	    (set (make-local-variable 'fill-nobreak-predicate)
+		 (lambda ()
+		   (not (eq (get-text-property (point) 'face)
+			    'font-lock-comment-face))))))
+
+(add-hook 'text-mode-hook
+          (lambda ()
+            (set-fill-column 80)))
+
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (set-fill-column 80)))
+
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
+
+
 ;; TeX
 (require 'reftex)
 (setq TeX-auto-save t)
@@ -2076,5 +2103,4 @@ Finaly, blinks at the end of the marked region."
  '(TeX-source-correlate-method (quote synctex))
  '(TeX-source-correlate-mode t)
  '(TeX-source-correlate-start-server t)
- '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)") ("DVI Viewer" "iceweasel %o") ("PDF Viewer" "iceweasel %o") ("Google Chrome" "google-chrome %o"))))
- '(fill-column 80))
+ '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)") ("DVI Viewer" "iceweasel %o") ("PDF Viewer" "iceweasel %o") ("Google Chrome" "google-chrome %o")))))
