@@ -1987,6 +1987,31 @@ by using nxml's indentation rules."
 (global-set-key [triple-mouse-3] 'x-sc-copy-kill-yank)
 
 
+(defun sc-mark-sexp (arg)
+  "Set mark ARG sexps from point."
+  (interactive "p")
+  (cond ((char-equal (char-after (point)) 41)
+	 (goto-char (1+ (point)))
+	 (backward-sexp arg)
+	 (save-excursion
+	   (forward-sexp arg)
+	   (point)))
+	((char-equal (char-after (point)) 40)
+	 (save-excursion
+	   (forward-sexp arg)
+	   (point)))
+	((char-equal (char-after (1- (point))) 41)
+	 (backward-sexp arg)
+	 (save-excursion
+	   (forward-sexp arg)
+	   (point)))
+	(t (if (not (find (char-after (1- (point))) '(32 40 41) :test '=))
+	       (backward-sexp arg))
+	   (save-excursion
+	     (forward-sexp arg)
+	     (point)))))
+
+
 (defun x-sc-mark-sexp (click)
   "Moves point to current mouse position. Then marks the S-Expression.
 Finaly, blinks at the end of the marked region."
