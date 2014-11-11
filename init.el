@@ -31,18 +31,45 @@
 
 
 ;; ******************************************************
-(setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
+;; (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
+;; (setq buffer-time-stamp-format "%h %d %H:%M:%S")
 
 (setq indicate-empty-lines t)
 
 ;;; Display date and time in mode line
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
-(setq display-time-format "∥ %A %e %B − %R ∥")
+;; (setq display-time-format "∥ %A %e %B − %R ∥")
+(setq display-time-format nil)
 (display-time-mode 1)
 
-(setq fill-column 80)
+;; (setq fill-column 80)
 (auto-fill-mode t)
+
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (set-fill-column 80)))
+
+(add-hook 'lisp-mode-hook
+	  (lambda ()
+	    (turn-on-auto-fill)
+	    (set (make-local-variable 'fill-nobreak-predicate)
+		 (lambda ()
+		   (not (eq (get-text-property (point) 'face)
+			    'font-lock-comment-face))))))
+
+(add-hook 'text-mode-hook
+          (lambda ()
+            (set-fill-column 80)))
+
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (set-fill-column 80)))
+
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
+
 
 ;; display only tails of lines longer than 80 columns, tabs and
 ;; trailing whitespaces
@@ -2026,35 +2053,10 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [triple-mouse-2] 'x-sc-mark-sexp)
 
 
-(add-hook 'lisp-mode-hook
-          (lambda ()
-            (set-fill-column 80)))
-
-(add-hook 'lisp-mode-hook
-	  (lambda ()
-	    (turn-on-auto-fill)
-	    (set (make-local-variable 'fill-nobreak-predicate)
-		 (lambda ()
-		   (not (eq (get-text-property (point) 'face)
-			    'font-lock-comment-face))))))
-
-(add-hook 'text-mode-hook
-          (lambda ()
-            (set-fill-column 80)))
-
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-
-(add-hook 'org-mode-hook
-          (lambda ()
-            (set-fill-column 80)))
-
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
-
-
 ;; TeX
 
-(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
+;; (load "auctex.el" nil t t)
+;; (load "preview-latex.el" nil t t)
 
 (require 'reftex)
 (setq TeX-auto-save t)
