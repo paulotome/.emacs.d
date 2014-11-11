@@ -43,12 +43,7 @@
 (setq display-time-format nil)
 (display-time-mode 1)
 
-;; (setq fill-column 80)
-(auto-fill-mode t)
-
-(add-hook 'lisp-mode-hook
-          (lambda ()
-            (set-fill-column 80)))
+(auto-fill-mode 1)
 
 (add-hook 'lisp-mode-hook
 	  (lambda ()
@@ -58,15 +53,11 @@
 		   (not (eq (get-text-property (point) 'face)
 			    'font-lock-comment-face))))))
 
-(add-hook 'text-mode-hook
-          (lambda ()
-            (set-fill-column 80)))
-
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (set-fill-column 80)))
+;; (add-hook 'org-mode-hook
+;;           (lambda ()
+;;             (set-fill-column 80)))
 
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
