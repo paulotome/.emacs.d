@@ -2046,8 +2046,6 @@ Finaly, blinks at the end of the marked region."
 
 ;; TeX
 
-;; (load "auctex.el" nil t t)
-;; (load "preview-latex.el" nil t t)
 
 (require 'reftex)
 (setq TeX-auto-save t)

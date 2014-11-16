@@ -2,7 +2,7 @@ auto-save-list
 backups
 server
 *~
-elpa/*~
+elpa/
 csharp-mode-0.8.5.el
 org-clock-save.el
 News/
