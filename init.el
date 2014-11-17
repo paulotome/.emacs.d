@@ -1861,7 +1861,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; INDENTING XML  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun bf/pretty-print-xml-region (begin end)
+(defun utilities/pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
 http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
 this. The function inserts linebreaks to separate tags that have
@@ -2135,7 +2135,8 @@ Finaly, blinks at the end of the marked region."
 				 ("PDF Viewer" "iceweasel %o")
 				 ("Google Chrome" "google-chrome %o")))))
 
-;; Persistent command history in grep mode
+;; Persistent command history in grep mode (save grep command history between
+;; emacs sessions)
 
 ;; http://oleksandrmanzyuk.wordpress.com/2011/10/23/a-persistent-command-history-in-emacs/
 
@@ -2154,8 +2155,7 @@ Finaly, blinks at the end of the marked region."
             (format "~/.emacs.d/inferior-%s-history"
                     (process-name process)))
       (comint-read-input-ring)
-      (set-process-sentinel process
-                            #'comint-write-history-on-exit))))
+      (set-process-sentinel process #'comint-write-history-on-exit))))
 
 
 (defun mapc-buffers (fn)
@@ -2163,6 +2163,7 @@ Finaly, blinks at the end of the marked region."
           (with-current-buffer buffer
             (funcall fn)))
         (buffer-list)))
+
 
 (defun comint-write-input-ring-all-buffers ()
   (mapc-buffers 'comint-write-input-ring))
