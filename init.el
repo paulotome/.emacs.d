@@ -53,6 +53,11 @@
 		   (not (eq (get-text-property (point) 'face)
 			    'font-lock-comment-face))))))
 
+
+(add-hook 'emacs-lisp-mode-hook 'turn-on-auto-fill)
+
+(add-hook 'fundamental-mode-hook 'turn-on-auto-fill)
+
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; (add-hook 'org-mode-hook
