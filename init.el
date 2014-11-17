@@ -26,9 +26,17 @@
          ;; Maximize Emacs window
          (w32-send-sys-command ?\xf030))
         ;;(w32-send-sys-command #xf030)
-        )
-  (add-hook 'emacs-startup-hook 'fullscreen))
+        ))
 
+(add-hook 'emacs-startup-hook 'fullscreen)
+
+(add-hook 'window-setup-hook 'toggle-frame-maximized t)
+(add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;; This is bound to f11 in Emacs 24.4
+;;(toggle-frame-fullscreen)
 
 ;; ******************************************************
 ;; (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
@@ -374,9 +382,6 @@
 ;;;(Info-goto-node "(message)Security")
 ;;__________________________________________________________________________
 ;;;;    System Customizations
-
-;; This is bound to f11 in Emacs 24.4
-;;(toggle-frame-fullscreen)
 
 ;; keys for moving to prev/next code section (Form Feed; ^L)
 (global-set-key (kbd "<C-M-prior>") 'backward-page) ; Ctrl+Alt+PageUp
