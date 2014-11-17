@@ -2135,8 +2135,10 @@ Finaly, blinks at the end of the marked region."
 				 ("PDF Viewer" "iceweasel %o")
 				 ("Google Chrome" "google-chrome %o")))))
 
+;;
 ;; Persistent command history in grep mode (save grep command history between
 ;; emacs sessions)
+;;
 
 ;; http://oleksandrmanzyuk.wordpress.com/2011/10/23/a-persistent-command-history-in-emacs/
 
