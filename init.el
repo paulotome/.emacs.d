@@ -17,21 +17,22 @@
 ;; *               Maximize Emacs window                *
 ;; ******************************************************
 ;; Start emacs in fullscreen mode in Xorg
-(defun fullscreen ()
-  (interactive)
-  (cond ((eq window-system 'x)
-	 (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-				'(2 "_NET_WM_STATE_FULLSCREEN" 0)))
-        ((eq system-type 'windows-nt)
-         ;; Maximize Emacs window
-         (w32-send-sys-command ?\xf030))
-        ;;(w32-send-sys-command #xf030)
-        ))
+;; (defun fullscreen ()
+;;   (interactive)
+;;   (cond ((eq window-system 'x)
+;; 	 (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+;; 				'(2 "_NET_WM_STATE_FULLSCREEN" 0)))
+;;         ((eq system-type 'windows-nt)
+;;          ;; Maximize Emacs window
+;;          (w32-send-sys-command ?\xf030))
+;;         ;;(w32-send-sys-command #xf030)
+;;         ))
 
-(add-hook 'emacs-startup-hook 'fullscreen)
+;; (add-hook 'emacs-startup-hook 'fullscreen)
 
-(add-hook 'window-setup-hook 'toggle-frame-maximized t)
-(add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+;; (add-hook 'window-setup-hook 'toggle-frame-maximized t)
+;; (
+ add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
