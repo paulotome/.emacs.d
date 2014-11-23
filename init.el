@@ -31,13 +31,12 @@
 ;; (add-hook 'emacs-startup-hook 'fullscreen)
 
 ;; (add-hook 'window-setup-hook 'toggle-frame-maximized t)
-;; (
- add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+;; This is bound to f11 in Emacs 24.4
+;;(toggle-frame-fullscreen)
+;;(add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;; This is bound to f11 in Emacs 24.4
-;;(toggle-frame-fullscreen)
 
 ;; ******************************************************
 ;; (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
