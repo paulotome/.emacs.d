@@ -829,8 +829,9 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG-MODE SETUP ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq org-directory "~/git/org-mode")
-(setq org-default-notes-file "~/github/notes.org")
+(setq org-directory "~/org")
+
+(setq org-default-notes-file "~/org/notes.org")
 
 (add-to-list 'load-path (expand-file-name "~/git/org-mode/contrib/lisp"))
 
@@ -1280,6 +1281,13 @@ A prefix arg forces clock in of the default task."
   (call-interactively 'iimage-mode))
 
 
+;;
+;; Org Mobile
+;;
+(setq org-mobile-directory "~/Dropbox/MobileOrg")
+(setq org-mobile-use-encryption nil)
+(setq org-mobile-inbox-for-pull "~/org/flagged.org")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SAVE PLACE  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'saveplace)
 (setq-default save-place t)
@@ -1307,7 +1315,7 @@ A prefix arg forces clock in of the default task."
 ;;(setq org-agenda-window-setup 'current-window)
 (setq org-agenda-window-setup 'reorganize-frame)
 
-(setq org-agenda-files (quote ("~/github/agenda" "z:/ptome/org")))
+(setq org-agenda-files '("~/org/agenda.org"))
 
 (global-set-key "\C-ca" 'org-agenda)
 
@@ -2113,27 +2121,12 @@ Finaly, blinks at the end of the marked region."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-output-view-style (quote (("^pdf$" "." "iceweasel %o %(outpage)")
-				 ("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f")
-				 ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f")
-				 ("^dvi$" ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d")
-				 ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d")
-				 ("^dvi$" ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d")
-				 ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d")
-				 ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d")
-				 ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d")
-				 ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d")
-				 ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d")
-				 ("^dvi$" "." "%(o?)xdvi %dS %d")
-				 ("^pdf$" "." "xpdf -remote %s -raise %o %(outpage)")
-				 ("^html?$" nil "iceweasel %o"))))
+ '(TeX-output-view-style (quote (("^pdf$" "." "iceweasel %o %(outpage)") ("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f") ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f") ("^dvi$" ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d") ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d") ("^dvi$" ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d") ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d") ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d") ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d") ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d") ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d") ("^dvi$" "." "%(o?)xdvi %dS %d") ("^pdf$" "." "xpdf -remote %s -raise %o %(outpage)") ("^html?$" nil "iceweasel %o"))))
  '(TeX-source-correlate-method (quote synctex))
  '(TeX-source-correlate-mode t)
  '(TeX-source-correlate-start-server t)
- '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)")
-				 ("DVI Viewer" "iceweasel %o")
-				 ("PDF Viewer" "iceweasel %o")
-				 ("Google Chrome" "google-chrome %o")))))
+ '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)") ("DVI Viewer" "iceweasel %o") ("PDF Viewer" "iceweasel %o") ("Google Chrome" "google-chrome %o"))))
+ '(org-agenda-files (quote ("/home/paulo/org/agenda.org" "/home/paulo/org/diary.org" "/home/paulo/org/refile.org"))))
 
 ;;
 ;; Persistent command history in grep mode (save grep command history between
