@@ -1269,7 +1269,10 @@ A prefix arg forces clock in of the default task."
 ;;
 ;; Org Mobile
 ;;
-(setq org-mobile-directory "~/Dropbox/MobileOrg")
+(setq org-mobile-directory (if (eq system-type 'windows-nt)
+			       "C:/Users/ptome/Dropbox/MobileOrg"
+			     "~/Dropbox/MobileOrg"))
+
 (setq org-mobile-use-encryption nil)
 (setq org-mobile-inbox-for-pull "~/org/flagged.org")
 
@@ -2046,9 +2049,9 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [double-mouse-2] 'x-sc-mark-sexp)
 (global-set-key [triple-mouse-2] 'x-sc-mark-sexp)
 
-
+;;
 ;; TeX
-
+;;
 
 (require 'reftex)
 (setq TeX-auto-save t)
@@ -2110,8 +2113,7 @@ Finaly, blinks at the end of the marked region."
  '(TeX-source-correlate-method (quote synctex))
  '(TeX-source-correlate-mode t)
  '(TeX-source-correlate-start-server t)
- '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)") ("DVI Viewer" "iceweasel %o") ("PDF Viewer" "iceweasel %o") ("Google Chrome" "google-chrome %o"))))
- '(org-agenda-files (quote ("/home/paulo/org/agenda.org" "/home/paulo/org/diary.org" "/home/paulo/org/refile.org"))))
+ '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)") ("DVI Viewer" "iceweasel %o") ("PDF Viewer" "iceweasel %o") ("Google Chrome" "google-chrome %o")))))
 
 ;;
 ;; Persistent command history in grep mode (save grep command history between
