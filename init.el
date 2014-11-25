@@ -764,17 +764,6 @@
     (unless (zerop (length cs)) (intern cs))))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SPELL CHECKER ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;(if (file-exists-p "C:/gnu/ezwinports/bin/hunspell.exe")
-;;;    (progn
-;;;      (setq ispell-program-name "hunspell")
-;;;      (eval-after-load "ispell"
-;;;        '(progn (setq ispell-dictionary "american"
-;;;                   ispell-extra-args '("-a" "-i" "utf-8")
-;;;                   ispell-silently-savep t)))))
-;;;
-;;;(setq-default ispell-program-name "C:/gnu/ezwinports/bin/hunspell.exe")
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SHOW ERRORS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Show errors in this file:
 ;; (setq debug-on-error t)
@@ -1259,10 +1248,6 @@ A prefix arg forces clock in of the default task."
 (setq org-yank-adjusted-subtrees t)
 
 (setq org-deadline-warning-days 30)
-
-
-;; flyspell mode for spell checking everywhere
-;; (add-hook 'org-mode-hook 'turn-on-flyspell 'append)
 
 
 ;; function to setup images for display on load
@@ -2168,3 +2153,28 @@ Finaly, blinks at the end of the marked region."
 
 
 (add-hook 'kill-emacs-hook 'comint-write-input-ring-all-buffers)
+
+;;
+;; aspell
+;;
+
+(setq ispell-program-name "aspell")
+;; (setq ispell-personal-dictionary "C:/path/to/your/.ispell")
+
+
+;; flyspell mode for spell checking everywhere
+;; (add-hook 'org-mode-hook 'turn-on-flyspell 'append)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SPELL CHECKER ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;(if (file-exists-p "C:/gnu/ezwinports/bin/hunspell.exe")
+;;;    (progn
+;;;      (setq ispell-program-name "hunspell")
+;;;      (eval-after-load "ispell"
+;;;        '(progn (setq ispell-dictionary "american"
+;;;                   ispell-extra-args '("-a" "-i" "utf-8")
+;;;                   ispell-silently-savep t)))))
+;;;
+;;;(setq-default ispell-program-name "C:/gnu/ezwinports/bin/hunspell.exe")
+
+(require 'ispell)
