@@ -1303,7 +1303,9 @@ A prefix arg forces clock in of the default task."
 ;;(setq org-agenda-window-setup 'current-window)
 (setq org-agenda-window-setup 'reorganize-frame)
 
-(setq org-agenda-files '("~/org/agenda.org"))
+(setq org-agenda-files (if (eq system-type 'windows-nt)
+			   '("z:/ptome/org/" "~/org/agenda.org")
+			 '("~/org/agenda.org")))
 
 (global-set-key "\C-ca" 'org-agenda)
 
@@ -1444,7 +1446,7 @@ A prefix arg forces clock in of the default task."
 
 (setq org-agenda-include-all-todo t)
 
-(setq org-agenda-diary-file "~/github/agenda/diary.org")
+;;(setq org-agenda-diary-file "~/github/agenda/diary.org")
 
 ;; Any time strings in the heading are shown in the agenda
 (setq org-agenda-insert-diary-extract-time t)
