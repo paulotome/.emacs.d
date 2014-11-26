@@ -1,15 +1,5 @@
 (require 'cl)
 
-;; ******************************************************
-;; *                    EZWINPORTS                      *
-;; ******************************************************
-
-(if (eq system-type 'windows-nt)
-    (progn
-      (setq exec-path (cons "C:/gnu/ezwinports/bin" exec-path))
-      (setenv "PATH" (concat "C:\\gnu\\ezwinports\\bin;" (getenv "PATH")))
-      ))
-
 (if (eq system-type 'windows-nt)
     (setq tls-program '("C:/siscog-dev-tools/Git/bin/openssl.exe s_client -connect %h:%p -no_ssl2 -ign_eof")))
 
@@ -37,6 +27,8 @@
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+(when (eq system-type 'windows-nt)
+  (w32-send-sys-command ?\xf030))
 
 ;; ******************************************************
 ;; (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
