@@ -100,9 +100,8 @@
 ;; (find-lisp-object-file-name 'goto-line 'function)
 
 (cond ((eq system-type 'windows-nt)
-       (setq find-function-C-source-directory "C:/siscog-dev-tools/emacs-24.3/src")
-       (setq source-directory "C:/siscog-dev-tools/emacs-24.3")
-       )
+       (setq find-function-C-source-directory "c:/emacs-24.4.51-windows-x64/share/emacs/24.4.51/src")
+       (setq source-directory "c:/emacs-24.4.51-windows-x64"))
       (t
        (setq find-function-C-source-directory "/usr/share/emacs24/emacs24-24.3+1/src")
        (setq source-directory "/usr/share/emacs24/emacs24-24.3+1")))
@@ -565,9 +564,6 @@
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
 (display-time)
-
-
-(setq flyspell-issue-welcome-flag nil)
 
 (setq mouse-wheel-progressive-speed nil)
 
@@ -2197,6 +2193,7 @@ Finaly, blinks at the end of the marked region."
 
 (add-hook 'kill-emacs-hook 'comint-write-input-ring-all-buffers)
 
+
 ;;
 ;; aspell
 ;;
@@ -2209,7 +2206,6 @@ Finaly, blinks at the end of the marked region."
 ;; (add-hook 'org-mode-hook 'turn-on-flyspell 'append)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SPELL CHECKER ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;(if (file-exists-p "C:/gnu/ezwinports/bin/hunspell.exe")
 ;;;    (progn
 ;;;      (setq ispell-program-name "hunspell")
@@ -2221,3 +2217,12 @@ Finaly, blinks at the end of the marked region."
 ;;;(setq-default ispell-program-name "C:/gnu/ezwinports/bin/hunspell.exe")
 
 (require 'ispell)
+
+(setq flyspell-issue-welcome-flag nil)
+
+
+;;
+;; deafult directory
+;;
+
+(setq default-directory "~/")
