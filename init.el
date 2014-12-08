@@ -2144,7 +2144,6 @@ Finaly, blinks at the end of the marked region."
  '(TeX-source-correlate-mode t)
  '(TeX-source-correlate-start-server t)
  '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)") ("DVI Viewer" "iceweasel %o") ("PDF Viewer" "iceweasel %o") ("Google Chrome" "google-chrome %o")))))
-
 ;;
 ;; Persistent command history in grep mode (save grep command history between
 ;; emacs sessions)
@@ -2229,3 +2228,4 @@ Finaly, blinks at the end of the marked region."
 (add-to-list 'load-path "~/git/Fill-Column-Indicator")
 (require 'fill-column-indicator)
 (add-hook 'after-change-major-mode-hook 'fci-mode)
+(setq-default fci-always-use-textual-rule t)
