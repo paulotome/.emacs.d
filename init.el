@@ -60,9 +60,6 @@
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-;; (add-hook 'org-mode-hook
-;;           (lambda ()
-;;             (set-fill-column 80)))
 
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
@@ -1914,9 +1911,6 @@ by using nxml's indentation rules."
 (add-to-list 'load-path (expand-file-name "~/git/helm/"))
 ;;(require 'helm-config)
 
-;; Multi
-;; (add-to-list 'load-path (expand-file-name "~/git/emacs-multi/"))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; CASK  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;(require 'cask "~/.cask/cask.el")
 ;;;(cask-initialize)
@@ -2225,3 +2219,13 @@ Finaly, blinks at the end of the marked region."
 ;;
 
 (setq default-directory "~/")
+
+
+(setq-default fill-column 80)
+
+;;
+;; fill-column-indicator
+;;
+(add-to-list 'load-path "~/git/Fill-Column-Indicator")
+(require 'fill-column-indicator)
+(add-hook 'after-change-major-mode-hook 'fci-mode)
