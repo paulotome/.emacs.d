@@ -39,9 +39,12 @@
 ;;; Display date and time in mode line
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
-;; (setq display-time-format "∥ %A %e %B − %R ∥")
 (setq display-time-format nil)
 (display-time-mode 1)
+
+(setq european-calendar-style 't) 
+(setq calendar-week-start-day 1)
+(add-hook 'diary-hook 'appt-make-list)
 
 (auto-fill-mode 1)
 
@@ -703,6 +706,10 @@
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 (set-charset-priority 'unicode)
+(set-language-environment 'utf-8)
+(unless (eq system-type 'windows-nt)
+  (set-selection-coding-system 'utf-8))
+
 
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
@@ -2214,12 +2221,14 @@ Finaly, blinks at the end of the marked region."
 
 
 ;;
-;; deafult directory
+;; default directory
 ;;
-
 (setq default-directory "~/")
 
 
+;;
+;; fill column
+;;
 (setq-default fill-column 80)
 
 ;;
@@ -2229,3 +2238,9 @@ Finaly, blinks at the end of the marked region."
 (require 'fill-column-indicator)
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 (setq-default fci-always-use-textual-rule t)
+
+
+;;
+;; input method
+;;
+(setq default-input-method "portuguese-prefix")
