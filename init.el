@@ -44,7 +44,6 @@
 
 (setq european-calendar-style 't) 
 (setq calendar-week-start-day 1)
-(add-hook 'diary-hook 'appt-make-list)
 
 (auto-fill-mode 1)
 
