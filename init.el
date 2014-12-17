@@ -2235,7 +2235,7 @@ Finaly, blinks at the end of the marked region."
 ;;
 (add-to-list 'load-path "~/git/Fill-Column-Indicator")
 (require 'fill-column-indicator)
-(add-hook 'after-change-major-mode-hook 'fci-mode)
+;; (add-hook 'after-change-major-mode-hook 'fci-mode)
 (setq-default fci-always-use-textual-rule t)
 
 
