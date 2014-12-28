@@ -2090,19 +2090,19 @@ Finaly, blinks at the end of the marked region."
 ;;
 
 (require 'reftex)
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
+(setq TeX-auto-save t) ; Enable parse on load.
+(setq TeX-parse-self t) ; Enable parse on save.
 (setq-default TeX-master nil)
 
 (setq TeX-PDF-mode t)
 
-(add-hook 'LaTeX-mode-hook 'TeX-PDF-mode) ;Turn on pdf-mode.
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode) ;turn on math-mode by default
-(add-hook 'LaTeX-mode-hook 'reftex-mode) ;turn on REFTeX mode by default
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
-(add-hook 'latex-mode-hook 'turn-on-reftex)   ; with Emacs latex mode
-(add-hook 'LaTeX-mode-hook 'flyspell-mode) ;turn on flyspell mode by default
-(setq TeX-save-query nil) ;autosave before compiling
+(add-hook 'LaTeX-mode-hook 'TeX-PDF-mode) ;; turn on pdf-mode
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode) ;; turn on math-mode by default
+(add-hook 'LaTeX-mode-hook 'reftex-mode) ;; turn on REFTeX mode by default
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex) ;; with AUCTeX LaTeX mode
+(add-hook 'latex-mode-hook 'turn-on-reftex) ;; with Emacs latex mode
+(add-hook 'LaTeX-mode-hook 'flyspell-mode) ;; turn on flyspell mode by default
+(setq TeX-save-query nil) ;; autosave before compiling
 (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
 (setq reftex-ref-macro-prompt nil)
 
@@ -2119,12 +2119,8 @@ Finaly, blinks at the end of the marked region."
 	       '("^pdf$" "." "iceweasel %o %(outpage)")))
 
 
-(add-hook  'LaTeX-mode-hook   'pdficeweasel t) ; AUCTeX LaTeX mode
+(add-hook 'LaTeX-mode-hook 'pdficeweasel t) ; AUCTeX LaTeX mode
 ;(add-hook  'LaTeX-mode-hook  'pdfokular  t) ; AUCTeX LaTeX mode
-;; Turn on RefTeX for AUCTeX, http://www.gnu.org/s/auctex/manual/reftex/reftex_5.html
-;;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-;; Make RefTeX interact with AUCTeX, http://www.gnu.org/s/auctex/manual/reftex/AUCTeX_002dRefTeX-Interface.html
-(setq reftex-plug-into-AUCTeX t)
 
 (add-hook 'LaTeX-mode-hook 'visual-line-mode)
 
@@ -2136,20 +2132,53 @@ Finaly, blinks at the end of the marked region."
 			 (save-excursion
 			   (delete-trailing-whitespace))))))
 
+;; Turn on RefTeX for AUCTeX, http://www.gnu.org/s/auctex/manual/reftex/reftex_5.html
+;;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; Make RefTeX interact with AUCTeX, http://www.gnu.org/s/auctex/manual/reftex/AUCTeX_002dRefTeX-Interface.html
+(setq reftex-plug-into-AUCTeX t)
+
+
 (setq reftex-external-file-finders
       '(("tex" . "kpsewhich -format=.tex %f")
         ("bib" . "kpsewhich -format=.bib %f")))
+
+
+(setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresource"))
+
+
+(setq TeX-output-view-style '(("^pdf$" "." "iceweasel %o %(outpage)")
+			      ("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f")
+			      ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f")
+			      ("^dvi$" ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d")
+			      ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d")
+			      ("^dvi$" ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d")
+			      ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d")
+			      ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d")
+			      ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d")
+			      ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d")
+			      ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d")
+			      ("^dvi$" "." "%(o?)xdvi %dS %d")
+			      ("^pdf$" "." "xpdf -remote %s -raise %o %(outpage)")
+			      ("^html?$" nil "iceweasel %o")))
+
+
+(setq TeX-view-program-list '(("Iceweasel" "iceweasel --page-index=%(outpage) %o")
+			      ("DVI Viewer" "iceweasel %o")
+			      ("PDF Viewer" "iceweasel %o")
+			      ("Google Chrome" "google-chrome %o")))
+
+
+(setq TeX-view-program-selection '((output-pdf "Iceweasel")))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-output-view-style (quote (("^pdf$" "." "iceweasel %o %(outpage)") ("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f") ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f") ("^dvi$" ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d") ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d") ("^dvi$" ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d") ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d") ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d") ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d") ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d") ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d") ("^dvi$" "." "%(o?)xdvi %dS %d") ("^pdf$" "." "xpdf -remote %s -raise %o %(outpage)") ("^html?$" nil "iceweasel %o"))))
  '(TeX-source-correlate-method (quote synctex))
  '(TeX-source-correlate-mode t)
- '(TeX-source-correlate-start-server t)
- '(TeX-view-program-list (quote (("Iceweasel" "iceweasel --page-index=%(outpage)") ("DVI Viewer" "iceweasel %o") ("PDF Viewer" "iceweasel %o") ("Google Chrome" "google-chrome %o")))))
+ '(TeX-source-correlate-start-server t))
 ;;
 ;; Persistent command history in grep mode (save grep command history between
 ;; emacs sessions)
