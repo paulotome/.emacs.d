@@ -42,7 +42,7 @@
 (setq display-time-format nil)
 (display-time-mode 1)
 
-(setq european-calendar-style 't) 
+(setq european-calendar-style 't)
 (setq calendar-week-start-day 1)
 
 (auto-fill-mode 1)
@@ -794,7 +794,7 @@
 	     '("emacs_lisp" . emacs-lisp))
 
 (setq org-src-preserve-indentation t)
-(setq org-edit-src-auto-save-idle-delay 5)
+(setq org-edit-src-auto-save-idle-delay 0)
 (setq org-edit-src-content-indentation 0)
 
 (setq org-export-coding-system 'utf-8-unix)
