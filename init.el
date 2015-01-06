@@ -2162,7 +2162,7 @@ Finaly, blinks at the end of the marked region."
 			      ("^html?$" nil "iceweasel %o")))
 
 
-(setq TeX-view-program-list '(("Iceweasel" "iceweasel --page-index=%(outpage) %o")
+(setq TeX-view-program-list '(("Iceweasel" "iceweasel %o#page=%(outpage)")
 			      ("DVI Viewer" "iceweasel %o")
 			      ("PDF Viewer" "iceweasel %o")
 			      ("Google Chrome" "google-chrome %o")))
@@ -2170,6 +2170,7 @@ Finaly, blinks at the end of the marked region."
 
 (setq TeX-view-program-selection '((output-pdf "Iceweasel")))
 
+(add-hook 'tex-mode-hook (function (lambda () (setq ispell-parser 'tex))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
