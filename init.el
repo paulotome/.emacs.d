@@ -2223,7 +2223,7 @@ Finaly, blinks at the end of the marked region."
 
 
 ;;
-;; aspell
+;; Spell Checker
 ;;
 
 (setq ispell-program-name "aspell")
