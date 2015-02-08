@@ -1342,7 +1342,7 @@ A prefix arg forces clock in of the default task."
 
 (setq org-agenda-files (if (eq system-type 'windows-nt)
 			   '("z:/ptome/org/" "~/org/agenda.org")
-			 '("~/org/agenda.org")))
+			 '("~/Dropbox/MobileOrg/agenda.org")))
 
 (global-set-key "\C-ca" 'org-agenda)
 
