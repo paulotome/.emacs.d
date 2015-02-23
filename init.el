@@ -762,7 +762,8 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ELECTRIC MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(electric-pair-mode)
+(when (>= emacs-major-version 24)
+  (electric-pair-mode))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG MODE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2008,11 +2009,12 @@ by using nxml's indentation rules."
 ;;;
 ;;; PO Mode
 ;;;
-(add-to-list 'load-path (expand-file-name "~/git/gettext/gettext-tools/misc/"))
-(require 'po-mode)
-(setq auto-mode-alist
-      (cons '("\\.po\\'\\|\\.po\\." . po-mode) auto-mode-alist))
-(autoload 'po-mode "po-mode" "Major mode for translators to edit PO files" t)
+(when (>= emacs-major-version 24)
+  (add-to-list 'load-path (expand-file-name "~/git/gettext/gettext-tools/misc/"))
+  (require 'po-mode)
+  (setq auto-mode-alist
+	(cons '("\\.po\\'\\|\\.po\\." . po-mode) auto-mode-alist))
+  (autoload 'po-mode "po-mode" "Major mode for translators to edit PO files" t))
 
 ;;;
 ;;; notmuch
@@ -2263,10 +2265,11 @@ Finaly, blinks at the end of the marked region."
 ;;
 ;; fill-column-indicator
 ;;
-(add-to-list 'load-path "~/git/Fill-Column-Indicator")
-(require 'fill-column-indicator)
-;; (add-hook 'after-change-major-mode-hook 'fci-mode)
-(setq-default fci-always-use-textual-rule t)
+(when (>= emacs-major-version 24)
+ (add-to-list 'load-path "~/git/Fill-Column-Indicator")
+ (require 'fill-column-indicator)
+ ;; (add-hook 'after-change-major-mode-hook 'fci-mode)
+ (setq-default fci-always-use-textual-rule t))
 
 
 ;;
