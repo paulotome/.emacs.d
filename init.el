@@ -1980,12 +1980,12 @@ by using nxml's indentation rules."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MAGIT  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'load-path "~/git/git-modes")
-(add-to-list 'load-path "~/git/magit")
-(eval-after-load 'info
-		 '(progn (info-initialize)
-		   (add-to-list 'Info-directory-list "~/git/magit/")))
-(unless (>= emacs-major-version 24)
-  (require 'magit))
+;; (add-to-list 'load-path "~/git/magit")
+;; (eval-after-load 'info
+;; 		 '(progn (info-initialize)
+;; 		   (add-to-list 'Info-directory-list "~/git/magit/")))
+;; (unless (>= emacs-major-version 24))
+;;   (require 'magit))
 
 ;;;
 ;;; Emacs Server Mode
@@ -2009,7 +2009,8 @@ by using nxml's indentation rules."
 ;;;
 ;;; PO Mode
 ;;;
-(when (>= emacs-major-version 24)
+(when (and (>= emacs-major-version 24)
+	   (not (eq system-type 'windows-nt)))
   (add-to-list 'load-path (expand-file-name "~/git/gettext/gettext-tools/misc/"))
   (require 'po-mode)
   (setq auto-mode-alist
@@ -2265,7 +2266,8 @@ Finaly, blinks at the end of the marked region."
 ;;
 ;; fill-column-indicator
 ;;
-(when (>= emacs-major-version 24)
+(when (and (>= emacs-major-version 24)
+	   (not (eq system-type 'windows-nt)))
  (add-to-list 'load-path "~/git/Fill-Column-Indicator")
  (require 'fill-column-indicator)
  ;; (add-hook 'after-change-major-mode-hook 'fci-mode)
