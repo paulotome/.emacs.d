@@ -2278,3 +2278,14 @@ Finaly, blinks at the end of the marked region."
 ;; input method
 ;;
 (setq default-input-method "portuguese-prefix")
+
+
+;;
+;; `f3-insert-tab'
+;;
+(defun f3-insert-tab (&optional arg)
+  (interactive)
+  (let ((indent-tabs-mode t))
+    (insert-tab arg)))
+
+(global-set-key [f3] 'f3-insert-tab)
