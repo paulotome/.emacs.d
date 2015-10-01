@@ -1480,7 +1480,7 @@ A prefix arg forces clock in of the default task."
 ;; Remove completed items from search results
 (setq org-agenda-skip-timestamp-if-done t)
 
-(setq org-agenda-include-diary t)
+(setq org-agenda-include-diary nil)
 
 (setq org-agenda-include-all-todo t)
 
