@@ -45,25 +45,25 @@
 (setq european-calendar-style 't)
 (setq calendar-week-start-day 1)
 
-(auto-fill-mode 1)
+;; (auto-fill-mode 1)
 
-(add-hook 'lisp-mode-hook
-	  (lambda ()
-	    (turn-on-auto-fill)
-	    (set (make-local-variable 'fill-nobreak-predicate)
-		 (lambda ()
-		   (not (eq (get-text-property (point) 'face)
-			    'font-lock-comment-face))))))
-
-
-(add-hook 'emacs-lisp-mode-hook 'turn-on-auto-fill)
-
-(add-hook 'fundamental-mode-hook 'turn-on-auto-fill)
-
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+;;;(add-hook 'lisp-mode-hook
+;;;	  (lambda ()
+;;;	    (turn-on-auto-fill)
+;;;	    (set (make-local-variable 'fill-nobreak-predicate)
+;;;		 (lambda ()
+;;;		   (not (eq (get-text-property (point) 'face)
+;;;			    'font-lock-comment-face))))))
 
 
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
+;;;(add-hook 'emacs-lisp-mode-hook 'turn-on-auto-fill)
+;;;
+;;;(add-hook 'fundamental-mode-hook 'turn-on-auto-fill)
+;;;
+;;;(add-hook 'text-mode-hook 'turn-on-auto-fill)
+;;;
+;;;
+;;;(add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 
 ;; display only tails of lines longer than 80 columns, tabs and
@@ -94,7 +94,7 @@
 ;;(require 'setnu)
 ;;(require 'wtf)
 
-(add-hook 'prog-mode-hook #'hs-minor-mode)
+;;(add-hook 'prog-mode-hook #'hs-minor-mode)
 
 ;; (find-lisp-object-file-name 'goto-line 'function)
 
@@ -232,7 +232,7 @@
 ;;;_ , higlight-changes-mode
 
 ;;(global-highlight-changes-mode t)
-(setq highlight-changes-global-changes-existing-buffers t)
+;;(setq highlight-changes-global-changes-existing-buffers t)
 
 ;;;_ , uniquify
 ;; See (Info-goto-node "(emacs) Uniquify")
@@ -399,16 +399,15 @@
 (setq font-lock-maximum-decoration t)
 
 ;;; Show matching parenthesis
-;;(setq show-paren-delay 0.125) ; how long to wait?
+;;(setq show-paren-delay 1) ; how long to wait?
 (show-paren-mode 1) ; turn paren-mode on
 (setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
 ;; (setq show-paren-style 'mixed)
 ;; (show-paren-match ((t (:bold t))))
 ;; (setq show-paren-style 'expression)
 ;; (set-face-background 'show-paren-match-face "LightSteelBlue2")
-;;;(set-face-background 'show-paren-match-face (face-background 'default))
-;;;(set-face-foreground 'show-paren-match-face (face-foreground 'default))
-;;;(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
+(set-face-background 'show-paren-match-face (face-background 'default))
+(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 ;;;(set-face-background 'show-paren-match (face-background 'default))
 ;;;(set-face-foreground 'font-lock-comment-face       "red")
 ;;;(set-face-foreground 'font-lock-keyword-face       "blue")
@@ -2261,17 +2260,17 @@ Finaly, blinks at the end of the marked region."
 ;;
 ;; fill column
 ;;
-(setq-default fill-column 80)
+;; (setq-default fill-column 80)
 
 ;;
 ;; fill-column-indicator
 ;;
-(when (and (>= emacs-major-version 24)
-	   (not (eq system-type 'windows-nt)))
- (add-to-list 'load-path "~/git/Fill-Column-Indicator")
- (require 'fill-column-indicator)
- ;; (add-hook 'after-change-major-mode-hook 'fci-mode)
- (setq-default fci-always-use-textual-rule t))
+;;;(when (and (>= emacs-major-version 24)
+;;;	   (not (eq system-type 'windows-nt)))
+;;; (add-to-list 'load-path "~/git/Fill-Column-Indicator")
+;;; (require 'fill-column-indicator)
+;;; ;; (add-hook 'after-change-major-mode-hook 'fci-mode)
+;;; (setq-default fci-always-use-textual-rule t))
 
 
 ;;
