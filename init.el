@@ -418,6 +418,15 @@
 ;;;(set-face-background 'show-paren-mismatch-face     "red")
 ;;;(set-face-foreground 'show-paren-match "black")
 
+
+;;; Background selection color
+;; (set-face-background 'region "darkseagreen")
+
+;;; Background Color
+(set-background-color "seashell")
+
+
+
 ;; Set buffer behaviour
 ;; Prevent emacs from adding newlines when pressing down arrow at the end of the buffer
 (setq next-line-add-newlines nil)
@@ -544,13 +553,6 @@
 
 ;;; VISUAL ENHANCEMENTS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Background selection color
-(set-face-background 'region "darkseagreen")
-
-;;; Background Color
-(set-background-color "seashell")
-
 ;;; Highlight isearch current match
 (setq search-highlight t)
 
@@ -2288,3 +2290,8 @@ Finaly, blinks at the end of the marked region."
     (insert-tab arg)))
 
 (global-set-key [f3] 'f3-insert-tab)
+
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
+
+(load-theme 'zenburn t)
