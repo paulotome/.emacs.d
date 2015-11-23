@@ -398,35 +398,6 @@
 ;; We have CPU to spare; highlight all syntax categories.
 (setq font-lock-maximum-decoration t)
 
-;;; Show matching parenthesis
-;;(setq show-paren-delay 1) ; how long to wait?
-(show-paren-mode 1) ; turn paren-mode on
-(setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
-;; (setq show-paren-style 'mixed)
-;; (show-paren-match ((t (:bold t))))
-;; (setq show-paren-style 'expression)
-;; (set-face-background 'show-paren-match-face "LightSteelBlue2")
-(set-face-background 'show-paren-match-face (face-background 'default))
-(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
-;;;(set-face-background 'show-paren-match (face-background 'default))
-;;;(set-face-foreground 'font-lock-comment-face       "red")
-;;;(set-face-foreground 'font-lock-keyword-face       "blue")
-;;;(set-face-foreground 'font-lock-string-face        "forest green")
-;;;(set-face-foreground 'font-lock-variable-name-face "black")
-;;;(set-face-foreground 'font-lock-function-name-face "black")
-;;;(set-face-background 'show-paren-match-face        "light green")
-;;;(set-face-background 'show-paren-mismatch-face     "red")
-;;;(set-face-foreground 'show-paren-match "black")
-
-
-;;; Background selection color
-;; (set-face-background 'region "darkseagreen")
-
-;;; Background Color
-(set-background-color "seashell")
-
-
-
 ;; Set buffer behaviour
 ;; Prevent emacs from adding newlines when pressing down arrow at the end of the buffer
 (setq next-line-add-newlines nil)
@@ -2295,3 +2266,30 @@ Finaly, blinks at the end of the marked region."
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
 
 (load-theme 'zenburn t)
+
+;;; Show matching parenthesis
+;;(setq show-paren-delay 1) ; how long to wait?
+(show-paren-mode 1) ; turn paren-mode on
+(setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
+;; (setq show-paren-style 'mixed)
+;; (show-paren-match ((t (:bold t))))
+;; (setq show-paren-style 'expression)
+;; (set-face-background 'show-paren-match-face "LightSteelBlue2")
+(set-face-background 'show-paren-match-face (face-background 'default))
+(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
+;;;(set-face-background 'show-paren-match (face-background 'default))
+;;;(set-face-foreground 'font-lock-comment-face       "red")
+;;;(set-face-foreground 'font-lock-keyword-face       "blue")
+;;;(set-face-foreground 'font-lock-string-face        "forest green")
+;;;(set-face-foreground 'font-lock-variable-name-face "black")
+;;;(set-face-foreground 'font-lock-function-name-face "black")
+;;;(set-face-background 'show-paren-match-face        "light green")
+;;;(set-face-background 'show-paren-mismatch-face     "red")
+;;;(set-face-foreground 'show-paren-match "black")
+
+
+;;; Background selection color
+;; (set-face-background 'region "darkseagreen")
+
+;;; Background Color
+;;;(set-background-color "seashell")
