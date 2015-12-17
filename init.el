@@ -2293,9 +2293,9 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [f3] 'f3-insert-tab)
 
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
 
-(load-theme 'zenburn t)
+(load-theme 'wombat t)
 
 ;;; Show matching parenthesis
 ;;(setq show-paren-delay 1) ; how long to wait?
