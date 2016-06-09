@@ -30,6 +30,25 @@
 (when (eq system-type 'windows-nt)
   (w32-send-sys-command ?\xf030))
 
+
+(defun w32-restore-frame ()
+  "Restore a minimized/maximized frame"
+  (interactive)
+  (w32-send-sys-command 61728))
+
+
+(defun w32-maximize-frame ()
+  "Maximize the current frame"
+  (interactive)
+  (w32-send-sys-command 61488))
+
+
+(global-set-key [(f4)] (function (lambda ()
+				   "Maximize frame"
+				   (interactive)
+				   (w32-send-sys-command 61488))))
+
+
 ;; ******************************************************
 ;; (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S")
 ;; (setq buffer-time-stamp-format "%h %d %H:%M:%S")
@@ -384,7 +403,8 @@
 
 ;; Who use the bar to scroll?
 ;;(scroll-bar-mode left)
-(set-scroll-bar-mode 'left)
+;;(set-scroll-bar-mode 'left)
+;;(set-scroll-bar-mode 'right)
 
 ;; Deactivate tooltips in emacs
 (tooltip-mode 0)
@@ -673,7 +693,7 @@
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8-unix)
 (set-terminal-coding-system 'utf-8-unix)
-(set-selection-coding-system 'utf-8)
+; (set-selection-coding-system 'utf-8)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 (set-charset-priority 'unicode)
@@ -2292,7 +2312,8 @@ Finaly, blinks at the end of the marked region."
 
 (global-set-key [f3] 'f3-insert-tab)
 
-
+(setq package-enable-at-startup nil)
+(package-initialize)
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
 
 (load-theme 'wombat t)
