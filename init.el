@@ -1984,6 +1984,16 @@ by using nxml's indentation rules."
 ;;;
 (server-mode)
 
+;; Lines needed to gitk external diff work correctly
+(defadvice server-visit-files (after server-visit-files-gitk-ediff first (files client &optional nowait) activate)
+  (let ((filenames (mapcar 'car files)))
+    (when (and (= (length filenames) 2)
+               (some (lambda (filename)
+                       (string-match "\\.gitk-tmp\\.[0-9]+" filename))
+                     filenames))
+      (apply 'ediff-buffers (mapcar 'get-file-buffer filenames)))))
+
+
 (defun reposition-defun-at-top ()
   "Put current defun at top of window."
   (interactive)
@@ -2344,3 +2354,4 @@ Finaly, blinks at the end of the marked region."
 
 ;;; Background Color
 ;;;(set-background-color "seashell")
+(setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
