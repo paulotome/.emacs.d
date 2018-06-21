@@ -2355,3 +2355,10 @@ Finaly, blinks at the end of the marked region."
 ;;; Background Color
 ;;;(set-background-color "seashell")
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
+
+(define-key lisp-mode-map "€" 'end-of-defun)
+
+
+(setq search-highlight t)
+
+(setq mouse-drag-copy-region t)
