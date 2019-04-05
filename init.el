@@ -2362,3 +2362,7 @@ Finaly, blinks at the end of the marked region."
 (setq search-highlight t)
 
 (setq mouse-drag-copy-region t)
+
+
+(global-set-key [kbd "<C-wheel-up>"]  'text-scale-increase)
+(global-set-key  [kbd "<C-wheel-down>"] 'text-scale-decrease)
