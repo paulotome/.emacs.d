@@ -343,9 +343,9 @@
 
 
 ;;; HyperSpec
-;;(setq common-lisp-hyperspec-root "k:/doc/ansicl/HyperSpec/")
-(setq common-lisp-hyperspec-root "D:\\clhs\\clhs.chm::/")
-(setq common-lisp-hyperspec-symbol-table "D:/clhs/Map_Sym.txt")
+;; (setq common-lisp-hyperspec-root "k:/doc/ansicl/HyperSpec/")
+;; (setq common-lisp-hyperspec-root "D:\\clhs\\clhs.chm::/")
+;; (setq common-lisp-hyperspec-symbol-table "D:/clhs/Map_Sym.txt")
 
 (defun google-region-or-query ()
   "Googles a query or region if any."
@@ -662,7 +662,7 @@
 
 (add-to-list 'file-coding-system-alist '("\\.tex" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("\\.txt" . utf-8-unix) )
-(add-to-list 'file-coding-system-alist '("\\.el" . utf-8-unix) )
+;(add-to-list 'file-coding-system-alist '("\\.el" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("\\.scratch" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("user_prefs" . utf-8-unix) )
 (add-to-list 'file-coding-system-alist '("\\.xml" . utf-8-unix) )
@@ -2366,3 +2366,9 @@ Finaly, blinks at the end of the marked region."
 
 (global-set-key [kbd "<C-wheel-up>"]  'text-scale-increase)
 (global-set-key  [kbd "<C-wheel-down>"] 'text-scale-decrease)
+
+
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(package-initialize)
