@@ -1,8 +1,5 @@
 (require 'cl)
 
-(if (eq system-type 'windows-nt)
-    (setq tls-program '("C:/siscog-dev-tools/Git/bin/openssl.exe s_client -connect %h:%p -no_ssl2 -ign_eof")))
-
 ;; ******************************************************
 ;; *               Maximize Emacs window                *
 ;; ******************************************************
@@ -270,7 +267,7 @@
 
 (require 'tramp)
 ;;(add-to-list 'Info-default-directory-list "~/git/tramp/info/")
-(setq tramp-default-method "ssh")
+;;(setq tramp-default-method "ssh")
 
 ;;;_ , dired
 
@@ -290,9 +287,9 @@
 
 ;;;_  . Omit
 
-(dired-omit-mode 1)
-(setq dired-omit-files (concat dired-omit-files "\\|^\\."))
-(setq dired-omit-extensions `(,@dired-omit-extensions ".avi" ".mp3"))
+;; (dired-omit-mode 1)
+;; (setq dired-omit-files (concat dired-omit-files "\\|^\\."))
+;; (setq dired-omit-extensions `(,@dired-omit-extensions ".avi" ".mp3"))
 
 ;;;_ , image-dired
 
@@ -552,9 +549,9 @@
 (setq-default column-number-mode 't)
 
 ;;; Display date and time in mode line
-(setq display-time-24hr-format t)
-(setq display-time-day-and-date t)
-(display-time)
+;; (setq display-time-24hr-format t)
+;; (setq display-time-day-and-date t)
+;; (display-time)
 
 (setq mouse-wheel-progressive-speed nil)
 
@@ -2323,10 +2320,11 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [f3] 'f3-insert-tab)
 
 (setq package-enable-at-startup nil)
-(package-initialize)
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
+;;(package-initialize)
+;; (add-to-list ' "~/.emacs.d/themes/zenburn-emacs/")
 
 (load-theme 'wombat t)
+;; (load-theme 'vscode-dark-plus t)
 
 ;;; Show matching parenthesis
 ;;(setq show-paren-delay 1) ; how long to wait?
@@ -2336,7 +2334,8 @@ Finaly, blinks at the end of the marked region."
 ;; (show-paren-match ((t (:bold t))))
 ;; (setq show-paren-style 'expression)
 ;; (set-face-background 'show-paren-match-face "LightSteelBlue2")
-(set-face-background 'show-paren-match-face (face-background 'default))
+(set-face-foreground 'show-paren-match "#def")
+;;(set-face-background 'show-paren-match-face (face-background 'default))
 (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 ;;;(set-face-background 'show-paren-match (face-background 'default))
 ;;;(set-face-foreground 'font-lock-comment-face       "red")
@@ -2367,8 +2366,55 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [kbd "<C-wheel-up>"]  'text-scale-increase)
 (global-set-key  [kbd "<C-wheel-down>"] 'text-scale-decrease)
 
+(load-library "url-handlers")
 
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+	("melpa-stable" . "http://stable.melpa.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")))
+
 (package-initialize)
+
+;; (require 'package)
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+;; (package-initialize)
+
+
+;; Extract S-Expression, by João Távora
+(defun joaot:extract-list-or-region (arg)
+  "Take the list after the point and remove the surrounding list.  With
+argument ARG do it that many times."
+  (interactive "p")
+  (let* ((start (if mark-active
+                    (region-beginning)
+                  (point)))
+         (end (if mark-active
+                  (region-end)
+                (save-excursion
+                  (forward-sexp)
+                  (point))))
+         (extracted (buffer-substring start end))
+         (stop nil))
+    (backward-up-list (or arg 1))
+    (progn
+      (delete-region start end)
+      (condition-case err
+          (kill-region (point)
+                       (save-excursion
+                         (forward-sexp)
+                         (point)))
+        (error (goto-char start)
+               (insert extracted)
+               (message "ooops....")
+               (setq stop t)))
+      (unless stop
+        (indent-region
+         (point)
+         (progn
+           (save-excursion
+             (insert extracted)
+             (point))))))))
+
+(global-set-key (kbd "C-c %") 'joaot:extract-list-or-region)

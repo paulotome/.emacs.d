@@ -1,0 +1,7 @@
+(
+ (:id "sha1:d9566ef0ff18fa075a917e84aaa9b85f9d5b2bcb" :fingerprints ("sha1:9c:93:ce:31:44:1d:70:8f:50:35:0b:56:13:7c:48:3d:35:ab:d2:df") :host "trisquel.info:443" :conditions (:renegotiation-info-ext))
+ (:id "sha1:0d8eef0547cb20bfb2d9d7c3bdaad1ec98c79e8e" :fingerprints ("sha1:9c:93:ce:31:44:1d:70:8f:50:35:0b:56:13:7c:48:3d:35:ab:d2:df") :host "static.fsf.org:443" :conditions (:renegotiation-info-ext))
+ (:id "sha1:fb978c85c0cf3c9d62d497157827b311f7197e87" :fingerprints ("sha1:9c:93:ce:31:44:1d:70:8f:50:35:0b:56:13:7c:48:3d:35:ab:d2:df") :host "www.gnu.org:443" :conditions (:renegotiation-info-ext))
+ (:id "sha1:85b31c268009209a8d3c5387033b219264f7e62b" :fingerprints ("sha1:0f:f4:2b:54:47:d8:5c:d5:de:24:a8:25:7b:5d:d0:1f:46:37:11:78") :host "melpa.org:443" :conditions (:renegotiation-info-ext))
+ (:id "sha1:ccfd2cc2a08c89a9b10969be8c1e926954d53e28" :fingerprints ("sha1:0f:f4:2b:54:47:d8:5c:d5:de:24:a8:25:7b:5d:d0:1f:46:37:11:78") :host "stable.melpa.org:443" :conditions (:renegotiation-info-ext))
+)
