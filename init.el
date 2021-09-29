@@ -1,7 +1,10 @@
 (require 'cl)
 
-(if (eq system-type 'windows-nt)
-    (setq tls-program '("C:/siscog-dev-tools/Git/bin/openssl.exe s_client -connect %h:%p -no_ssl2 -ign_eof")))
+(setq mouse-buffer-menu-mode-mult 1000)
+
+;; automatically enable linum-mode in all programming modes
+(add-hook 'prog-mode-hook 'linum-mode)
+
 
 ;; ******************************************************
 ;; *               Maximize Emacs window                *
@@ -47,6 +50,39 @@
 				   "Maximize frame"
 				   (interactive)
 				   (w32-send-sys-command 61488))))
+
+
+;; Close current buffer and reopen it (files only)
+(defvar previous-opened-buffer nil)
+
+
+(defun reopen.last.buffer ()
+  (interactive)
+  (let ((file.name (pop previous-opened-buffer)))
+    (if file.name
+    (find-file file.name)
+    (print "No more buffers to open"))))
+
+
+(defun kill.this.buffer ()
+  (interactive)
+  (let ((buffer.name (buffer-file-name)))
+    (when buffer.name
+      (push buffer.name previous-opened-buffer)))
+  (kill-buffer))
+
+
+(defun kill.region.or.buffer ()
+  (interactive)
+  (if (region-active-p)
+      (kill-region (region-beginning) (region-end))
+      (kill.this.buffer)))
+
+
+(global-set-key [(control w)] 'kill.region.or.buffer)
+
+
+(global-set-key [(control shift t)] 'reopen.last.buffer)
 
 
 ;; ******************************************************
@@ -270,7 +306,7 @@
 
 (require 'tramp)
 ;;(add-to-list 'Info-default-directory-list "~/git/tramp/info/")
-(setq tramp-default-method "ssh")
+;;(setq tramp-default-method "ssh")
 
 ;;;_ , dired
 
@@ -290,9 +326,9 @@
 
 ;;;_  . Omit
 
-(dired-omit-mode 1)
-(setq dired-omit-files (concat dired-omit-files "\\|^\\."))
-(setq dired-omit-extensions `(,@dired-omit-extensions ".avi" ".mp3"))
+;; (dired-omit-mode 1)
+;; (setq dired-omit-files (concat dired-omit-files "\\|^\\."))
+;; (setq dired-omit-extensions `(,@dired-omit-extensions ".avi" ".mp3"))
 
 ;;;_ , image-dired
 
@@ -409,6 +445,10 @@
 ;; Deactivate tooltips in emacs
 (tooltip-mode 0)
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
+;; (setq scroll-margin 0)
+;; (setq scroll-conservatively 100000)
+;; (setq scroll-preserve-screen-position 1)
 ;;(fringe-mode 'no-fringes)
 ;; Delete the selection area with a keypress
 (delete-selection-mode t)
@@ -552,9 +592,9 @@
 (setq-default column-number-mode 't)
 
 ;;; Display date and time in mode line
-(setq display-time-24hr-format t)
-(setq display-time-day-and-date t)
-(display-time)
+;; (setq display-time-24hr-format t)
+;; (setq display-time-day-and-date t)
+;; (display-time)
 
 (setq mouse-wheel-progressive-speed nil)
 
@@ -2323,20 +2363,24 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [f3] 'f3-insert-tab)
 
 (setq package-enable-at-startup nil)
-(package-initialize)
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
+;;(package-initialize)
+;; (add-to-list ' "~/.emacs.d/themes/zenburn-emacs/")
 
+(load-theme 'vscode-dark-plus t)
 (load-theme 'wombat t)
-
+;; (add-to-list 'default-frame-alist '(background-color . "grey7"))
+(set-background-color "grey7")
 ;;; Show matching parenthesis
 ;;(setq show-paren-delay 1) ; how long to wait?
 (show-paren-mode 1) ; turn paren-mode on
-(setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
+;;(setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
+(setq show-paren-style 'parenthesis)
 ;; (setq show-paren-style 'mixed)
 ;; (show-paren-match ((t (:bold t))))
 ;; (setq show-paren-style 'expression)
 ;; (set-face-background 'show-paren-match-face "LightSteelBlue2")
-(set-face-background 'show-paren-match-face (face-background 'default))
+(set-face-foreground 'show-paren-match "#def")
+;;(set-face-background 'show-paren-match-face (face-background 'default))
 (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 ;;;(set-face-background 'show-paren-match (face-background 'default))
 ;;;(set-face-foreground 'font-lock-comment-face       "red")
@@ -2348,9 +2392,9 @@ Finaly, blinks at the end of the marked region."
 ;;;(set-face-background 'show-paren-mismatch-face     "red")
 ;;;(set-face-foreground 'show-paren-match "black")
 
-
+(set-cursor-color "DeepSkyBlue2")
 ;;; Background selection color
-;; (set-face-background 'region "darkseagreen")
+(set-face-background 'region "RoyalBlue4")
 
 ;;; Background Color
 ;;;(set-background-color "seashell")
@@ -2367,8 +2411,56 @@ Finaly, blinks at the end of the marked region."
 (global-set-key [kbd "<C-wheel-up>"]  'text-scale-increase)
 (global-set-key  [kbd "<C-wheel-down>"] 'text-scale-decrease)
 
+(load-library "url-handlers")
 
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+	;; ("melpa-stable" . "http://stable.melpa.org/packages/")
+        ;; ("melpa" . "http://melpa.org/packages/")
+	))
+
 (package-initialize)
+
+;; (require 'package
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+;; (package-initialize)
+
+
+;; Extract S-Expression, by João Távora
+(defun joaot:extract-list-or-region (arg)
+  "Take the list after the point and remove the surrounding list.  With
+argument ARG do it that many times."
+  (interactive "p")
+  (let* ((start (if mark-active
+                    (region-beginning)
+                  (point)))
+         (end (if mark-active
+                  (region-end)
+                (save-excursion
+                  (forward-sexp)
+                  (point))))
+         (extracted (buffer-substring start end))
+         (stop nil))
+    (backward-up-list (or arg 1))
+    (progn
+      (delete-region start end)
+      (condition-case err
+          (kill-region (point)
+                       (save-excursion
+                         (forward-sexp)
+                         (point)))
+        (error (goto-char start)
+               (insert extracted)
+               (message "ooops....")
+               (setq stop t)))
+      (unless stop
+        (indent-region
+         (point)
+         (progn
+           (save-excursion
+             (insert extracted)
+             (point))))))))
+
+(global-set-key (kbd "C-c %") 'joaot:extract-list-or-region)
