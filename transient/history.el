@@ -13,3 +13,4 @@
  (magit-merge
   ("--ff-only"))
  (magit-stash nil))
+  ("--ff-only")))

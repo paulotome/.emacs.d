@@ -2370,6 +2370,8 @@ Finaly, blinks at the end of the marked region."
 (load-theme 'wombat t)
 ;; (add-to-list 'default-frame-alist '(background-color . "grey7"))
 (set-background-color "grey7")
+;; (load-theme 'vscode-dark-plus t)
+
 ;;; Show matching parenthesis
 ;;(setq show-paren-delay 1) ; how long to wait?
 (show-paren-mode 1) ; turn paren-mode on
@@ -2419,11 +2421,13 @@ Finaly, blinks at the end of the marked region."
       '(("gnu" . "http://elpa.gnu.org/packages/")
 	;; ("melpa-stable" . "http://stable.melpa.org/packages/")
         ;; ("melpa" . "http://melpa.org/packages/")
-	))
+	("melpa-stable" . "http://stable.melpa.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")))
 
 (package-initialize)
 
-;; (require 'package
+;; (require 'package)
+>>>>>>> 7b5fbc2ba860a43878bb14162ed022c93c6ec0d7
 ;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 ;; (package-initialize)
 
